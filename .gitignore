@@ -274,3 +274,4 @@ fabric.properties
 .ionide
 .vscode
 .idea
+/static
