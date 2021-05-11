@@ -275,3 +275,4 @@ fabric.properties
 .vscode
 .idea
 /static
+/node_modules

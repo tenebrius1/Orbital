@@ -1,0 +1,53 @@
+<nav class="top-bar topbar-responsive">
+    <div class="top-bar-title">
+        <span data-responsive-toggle="topbar-responsive" data-hide-for="medium">
+            <button class="menu-icon" type="button" data-toggle></button>
+        </span>
+        <a class="topbar-responsive-logo" href="{% url 'index' %}"><strong>ShopBud</strong></a>
+    </div>
+    <div id="topbar-responsive" class="topbar-responsive-links">
+        <div class="top-bar-right">
+            <ul class="menu simple vertical medium-horizontal">
+                <li><a href="#">Contact</a></li>
+                <li>
+                    <button type="button" class="button hollow success topbar-responsive-button" data-open="signup">Sign
+                        up</button>
+                    <div class="small reveal" id="signup" data-reveal>
+                        <div class="login-box">
+                            <div class="grid-x collapse expanded">
+                                <div class="cell small-12 medium-6">
+                                    <div class="login-box-form-section">
+                                        <h1 class="login-box-title">Sign up</h1>
+                                        <input class="login-box-input" type="text" name="username"
+                                            placeholder="Username" />
+                                        <input class="login-box-input" type="email" name="email" placeholder="E-mail" />
+                                        <input class="login-box-input" type="password" name="password"
+                                            placeholder="Password" />
+                                        <input class="login-box-input" type="password" name="password2"
+                                            placeholder="Retype password" />
+                                        <input class="login-box-submit-button" type="submit" name="signup_submit"
+                                            value="Sign me up" />
+                                    </div>
+                                    <div class="or">OR</div>
+                                </div>
+                                <div
+                                    class="cell small-12 medium-6 login-box-social-section">
+                                    <div class="login-box-social-section-inner">
+                                        <span class="login-box-social-headline">Sign in with<br />your social
+                                            network</span>
+                                        <a class="login-box-social-button-facebook">Log in with facebook</a>
+                                        <a class="login-box-social-button-twitter">Log in with Twitter</a>
+                                        <a class="login-box-social-button-google">Log in with Google+</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="close-button" data-close aria-label="Close modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -6,18 +6,28 @@
     <meta charset="UTF-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orbital</title>
+    <title>ShopBud: {% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/foundation.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}" />
 
     {% block header %}
     {% endblock %}
 </head>
 
 <body>
-    {% block content %}
-    {% endblock %}
+    <!-- NavBar -->
+    {% include 'partials/_navbar.html' %}
+    <!-- Main Content -->
+    {% block content %} {% endblock %}
+    <!-- Footer -->
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/vendor.js' %}"></script>
     <script src="{% static 'js/foundation.js' %}"></script>
+    <script>
+        $(document).foundation();
+    </script>
 </body>
 
 </html>
