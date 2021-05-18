@@ -274,5 +274,5 @@ fabric.properties
 .ionide
 .vscode
 .idea
-/static
+/staticfiles
 /node_modules
