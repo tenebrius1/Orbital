@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load socialaccount %}
+{% block header %}
+<link href="{% static 'css/registration.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-lg-6 align-self-center">
+      <div class="m-3 m-lg-5">
+        <div class="text-center mt-4">
+          <h1 class="h3">ShopBud</h1>
+          <p class="lead">
+            Start enhancing your shopping experience today!
+          </p>
+        </div>
+
+        <!-- Alerts -->
+        {% include 'partials/_alerts.html' %}
+        <form class="needs-validation" action="{% url 'register' %}" method='POST' novalidate>
+          {% csrf_token %}
+          <div class="row justify-content-center gx-lg-1">
+            <div class="form-floating mb-3 col-lg-5">
+              <input class="form-control rounded-pill" type="text" name="name" id="name" placeholder="name" required />
+              <label for="name">Name</label>
+              <div class="invalid-feedback">
+                Please enter your name.
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center gx-lg-1">
+            <div class="form-floating mb-3 col-lg-5">
+              <input class="form-control rounded-pill" type="email" id="email" name="email" placeholder="email"
+                required />
+              <label for="email">Email</label>
+              <div class="invalid-feedback">
+                Please enter a valid email.
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center gx-lg-1">
+            <div class="form-floating mb-3 password col-lg-5">
+              <input class="form-control rounded-pill" type="password" name="password" id="password"
+                placeholder="password" required />
+              <i class="bi bi-eye" id="togglePassword"></i>
+              <label for="pasword">Password</label>
+              <div class="invalid-feedback">
+                Please enter your password.
+              </div>
+            </div>
+          </div>
+          <!-- {% include 'partials/_alerts.html' %} -->
+          <div class="text-center mt-2">
+            <button type="submit" class="btn btn-block btn-success">Sign up</button>
+          </div>
+          <p class="divider-text">
+            <span class="or">OR</span>
+          </p>
+          <div class="container px-4">
+            <div class="row gx-5 justify-content-lg-center">
+              <div class="col-lg-4 text-center">
+                <div class="p-3 border facebook rounded-pill">
+                  <a href="{% provider_login_url 'facebook' method='oauth2' %}">
+                    <i class="bi bi-facebook" title="Facebook" class="justify-content-start"></i>
+                    Facebook
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-4 text-center">
+                <div class="p-3 border google rounded-pill ">
+                  <a href="/accounts/google/login/?process=login"><i class="bi bi-google" title="Google"></i>
+                    Google
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center text-muted mt-3">
+            Already have an account? <a href="{% url 'login' %}">Sign in</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 d-none d-lg-flex col-img">
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  (function () {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+  })()
+
+  const togglePassword = document.querySelector('#togglePassword');
+  const password = document.querySelector('#password');
+  togglePassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('bi-eye-slash');
+    this.classList.toggle('bi-eye');
+  });
+</script>
+{% endblock %}

@@ -4,25 +4,31 @@ from django.shortcuts import redirect, render
 
 
 def logout(request):
-    return redirect('index')
+    return redirect("index")
+
 
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    return render(request, "accounts/dashboard.html")
+
 
 def register(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         # Get form values
-        name = request.POST['name']
-        email = request.POST['email']
-        password = request.POST['password']
+        name = request.POST["name"]
+        email = request.POST["email"]
+        password = request.POST["password"]
 
         # Check email
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Account already created, please login instead.")
-            return
-        else:
-            user = User.objects.create_user(username=name, email=email, password=password)
-            user.save()
-            return redirect('index')
+        # if User.objects.filter(email=email).exists():
+        messages.error(request, "Account already created, please login instead.")
+        #     return
+        # else:
+        #     user = User.objects.create_user(username=name, email=email, password=password)
+        #     # user.save()
+        return redirect("register")
+    else:
+        return render(request, "accounts/register.html")
 
-        return redirect('index')
+
+def login(request):
+    return render(request, "accounts/login.html")
