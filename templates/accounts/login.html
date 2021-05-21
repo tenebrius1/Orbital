@@ -18,16 +18,20 @@
         </div>
 
         <!-- Alerts -->
-        <!-- {% include 'partials/_alerts.html' %} -->
-        <form class="needs-validation" action="{% url 'register' %}" method='POST' novalidate>
+        <div class="row justify-content-lg-center">
+          <div class="col-auto">
+            {% include 'partials/_alerts.html' %}
+          </div>
+        </div>
+        <form class="needs-validation" action="{% url 'login' %}" method='POST' novalidate>
           {% csrf_token %}
           <div class="row justify-content-center gx-lg-1">
             <div class="form-floating mb-3 col-lg-5">
-              <input class="form-control rounded-pill" type="email" id="email" name="email" placeholder="email"
+              <input class="form-control rounded-pill" type="username" id="username" name="username" placeholder="username"
                 required />
-              <label for="email">Email</label>
+              <label for="username">Username</label>
               <div class="invalid-feedback">
-                Please enter your email.
+                Please enter your username.
               </div>
             </div>
           </div>

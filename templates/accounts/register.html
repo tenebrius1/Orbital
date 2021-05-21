@@ -17,16 +17,26 @@
           </p>
         </div>
 
-        <!-- Alerts -->
-        {% include 'partials/_alerts.html' %}
         <form class="needs-validation" action="{% url 'register' %}" method='POST' novalidate>
           {% csrf_token %}
           <div class="row justify-content-center gx-lg-1">
             <div class="form-floating mb-3 col-lg-5">
-              <input class="form-control rounded-pill" type="text" name="name" id="name" placeholder="name" required />
-              <label for="name">Name</label>
+              <input class="form-control rounded-pill" type="text" name="first_name" id="first_name" placeholder="first_name" required />
+              <label for="first_name">First Name</label>
+            </div>
+          </div>
+          <div class="row justify-content-center gx-lg-1">
+            <div class="form-floating mb-3 col-lg-5">
+              <input class="form-control rounded-pill" type="text" name="last_name" id="last_name" placeholder="last_name" required />
+              <label for="last_name">Last Name</label>
+            </div>
+          </div>
+          <div class="row justify-content-center gx-lg-1">
+            <div class="form-floating mb-3 col-lg-5">
+              <input class="form-control rounded-pill" type="text" name="username" id="username" placeholder="username" required />
+              <label for="name">Username</label>
               <div class="invalid-feedback">
-                Please enter your name.
+                Please enter a username.
               </div>
             </div>
           </div>
@@ -51,7 +61,12 @@
               </div>
             </div>
           </div>
-          <!-- {% include 'partials/_alerts.html' %} -->
+          <!-- Alerts -->
+          <div class="row justify-content-lg-center">
+            <div class="col-auto">
+              {% include 'partials/_alerts.html' %}
+            </div>
+          </div>
           <div class="text-center mt-2">
             <button type="submit" class="btn btn-block btn-success">Sign up</button>
           </div>

@@ -14,21 +14,49 @@ def dashboard(request):
 def register(request):
     if request.method == "POST":
         # Get form values
-        name = request.POST["name"]
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        username = request.POST["username"]
         email = request.POST["email"]
         password = request.POST["password"]
 
         # Check email
-        # if User.objects.filter(email=email).exists():
-        messages.error(request, "Account already created, please login instead.")
-        #     return
-        # else:
-        #     user = User.objects.create_user(username=name, email=email, password=password)
-        #     # user.save()
-        return redirect("register")
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Account already created, please login instead.")
+            return redirect("register")
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, "Username has already been taken.")
+            return redirect("register")
+        else:
+            user = User.objects.create_user(
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password,
+            )
+            # Login User after they register
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect("dashboard")
+
+            # Redirect user to login page after registration
+            # user.save()
+            # return redirect("login")
     else:
         return render(request, "accounts/register.html")
 
 
 def login(request):
-    return render(request, "accounts/login.html")
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return redirect("dashboard")
+        else:
+            messages.error(request, "Invalid credentials")
+            return redirect("login")
+    else:
+        return render(request, "accounts/login.html")

@@ -43,9 +43,7 @@
                     </ul>
                 </li>
                 <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                <button class="btn btn-sm btn-warning rounded-pill" type="button" data-bs-toggle="modal"
-                    data-bs-target="#signup">Sign up/Register
-                </button>
+                <a class="btn btn-sm btn-warning rounded-pill" href="{% url 'register' %}" role="button">Sign up</a>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -809,29 +807,4 @@
     </section><!-- End Contact Section -->
 
 </main><!-- End #main -->
-{% include 'partials/_login_signup.html' %}
-{% endblock %}
-
-{% block script %}
-<script>
-    (function () {
-        'use strict'
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
-
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
-</script>
 {% endblock %}

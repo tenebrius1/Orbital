@@ -67,3 +67,7 @@
     padding-right: initial;
     background-image: none;
 }
+
+.password .form-control:invalid {
+    background-image: none;
+}
