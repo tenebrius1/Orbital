@@ -19,40 +19,43 @@
 
         <form class="needs-validation" action="{% url 'register' %}" method='POST' novalidate>
           {% csrf_token %}
-          <div class="row justify-content-center gx-lg-1">
+          <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 col-lg-5">
-              <input class="form-control rounded-pill" type="text" name="first_name" id="first_name" placeholder="first_name" required />
+              <input class="form-control form-control-sm rounded-pill" type="text" name="first_name" id="first_name"
+                placeholder="first_name" required />
               <label for="first_name">First Name</label>
             </div>
           </div>
-          <div class="row justify-content-center gx-lg-1">
+          <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 col-lg-5">
-              <input class="form-control rounded-pill" type="text" name="last_name" id="last_name" placeholder="last_name" required />
+              <input class="form-control form-control-sm rounded-pill" type="text" name="last_name" id="last_name"
+                placeholder="last_name" required />
               <label for="last_name">Last Name</label>
             </div>
           </div>
-          <div class="row justify-content-center gx-lg-1">
+          <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 col-lg-5">
-              <input class="form-control rounded-pill" type="text" name="username" id="username" placeholder="username" required />
+              <input class="form-control form-control-sm rounded-pill" type="text" name="username" id="username"
+                placeholder="username" required />
               <label for="name">Username</label>
               <div class="invalid-feedback">
                 Please enter a username.
               </div>
             </div>
           </div>
-          <div class="row justify-content-center gx-lg-1">
+          <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 col-lg-5">
-              <input class="form-control rounded-pill" type="email" id="email" name="email" placeholder="email"
-                required />
+              <input class="form-control form-control-sm rounded-pill" type="email" id="email" name="email"
+                placeholder="email" required />
               <label for="email">Email</label>
               <div class="invalid-feedback">
                 Please enter a valid email.
               </div>
             </div>
           </div>
-          <div class="row justify-content-center gx-lg-1">
+          <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 password col-lg-5">
-              <input class="form-control rounded-pill" type="password" name="password" id="password"
+              <input class="form-control form-control-sm rounded-pill" type="password" name="password" id="password"
                 placeholder="password" required />
               <i class="bi bi-eye" id="togglePassword"></i>
               <label for="pasword">Password</label>

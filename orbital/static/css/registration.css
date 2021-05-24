@@ -59,7 +59,8 @@
 }
 
 .google a, .facebook a {
-    color: #C4C4C4;
+    /* color: #C4C4C4; */
+    color: white;
 }
 
 .was-validated .form-control:valid {
