@@ -1,5 +1,6 @@
-from django.contrib.auth.models import User
 from django.contrib import auth, messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
 
@@ -7,6 +8,7 @@ def logout(request):
     return redirect("index")
 
 
+@login_required
 def dashboard(request):
     return render(request, "accounts/dashboard.html")
 
@@ -36,7 +38,9 @@ def register(request):
                 password=password,
             )
             # Login User after they register
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            auth.login(
+                request, user, backend="django.contrib.auth.backends.ModelBackend"
+            )
             return redirect("dashboard")
 
             # Redirect user to login page after registration

@@ -134,7 +134,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 5px 15px 7px 15px;
   margin-left: 5px;
   font-size: 14px;
-  color: #fff;
+  color: white;
   white-space: nowrap;
   transition: 0.3s;
 }
@@ -147,6 +147,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .navbar a:hover, .navbar .active, .navbar li:hover > a {
   border-bottom: 2px solid #f6943e;
+  color: white;
 }
 
 .navbar .dropdown ul {

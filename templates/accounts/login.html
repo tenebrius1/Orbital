@@ -3,12 +3,28 @@
 {% load socialaccount %}
 {% block header %}
 <link href="{% static 'css/registration.css' %}" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
+<header id="header" class="fixed-top d-flex align-items-center">
+  <div class="container d-flex align-items-center justify-content-center">
+
+    <div class="logo">
+      <h1><a href="{% url 'index' %}">ShopBud</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="{% url 'index' %}"><img src="{% static 'img/favicon.png' %}" alt="" class="img-fluid"></a> -->
+    </div>
+
+    <nav id="navbar" class="navbar">
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+  </div>
+</header><!-- End Header -->
+
+<div class="container-fluid box">
   <div class="row">
-    <div class="col-12 col-lg-6 align-self-center">
+    <div class="col-12 align-self-center">
       <div class="m-3 m-lg-5">
         <div class="text-center mt-4">
           <h1 class="h3">ShopBud</h1>
@@ -25,8 +41,8 @@
         </div>
         <form class="needs-validation" action="{% url 'login' %}" method='POST' novalidate>
           {% csrf_token %}
-          <div class="row justify-content-center gx-1">
-            <div class="form-floating mb-3 col-lg-5">
+          <div class="row justify-content-center gx-0">
+            <div class="form-floating mb-3 col-lg-3">
               <input class="form-control rounded-pill" type="username" id="username" name="username" placeholder="username"
                 required />
               <label for="username">Username</label>
@@ -35,8 +51,8 @@
               </div>
             </div>
           </div>
-          <div class="row justify-content-center gx-1">
-            <div class="form-floating mb-3 password col-lg-5">
+          <div class="row justify-content-center gx-0">
+            <div class="form-floating mb-3 password col-lg-3">
               <input class="form-control rounded-pill" type="password" name="password" id="password"
                 placeholder="password" required />
               <i class="bi bi-eye" id="togglePassword"></i>
@@ -46,24 +62,26 @@
               </div>
             </div>
           </div>
-          <div class="text-center mt-2">
-            <button type="submit" class="btn btn-block btn-success">Sign in</button>
+          <div class="row justify-content-center">
+            <div class="text-center mt-2">
+              <button type="submit" class="btn btn-block btn-success col-lg-1">Sign in</button>
+            </div>
           </div>
           <p class="divider-text">
             <span class="or">OR</span>
           </p>
           <div class="container px-4">
             <div class="row gx-5 justify-content-lg-center">
-              <div class="col-lg-4 text-center">
-                <div class="p-3 border facebook rounded-pill">
+              <div class="col-lg-2 text-center">
+                <div class="p-2 border facebook rounded-pill">
                   <a href="{% provider_login_url 'facebook' method='oauth2' %}">
                     <i class="bi bi-facebook" title="Facebook" class="justify-content-start"></i>
                     Facebook
                   </a>
                 </div>
               </div>
-              <div class="col-lg-4 text-center">
-                <div class="p-3 border google rounded-pill ">
+              <div class="col-lg-2 text-center">
+                <div class="p-2 border google rounded-pill ">
                   <a href="/accounts/google/login/?process=login"><i class="bi bi-google" title="Google"></i>
                     Google
                   </a>
