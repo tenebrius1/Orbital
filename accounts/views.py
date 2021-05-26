@@ -5,10 +5,11 @@ from django.shortcuts import redirect, render
 
 
 def logout(request):
+    auth.logout(request)
     return redirect("index")
 
 
-@login_required
+@login_required(login_url='/accounts/login')
 def dashboard(request):
     return render(request, "accounts/dashboard.html")
 
