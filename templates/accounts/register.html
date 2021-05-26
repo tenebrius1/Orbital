@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<header id="header" class="fixed-top d-flex align-items-center">
+<div id="header" class="d-flex align-items-center flex-wrap">
   <div class="container d-flex align-items-center justify-content-center">
 
     <div class="logo">
@@ -15,12 +15,8 @@
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html"><img src="img/logo.png" alt="" class="img-fluid"></a>-->
     </div>
-
-    <nav id="navbar" class="navbar">
-      <i class="bi bi-list mobile-nav-toggle"></i>
-    </nav><!-- .navbar -->
   </div>
-</header><!-- End Header -->
+</div><!-- End Header -->
 
 <div class="container-fluid box">
   <div class="row">
@@ -107,7 +103,7 @@
                 </div>
               </div>
               <div class="col-lg-2 text-center">
-                <div class="p-2 border google rounded-pill ">
+                <div class="p-2 border google rounded-pill mt-2 mt-lg-0">
                   <a href="/accounts/google/login/?process=login"><i class="bi bi-google" title="Google"></i>
                     Google
                   </a>
