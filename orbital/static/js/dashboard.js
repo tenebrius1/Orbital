@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	new Chart(document.getElementById("chartjs-dashboard-pie"), {
 		type: "pie",
 		data: {
-			labels: ["Chrome", "Firefox", "IE"],
+			labels: ["Lazada", "Shopee", "Others"],
 			datasets: [{
 				data: [4306, 3801, 1689],
 				backgroundColor: [

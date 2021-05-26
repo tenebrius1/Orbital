@@ -65,3 +65,15 @@ def login(request):
             return redirect("login")
     else:
         return render(request, "accounts/login.html")
+
+def transaction(request):
+    return render(request, "accounts/transaction.html")
+
+def price(request):
+    return render(request, "accounts/price.html")
+
+def delivery(request):
+    return render(request, "accounts/delivery.html")
+
+def ship(request):
+    return render(request, "accounts/ship.html")
