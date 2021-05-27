@@ -7,13 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 {% endblock %}
 
-<!-- test -->
-
 {% block content %}
 <div class="wrapper">
   <div class="main">
     <nav class="navbar navbar-expand navbar-dark bg-dark navbar-bg" id="navbar">
-      <a class="navbar-brand" href="{% url 'index' %}">ShopBud</a>
+      <a class="navbar-brand" href="{% url 'dashboard' %}">ShopBud</a>
 
       <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align">
@@ -163,29 +161,43 @@
           <div class="col-md-8 col-xxl-8 d-flex">
             <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark"
               data-bs-ride="carousel">
-              <div class="card-header">
+
+              <div class="card-header" onclick="location.href='{% url "price" %}';" id="sbox">
                 <h5 class="card-title mb-0">Price Movement</h5>
               </div>
               <div class="card-body d-flex">
                 <div class="align-self-center w-100 ">
-                  <div class="carousel-inner d-flex">
-                    <div class="carousel-item active" data-bs-interval="5000">
+                  <div class="carousel-inner d-flex" onclick="location.href='{% url 'price' %}';" id="sbox">
+                    <div class="carousel-item active" data-bs-interval="10000">
                       <div class="chart">
                         <canvas id="chartjs-dashboard-line"></canvas>
                       </div>
 
                     </div>
-                    <div class="carousel-item" data-bs-interval="5000">
+                    <div class="carousel-item" data-bs-interval="10000">
                       <div class="chart chart-sm">
                         <canvas id="chartjs-dashboard-line1"></canvas>
                       </div>
                     </div>
-                    <div class="carousel-item" data-bs-interval="5000">
+                    <div class="carousel-item" data-bs-interval="10000">
                       <div class="chart chart-sm">
                         <canvas id="chartjs-dashboard-line2"></canvas>
                       </div>
                     </div>
                   </div>
+
+
+
+                  <!-- <button class="carousel-control-prev" type="button"
+										data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Previous</span>
+									</button>
+									<button class="carousel-control-next" type="button"
+										data-bs-target="#carouselExampleDark" data-bs-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Next</span>
+									</button> -->
                   <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
                       aria-current="true" aria-label="Slide 1"></button>
@@ -195,27 +207,30 @@
                       aria-label="Slide 3"></button>
                   </div>
                 </div>
+
                 <!-- <div class="chart chart-sm">
 									<canvas id="chartjs-dashboard-line"></canvas>
 								</div> -->
               </div>
+
             </div>
           </div>
         </div>
+
         <div class="row">
           <div class="d-flex">
             <div class="card flex-fill">
               <div class="card-header">
-                <h5 class="card-title mb-0">Latest Projects</h5>
+                <h5 class="card-title mb-0">Delivery Tracker</h5>
               </div>
               <table class="table table-hover my-0">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th class="d-none d-xl-table-cell">Start Date</th>
-                    <th class="d-none d-xl-table-cell">End Date</th>
+                    <th>Item</th>
+                    <th class="d-none d-xl-table-cell">Order Date</th>
+                    <th class="d-none d-xl-table-cell">Delivery Date</th>
                     <th>Status</th>
-                    <th class="d-none d-md-table-cell">Assignee</th>
+                    <th class="d-none d-md-table-cell">Courier</th>
                   </tr>
                 </thead>
                 <tbody>
