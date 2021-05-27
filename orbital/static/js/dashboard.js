@@ -41,6 +41,132 @@ document.addEventListener("DOMContentLoaded", function () {
 				intersect: true
 			},
 			plugins: {
+				title: {
+					display: true,
+					text: 'Razer Deathadder'
+				},
+				filler: {
+					propagate: false
+				}
+			},
+			scales: {
+				xAxes: [{
+					reverse: true,
+					gridLines: {
+						color: "rgba(0,0,0,0.0)"
+					}
+				}],
+				yAxes: [{
+					ticks: {
+						stepSize: 1000
+					},
+					display: true,
+					borderDash: [3, 3],
+					gridLines: {
+						color: "rgba(0,0,0,0.0)"
+					}
+				}]
+			}
+		}
+	});
+	new Chart(document.getElementById("chartjs-dashboard-line1"), {
+		type: "line",
+		data: {
+			labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			datasets: [{
+				label: "Sales ($)",
+				fill: true,
+				backgroundColor: gradient,
+				borderColor: window.theme.primary,
+				data: [
+					2115,
+					1562,
+					1584,
+					1892,
+					1587,
+					1923,
+					2566,
+					2448,
+					2805,
+					3438,
+					2917,
+					3327
+				]
+			}]
+		},
+		options: {
+			maintainAspectRatio: false,
+			legend: {
+				display: false
+			},
+			tooltips: {
+				intersect: false
+			},
+			hover: {
+				intersect: true
+			},
+			plugins: {
+				filler: {
+					propagate: false
+				}
+			},
+			scales: {
+				xAxes: [{
+					reverse: true,
+					gridLines: {
+						color: "rgba(0,0,0,0.0)"
+					}
+				}],
+				yAxes: [{
+					ticks: {
+						stepSize: 1000
+					},
+					display: true,
+					borderDash: [3, 3],
+					gridLines: {
+						color: "rgba(0,0,0,0.0)"
+					}
+				}]
+			}
+		}
+	});
+	new Chart(document.getElementById("chartjs-dashboard-line2"), {
+		type: "line",
+		data: {
+			labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			datasets: [{
+				label: "Sales ($)",
+				fill: true,
+				backgroundColor: gradient,
+				borderColor: window.theme.primary,
+				data: [
+					2115,
+					1562,
+					1584,
+					1892,
+					1587,
+					1923,
+					2566,
+					2448,
+					2805,
+					3438,
+					2917,
+					3327
+				]
+			}]
+		},
+		options: {
+			maintainAspectRatio: false,
+			legend: {
+				display: false
+			},
+			tooltips: {
+				intersect: false
+			},
+			hover: {
+				intersect: true
+			},
+			plugins: {
 				filler: {
 					propagate: false
 				}
