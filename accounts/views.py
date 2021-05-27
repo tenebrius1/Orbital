@@ -2,7 +2,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-
+import datetime
 
 def logout(request):
     auth.logout(request)
@@ -56,7 +56,6 @@ def register(request):
 
 def login(request):
     if request.user.is_authenticated:
-        print("logged in")
         return redirect("dashboard")
     else:
         if request.method == "POST":
@@ -74,7 +73,11 @@ def login(request):
             return render(request, "accounts/login.html")
 
 def transaction(request):
-    return render(request, "accounts/transaction.html")
+    month = datetime.datetime.now()
+    context = {
+        'month': month,
+    }
+    return render(request, "accounts/transaction.html", context=context)
 
 def price(request):
     return render(request, "accounts/price.html")
