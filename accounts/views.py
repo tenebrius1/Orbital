@@ -76,6 +76,7 @@ def transaction(request):
     month = datetime.datetime.now()
     context = {
         'month': month,
+        'range': range(8)
     }
     return render(request, "accounts/transaction.html", context=context)
 
