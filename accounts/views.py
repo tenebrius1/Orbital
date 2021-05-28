@@ -83,11 +83,14 @@ def transaction(request):
         date = request.POST["date"]
         company = request.POST["company"]
         price = request.POST["price"]
+        datelist = date.split("-")
+        datelist.reverse()
+        date = '{}/{}/{}'.format(*datelist)
         request.session['item']= {
             'name': name,
             'date': date,
             'company': company,
-            'price': price,
+            'price': '$' + price,
         }
         return redirect("transaction")
     else: 
