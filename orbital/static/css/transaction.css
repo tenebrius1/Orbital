@@ -11,3 +11,11 @@ input[type=number] {
 #actions {
     width: 10%;
 }
+
+.delete, .edit {
+    color: unset;
+}
+
+.delete:hover {
+    color: rgb(228, 74, 74);
+}

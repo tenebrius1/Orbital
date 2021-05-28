@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load l10n %}
 
 {% block title %}: Transactions{% endblock %}
 {% block header %}
@@ -149,32 +150,33 @@
                 <div class="modal-body">
                   <form class="needs-validation" action="{% url 'transaction' %}" method='POST' id='transaction_form'
                     novalidate>
+                    {% csrf_token %}
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="item-name" placeholder="item" required>
+                      <input type="text" class="form-control" id="item-name" placeholder="item" name='name' required>
                       <label for="item-name">Item name:</label>
                       <div class="invalid-feedback">
                         Please provide item name.
                       </div>
                     </div>
                     <div class="form-floating mb-3">
-                      <input class="form-control" id="date" type="date" placeholder="date" required>
+                      <input class="form-control" id="date" type="date" placeholder="date" name='date' required>
                       <label for="date">Date:</label>
                     </div>
-                    <select class="form-select mb-3" required>
+                    <select class="form-select mb-3" name='company' required>
                       <option value="">---Select platform---</option>
-                      <option value="1">Shopee</option>
-                      <option value="2">Lazada</option>
-                      <option value="3">Amazon</option>
-                      <option value="4">Taobao</option>
-                      <option value="5">Asos</option>
-                      <option value="6">Lazada</option>
-                      <option value="7">Others</option>
+                      <option value="Shopee">Shopee</option>
+                      <option value="Lazada">Lazada</option>
+                      <option value="Amazon">Amazon</option>
+                      <option value="Taobao">Taobao</option>
+                      <option value="Asos">Asos</option>
+                      <option value="Lazada">Lazada</option>
+                      <option value="Others">Others</option>
                     </select>
                     <div class="invalid-feedback">
                       Please select one.
                     </div>
                     <div class="form-floating mb-3">
-                      <input class="form-control" id="price" type="number" placeholder="price" required>
+                      <input class="form-control" id="price" type="number" placeholder="price" name='price' required>
                       <label for="price">Price:</label>
                       <div class="invalid-feedback">
                         Please provide valid price.
@@ -258,6 +260,22 @@
                     </td>
                   </tr>
                   {% endfor %}
+                  <tr>
+                    <td>{{ request.session.item.name|capfirst }}</td>
+                    <td class="d-none d-xl-table-cell">{{ request.session.item.date }}</td>
+                    <td class="d-none d-xl-table-cell">{{ request.session.item.company }}</td>
+                    <td class="d-none d-md-table-cell">{{ request.session.item.price|localize }}</td>
+                    <td>
+                      <span>
+                        <a class="edit" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
+                          <i class="bi bi-pencil-square me-3"></i>
+                        </a>
+                        <a class="delete" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
+                          <i class="bi bi-trash-fill"></i>
+                        </a>
+                      </span>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>

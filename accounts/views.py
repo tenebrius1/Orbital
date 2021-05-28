@@ -78,7 +78,20 @@ def transaction(request):
         'month': month,
         'range': range(8)
     }
-    return render(request, "accounts/transaction.html", context=context)
+    if request.method == "POST":
+        name = request.POST["name"]
+        date = request.POST["date"]
+        company = request.POST["company"]
+        price = request.POST["price"]
+        request.session['item']= {
+            'name': name,
+            'date': date,
+            'company': company,
+            'price': price,
+        }
+        return redirect("transaction")
+    else: 
+        return render(request, "accounts/transaction.html", context=context)
 
 def price(request):
     return render(request, "accounts/price.html")
