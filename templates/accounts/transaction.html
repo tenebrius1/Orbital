@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load l10n %}
 
 {% block title %}: Transactions{% endblock %}
 {% block header %}
@@ -260,11 +259,12 @@
                     </td>
                   </tr>
                   {% endfor %}
+                  {% for transaction in transactions %}
                   <tr>
-                    <td>{{ request.session.item.name|capfirst }}</td>
-                    <td class="d-none d-xl-table-cell">{{ request.session.item.date }}</td>
-                    <td class="d-none d-xl-table-cell">{{ request.session.item.company }}</td>
-                    <td class="d-none d-md-table-cell">{{ request.session.item.price|localize }}</td>
+                    <td>{{ transaction.item|capfirst }}</td>
+                    <td class="d-none d-xl-table-cell">{{ transaction.date }}</td>
+                    <td class="d-none d-xl-table-cell">{{ transaction.company }}</td>
+                    <td class="d-none d-md-table-cell">${{ transaction.price }}</td>
                     <td>
                       <span>
                         <a class="edit" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
@@ -276,6 +276,7 @@
                       </span>
                     </td>
                   </tr>
+                  {% endfor %}
                 </tbody>
               </table>
             </div>

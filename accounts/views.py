@@ -1,8 +1,12 @@
+import datetime
+
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-import datetime
+
+from .models import Transaction
+
 
 def logout(request):
     auth.logout(request)
@@ -72,35 +76,43 @@ def login(request):
         else:
             return render(request, "accounts/login.html")
 
+@login_required(login_url='/accounts/login')
 def transaction(request):
     month = datetime.datetime.now()
     context = {
         'month': month,
-        'range': range(8)
+        'range': range(2),
+        'transactions': Transaction.objects.filter(user_id=request.user.id)
     }
     if request.method == "POST":
         name = request.POST["name"]
         date = request.POST["date"]
         company = request.POST["company"]
+
+        # Formats price to be in 2 decimal place
         price = request.POST["price"]
+        price_formatted =  float("{:.2f}".format(float(price)))\
+
+        # Formats date to be in the form of dd/mm/yyyy
         datelist = date.split("-")
         datelist.reverse()
         date = '{}/{}/{}'.format(*datelist)
-        request.session['item']= {
-            'name': name,
-            'date': date,
-            'company': company,
-            'price': '$' + price,
-        }
+
+        # Create and save new transaction
+        Transaction.objects.create(item=name, user_id=request.user.id, date=date, price=price_formatted, company=company)
+
         return redirect("transaction")
     else: 
         return render(request, "accounts/transaction.html", context=context)
 
+@login_required(login_url='/accounts/login')
 def price(request):
     return render(request, "accounts/price.html")
 
+@login_required(login_url='/accounts/login')
 def delivery(request):
     return render(request, "accounts/delivery.html")
 
+@login_required(login_url='/accounts/login')
 def ship(request):
     return render(request, "accounts/ship.html")
