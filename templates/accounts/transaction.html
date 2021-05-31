@@ -161,7 +161,7 @@
                       <input class="form-control" id="date" type="date" placeholder="date" name='date' required>
                       <label for="date">Date:</label>
                     </div>
-                    <select class="form-select mb-3" name='company' required>
+                    <select class="form-select mb-3" name='company' id='company' required>
                       <option value="">---Select platform---</option>
                       <option value="Shopee">Shopee</option>
                       <option value="Lazada">Lazada</option>
@@ -175,7 +175,8 @@
                       Please select one.
                     </div>
                     <div class="form-floating mb-3">
-                      <input class="form-control" id="price" type="number" placeholder="price" name='price' min='0' step='.01' required>
+                      <input class="form-control" id="price" type="number" placeholder="price" name='price' min='0'
+                        step='.01' required>
                       <label for="price">Price:</label>
                       <div class="invalid-feedback">
                         Please provide valid price.
@@ -261,10 +262,10 @@
                   {% endfor %}
                   {% for transaction in transactions %}
                   <tr>
-                    <td>{{ transaction.item|capfirst }}</td>
-                    <td class="d-none d-xl-table-cell">{{ transaction.date }}</td>
-                    <td class="d-none d-xl-table-cell">{{ transaction.company }}</td>
-                    <td class="d-none d-md-table-cell">${{ transaction.price }}</td>
+                    <td class="name">{{ transaction.item|capfirst }}</td>
+                    <td class="d-none d-xl-table-cell date">{{ transaction.date }}</td>
+                    <td class="d-none d-xl-table-cell company">{{ transaction.company }}</td>
+                    <td class="d-none d-md-table-cell price">${{ transaction.price }}</td>
                     <td>
                       <span>
                         <a class="edit" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
@@ -295,4 +296,25 @@
 <script src="https://unpkg.com/@adminkit/core@latest/dist/js/app.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{% static 'js/transaction.js' %}"></script>
+
+<!-- AJAX REQUESTS -->
+<script>
+  // Delete row on delete button click
+  $(document).on("click", ".delete", function () {
+    $.ajax({
+      type: 'POST',
+      url: "{% url 'deleteTransaction' %}",
+      data: {
+        "name": $(this).parent().parent().siblings().closest(".name").text(),
+        "price": $(this).parent().parent().siblings().closest(".price").text(),
+        "date": $(this).parent().parent().siblings().closest(".date").text(),
+        "company": $(this).parent().parent().siblings().closest(".company").text(),
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      success: function (response) {
+        $(this).parents("tr").remove();
+      },
+    })
+  });
+</script>
 {% endblock %}

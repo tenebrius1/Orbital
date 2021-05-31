@@ -4,6 +4,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
+from django.http import JsonResponse
 
 from .models import Transaction
 
@@ -85,7 +86,7 @@ def transaction(request):
         'transactions': Transaction.objects.filter(user_id=request.user.id)
     }
     if request.method == "POST":
-        name = request.POST["name"]
+        name = request.POST["name"].lower()
         date = request.POST["date"]
         company = request.POST["company"]
 
@@ -104,6 +105,18 @@ def transaction(request):
         return redirect("transaction")
     else: 
         return render(request, "accounts/transaction.html", context=context)
+
+def deleteTransaction(request):
+    if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        item = request.POST.get("name").lower()
+        date = request.POST.get("date")
+        price = request.POST.get("price")[1:]
+        company = request.POST.get("company")
+
+        dlt = Transaction.objects.filter(item=item, date=date, price=price, company=company)[0]
+        dlt.delete()
+
+        return JsonResponse({"success": ""}, status=200)
 
 @login_required(login_url='/accounts/login')
 def price(request):
