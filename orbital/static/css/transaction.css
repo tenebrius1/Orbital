@@ -12,7 +12,7 @@ input[type=number] {
     width: 10%;
 }
 
-.delete, .edit {
+.delete, .edit, .btnSave, .cancel {
     color: unset;
 }
 

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
+from django.db.models import Sum
 
 from .models import Transaction
 
@@ -80,10 +81,11 @@ def login(request):
 @login_required(login_url='/accounts/login')
 def transaction(request):
     month = datetime.datetime.now()
+    transactions = Transaction.objects.filter(user_id=request.user.id)
     context = {
         'month': month,
         'range': range(2),
-        'transactions': Transaction.objects.filter(user_id=request.user.id)
+        'transactions': transactions,
     }
     if request.method == "POST":
         name = request.POST["name"].lower()
@@ -106,6 +108,8 @@ def transaction(request):
     else: 
         return render(request, "accounts/transaction.html", context=context)
 
+
+# Handles AJAX Requests
 def deleteTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         item = request.POST.get("name").lower()
@@ -114,9 +118,26 @@ def deleteTransaction(request):
         company = request.POST.get("company")
 
         dlt = Transaction.objects.filter(item=item, date=date, price=price, company=company)[0]
-        dlt.delete()
+        print(dlt)
+        # dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)
+
+def displayExpenses(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        transactions = Transaction.objects.filter(user_id=request.user.id)
+        lazada = transactions.filter(company="Lazada").aggregate(Sum('price'))['price__sum']
+        shopee = transactions.filter(company="Shopee").aggregate(Sum('price'))['price__sum']
+        amazon = transactions.filter(company="Amazon").aggregate(Sum('price'))['price__sum']
+        others = transactions.filter(company="Others").aggregate(Sum('price'))['price__sum']
+
+        return JsonResponse({
+            "lazada": lazada,
+            "shopee": shopee,
+            "amazon": amazon,
+            "others": others,
+        }, status=200)
+
 
 @login_required(login_url='/accounts/login')
 def price(request):

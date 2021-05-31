@@ -18,34 +18,69 @@
     })
 })()
 
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+$(document).on("click", ".delete", function () {
+  $.ajax({
+    type: 'POST',
+    url: "/accounts/deleteTransaction",
+    data: {
+      "name": $(this).parent().parent().siblings().closest(".name").text(),
+      "price": $(this).parent().parent().siblings().closest(".price").text(),
+      "date": $(this).parent().parent().siblings().closest(".date").text(),
+      "company": $(this).parent().parent().siblings().closest(".company").text(),
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+    },
+  })
+});
+
 // Delete row on delete button click
-$(document).on("click", ".delete", function(){
+$(document).on("click", ".delete", function () {
   $(this).parents("tr").remove();
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Pie chart
-  new Chart(document.getElementById("chartjs-dashboard-pie"), {
-    type: "pie",
-    data: {
-      labels: ["Lazada", "Shopee", "Others"],
-      datasets: [{
-        data: [4306, 3801, 1689],
-        backgroundColor: [
-          window.theme.primary,
-          window.theme.warning,
-          window.theme.danger
-        ],
-        borderWidth: 5
-      }]
+$(document).ready(function () {
+  $.ajax({
+    type: 'GET',
+    url: "/accounts/displayExpenses",
+    success: function (response) {
+      new Chart(document.getElementById("chartjs-dashboard-pie"), {
+        type: "pie",
+        data: {
+          labels: ["Lazada", "Shopee", "Amazon", "Others"],
+          datasets: [{
+            data: [response["lazada"], response["shopee"], response["amazon"], response["others"]],
+            backgroundColor: [
+              window.theme.primary,
+              window.theme.warning,
+              window.theme.danger,
+            ],
+            borderWidth: 5
+          }]
+        },
+        options: {
+          responsive: !window.MSInputMethodContext,
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          },
+          cutoutPercentage: 75
+        }
+      });
     },
-    options: {
-      responsive: !window.MSInputMethodContext,
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      cutoutPercentage: 75
-    }
-  });
+  })
 });

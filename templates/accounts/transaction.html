@@ -166,9 +166,6 @@
                       <option value="Shopee">Shopee</option>
                       <option value="Lazada">Lazada</option>
                       <option value="Amazon">Amazon</option>
-                      <option value="Taobao">Taobao</option>
-                      <option value="Asos">Asos</option>
-                      <option value="Lazada">Lazada</option>
                       <option value="Others">Others</option>
                     </select>
                     <div class="invalid-feedback">
@@ -209,15 +206,19 @@
                     <tbody>
                       <tr>
                         <td>Lazada</td>
-                        <td class="text-end">4306</td>
+                        <td class="text-end">$0.00</td>
+                      </tr>
+                      <tr>
+                        <td>Amazon</td>
+                        <td class="text-end">$50.99</td>
                       </tr>
                       <tr>
                         <td>Shopee</td>
-                        <td class="text-end">3801</td>
+                        <td class="text-end">$373.80</td>
                       </tr>
                       <tr>
                         <td>Others</td>
-                        <td class="text-end">1689</td>
+                        <td class="text-end">$5.45</td>
                       </tr>
                     </tbody>
                   </table>
@@ -231,7 +232,7 @@
               <div class="card-header">
                 <h5 class="card-title mb-0">Spendings</h5>
               </div>
-              <table class="table table-hover my-0">
+              <table class="table table-hover my-0" id='transaction_data'>
                 <thead>
                   <tr>
                     <th>Item</th>
@@ -299,22 +300,89 @@
 
 <!-- AJAX REQUESTS -->
 <script>
-  // Delete row on delete button click
-  $(document).on("click", ".delete", function () {
-    $.ajax({
-      type: 'POST',
-      url: "{% url 'deleteTransaction' %}",
-      data: {
-        "name": $(this).parent().parent().siblings().closest(".name").text(),
-        "price": $(this).parent().parent().siblings().closest(".price").text(),
-        "date": $(this).parent().parent().siblings().closest(".date").text(),
-        "company": $(this).parent().parent().siblings().closest(".company").text(),
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-      },
-      success: function (response) {
-        $(this).parents("tr").remove();
-      },
-    })
+  function Cancel(){ 
+    var par = $(this).parents("tr"); //tr 
+    var tdItem = par.children("td.name"); 
+    var tdDate = par.children("td.date"); 
+    var tdCompany = par.children("td.company"); 
+    var tdPrice = par.children("td.price");  
+    var tdEdit = par.find(".btnSave"); 
+    var tdDelete = par.find(".cancel"); 
+    
+    tdItem.html("<input type='text' value='"+tdItem.html()+"' required/>"); 
+    tdDate.html("<input type='date' value='"+tdDate.html()+"' required/>"); 
+    tdCompany.html("<select name='company' id='company' required>" +
+                      "<option value=''>---Select platform---</option>" +
+                      "<option value='Shopee'>Shopee</option>" +
+                      "<option value='Lazada'>Lazada</option>" +
+                      "<option value='Amazon'>Amazon</option>" +
+                      "<option value='Others'>Others</option>" +
+                    "</select>");
+    tdPrice.html("<input type='text' value='"+tdPrice.html()+"' required/>");
+    tdEdit.replaceWith("<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+                  "<i class='bi bi-pencil-square me-3'></i>" +
+                "</a>"); 
+    tdDelete.replaceWith("<a class='delete' title='Delete' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+                  "<i class='bi bi-trash-fill me-3'></i>"+
+                "</a>"); 
+                
+    $(".edit").bind("click", Edit); 
+  };
+
+  function Save(){ 
+    var par = $(this).parents("tr"); //tr 
+    var tdItem = par.children("td.name"); 
+    var tdDate = par.children("td.date"); 
+    var tdCompany = par.children("td.company"); 
+    var tdPrice = par.children("td.price"); 
+    var tdEdit = par.find(".btnSave"); 
+    var tdDelete = par.find(".cancel"); 
+    
+    tdItem.html(tdItem.children("input[type=text]").val()); 
+    tdDate.html(tdDate.children("input[type=date]").val()); 
+    tdCompany.html(tdCompany.children("input[type=text]").val());
+    tdPrice.html(tdPrice.children("input[type=text]").val());
+    tdEdit.replaceWith("<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+                  "<i class='bi bi-pencil-square me-3'></i>" +
+                "</a>"); 
+    tdDelete.replaceWith("<a class='delete' title='Delete' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+                  "<i class='bi bi-trash-fill me-3'></i>"+
+                "</a>"); 
+
+    $(".edit").bind("click", Edit);   
+  };
+
+  function Edit() { 
+    var par = $(this).parents("tr"); //tr 
+    var tdItem = par.children("td.name"); 
+    var tdDate = par.children("td.date"); 
+    var tdCompany = par.children("td.company"); 
+    var tdPrice = par.children("td.price");  
+    var tdSave = par.find(".edit"); 
+    var tdCancel = par.find(".delete"); 
+    
+    tdItem.html("<input type='text' class='name' value='"+tdItem.html()+"'/>"); 
+    tdDate.html("<input type='date' value='"+tdDate.html()+"' required/>"); 
+    tdCompany.html("<select name='company' id='company' required>" +
+                      "<option value=''>---Select platform---</option>" +
+                      "<option value='Shopee'>Shopee</option>" +
+                      "<option value='Lazada'>Lazada</option>" +
+                      "<option value='Amazon'>Amazon</option>" +
+                      "<option value='Others'>Others</option>" +
+                    "</select>");
+    tdPrice.html("<input type='text' value='"+tdPrice.html()+"' required/>");
+    tdSave.replaceWith("<a class='btnSave' title='Save' data-bs-toggle='tooltip' data-bs-placement='top'>"+
+                  "<i class='bi-check-square me-3'></i>"+
+                "</a>"); 
+    tdCancel.replaceWith("<a class='cancel' title='Cancel' data-bs-toggle='tooltip' data-bs-placement='top'>"+
+                  "<i class='bi bi-x-square me-3'></i>"+
+                "</a>"); 
+    $(".btnSave").bind("click", Save); 
+    $(".cancel").bind("click", Cancel); 
+  };
+
+  $(function(){ //Add, Save, Edit and Delete functions code 
+    $(".edit").bind("click", Edit); 
   });
 </script>
 {% endblock %}
