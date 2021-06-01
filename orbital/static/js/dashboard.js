@@ -195,30 +195,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+function displayExpenses() {
+  $.ajax({
+    type: 'GET',
+    url: "/accounts/displayExpenses",
+    success: function (response) {
+      new Chart(document.getElementById("chartjs-dashboard-pie"), {
+        type: "pie",
+        data: {
+          labels: ["Lazada", "Shopee", "Amazon", "Others"],
+          datasets: [{
+            data: [response["lazada"], response["shopee"], response["amazon"], response["others"]],
+            backgroundColor: [
+              window.theme.primary,
+              window.theme.warning,
+              window.theme.danger,
+            ],
+            borderWidth: 5
+          }]
+        },
+        options: {
+          responsive: !window.MSInputMethodContext,
+          maintainAspectRatio: false,
+          legend: {
+            display: false,
+          },
+          cutoutPercentage: 75,
+        }
+      });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Pie chart
-  new Chart(document.getElementById("chartjs-dashboard-pie"), {
-    type: "pie",
-    data: {
-      labels: ["Lazada", "Shopee", "Others"],
-      datasets: [{
-        data: [4306, 3801, 1689],
-        backgroundColor: [
-          window.theme.primary,
-          window.theme.warning,
-          window.theme.danger
-        ],
-        borderWidth: 5
-      }]
+      $(".amazon").text("$" + (response["amazon"] ? response["amazon"] : "0.00"));
+      $(".lazada").text("$" + (response["lazada"] ? response["lazada"] : "0.00"));
+      $(".shopee").text("$" + (response["shopee"] ? response["shopee"] : "0.00"));
+      $(".others").text("$" + (response["others"] ? response["others"] : "0.00"));
     },
-    options: {
-      responsive: !window.MSInputMethodContext,
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      cutoutPercentage: 75
-    }
-  });
-});
+  })
+}
+
+// Display expenses
+$(document).ready(displayExpenses());
+
+
+
