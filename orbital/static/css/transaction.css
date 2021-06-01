@@ -16,6 +16,10 @@ input[type=number] {
     color: unset;
 }
 
-.delete:hover {
+.delete:hover, .cancel:hover {
     color: rgb(228, 74, 74);
+}
+
+.btnSave:hover {
+  color: rgb(9, 169, 76);
 }

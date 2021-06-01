@@ -3,12 +3,11 @@ import datetime
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
-from django.http import JsonResponse
 from django.db.models import Sum
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
 
 from .models import Transaction
-
 
 def logout(request):
     auth.logout(request)

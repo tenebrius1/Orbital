@@ -1,9 +1,7 @@
 (function () {
   'use strict'
-
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
   var forms = document.querySelectorAll('.needs-validation')
-
   // Loop over them and prevent submission
   Array.prototype.slice.call(forms)
     .forEach(function (form) {
@@ -18,13 +16,13 @@
     })
 })()
 
+// Get CSRF token
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
-      // Does this cookie string begin with the name we want?
       if (cookie.substring(0, name.length + 1) === (name + '=')) {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
@@ -34,7 +32,9 @@ function getCookie(name) {
   return cookieValue;
 }
 
+// Delete button AJAX Request
 $(document).on("click", ".delete", function () {
+  $(this).parents("tr").remove();
   $.ajax({
     type: 'POST',
     url: "/accounts/deleteTransaction",
@@ -48,6 +48,7 @@ $(document).on("click", ".delete", function () {
   })
 });
 
+// Save button AJAX Request
 $(document).on("click", ".btnSave", function () {
   $.ajax({
     type: 'POST',
@@ -62,12 +63,7 @@ $(document).on("click", ".btnSave", function () {
   })
 });
 
-// Delete row on delete button click
-$(document).on("click", ".delete", function () {
-  $(this).parents("tr").remove();
-});
-
-$(document).ready(function () {
+function displayExpenses() {
   $.ajax({
     type: 'GET',
     url: "/accounts/displayExpenses",
@@ -102,4 +98,97 @@ $(document).ready(function () {
       $(".others").text("$" + (response["others"] ? response["others"] : "0.00"));
     },
   })
+}
+
+// Display expenses
+$(document).ready(displayExpenses());
+
+// Edit functions
+function Save() {
+  var par = $(this).parents("tr"); //tr 
+  var tdItem = par.children("td.name");
+  var tdDate = par.children("td.date");
+  var tdCompany = par.children("td.company");
+  var tdPrice = par.children("td.price");
+  var tdEdit = par.find(".btnSave");
+  var tdDelete = par.find(".cancel");
+
+  tdItem.html(tdItem.children("input[type=text]").val());
+  tdDate.html(tdDate.children("input[type=date]").val());
+  tdCompany.html(tdCompany.children("select#company").val())
+  tdPrice.html(tdPrice.children("input[type=text]").val());
+  tdEdit.replaceWith("<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+    "<i class='bi bi-pencil-square me-3'></i>" +
+    "</a>");
+  tdDelete.replaceWith("<a class='delete' title='Delete' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+    "<i class='bi bi-trash-fill me-3'></i>" +
+    "</a>");
+
+  $(".edit").bind("click", Edit);
+};
+
+function Edit() {
+  var par = $(this).parents("tr"); //tr 
+  var tdItem = par.children("td.name");
+  var tdDate = par.children("td.date");
+  var tdCompany = par.children("td.company");
+  var tdPrice = par.children("td.price");
+  var tdSave = par.find(".edit");
+  var tdCancel = par.find(".delete");
+  
+  // Extract and format original date
+  let date = tdDate.html().split("/")
+  date = date[2] + "-" + date[1] + "-" + date[0]
+
+  let selectMenu = "<select name='company' id='company' required>" +
+  "<option value=''>---Select platform---</option>" +
+  "<option value='Shopee'>Shopee</option>" +
+  "<option value='Lazada'>Lazada</option>" +
+  "<option value='Amazon'>Amazon</option>" +
+  "<option value='Others'>Others</option>" +
+  "</select>"
+  // Extract original selected company
+  let cmp = "'" + tdCompany.html() + "'"
+  selectMenu = selectMenu.replace(cmp, cmp + " selected")
+
+  let items = [tdItem.html(), tdDate.html(), tdCompany.html(), tdPrice.html()]
+
+  tdItem.html("<input type='text' class='name' value='" + tdItem.html() + "'/>");
+  tdDate.html("<input type='date' value='" + date + "' required/>");
+  tdCompany.html(selectMenu);
+  tdPrice.html("<input type='text' value='" + tdPrice.html() + "' required/>");
+  tdSave.replaceWith("<a class='btnSave' title='Save' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+    "<i class='bi-check-square me-3'></i>" +
+    "</a>");
+  tdCancel.replaceWith("<a class='cancel' title='Cancel' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+    "<i class='bi bi-x-square me-3'></i>" +
+    "</a>");
+
+  $(".btnSave").bind("click", Save);
+  $(".cancel").bind("click", function () {
+    var par = $(this).parents("tr"); //tr 
+    var tdItem = par.children("td.name");
+    var tdDate = par.children("td.date");
+    var tdCompany = par.children("td.company");
+    var tdPrice = par.children("td.price");
+    var tdEdit = par.find(".btnSave");
+    var tdDelete = par.find(".cancel");
+
+    tdItem.html(items[0]);
+    tdDate.html(items[1]);
+    tdCompany.html(items[2]);
+    tdPrice.html(items[3]);
+    tdEdit.replaceWith("<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+      "<i class='bi bi-pencil-square me-3'></i>" +
+      "</a>");
+    tdDelete.replaceWith("<a class='delete' title='Delete' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+      "<i class='bi bi-trash-fill me-3'></i>" +
+      "</a>");
+
+    $(".edit").bind("click", Edit);
+  });
+};
+
+$(function () { //Add, Save, Edit and Delete functions code 
+  $(".edit").bind("click", Edit);
 });
