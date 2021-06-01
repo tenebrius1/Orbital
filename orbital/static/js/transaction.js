@@ -81,6 +81,11 @@ $(document).ready(function () {
           cutoutPercentage: 75
         }
       });
+
+      $(".amazon").text("$" + (response["amazon"] ? response["amazon"] : "0.00"));
+      $(".lazada").text("$" + (response["lazada"] ? response["lazada"] : "0.00"));
+      $(".shopee").text("$" + (response["shopee"] ? response["shopee"] : "0.00"));
+      $(".others").text("$" + (response["others"] ? response["others"] : "0.00"));
     },
   })
 });
