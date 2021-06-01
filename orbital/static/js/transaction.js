@@ -48,6 +48,20 @@ $(document).on("click", ".delete", function () {
   })
 });
 
+$(document).on("click", ".btnSave", function () {
+  $.ajax({
+    type: 'POST',
+    url: "/accounts/editTransaction",
+    data: {
+      "name": $(this).parent().parent().siblings().closest(".name").text(),
+      "price": $(this).parent().parent().siblings().closest(".price").text(),
+      "date": $(this).parent().parent().siblings().closest(".date").text(),
+      "company": $(this).parent().parent().siblings().closest(".company").text(),
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+    },
+  })
+});
+
 // Delete row on delete button click
 $(document).on("click", ".delete", function () {
   $(this).parents("tr").remove();
