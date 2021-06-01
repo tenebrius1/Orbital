@@ -128,10 +128,10 @@
         <div class="row">
           <div class="col-12 col-md-4 col-xxl-4 d-flex">
             <div class="card flex-fill w-100">
-              <div class="card-header" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
+              <div class="card-header">
                 <h5 class="card-title mb-0">Expenses</h5>
               </div>
-              <div class="card-body d-flex" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
+              <div class="card-body d-flex">
                 <div class="align-self-center w-100">
                   <div class="py-3">
                     <div class="chart chart-xs">
@@ -141,16 +141,20 @@
                   <table class="table mb-0">
                     <tbody>
                       <tr>
+                        <td>Amazon</td>
+                        <td class="text-end amazon">Loading...</td>
+                      </tr>
+                      <tr>
                         <td>Lazada</td>
-                        <td class="text-end">4306</td>
+                        <td class="text-end lazada">Loading...</td>
                       </tr>
                       <tr>
                         <td>Shopee</td>
-                        <td class="text-end">3801</td>
+                        <td class="text-end shopee">Loading...</td>
                       </tr>
                       <tr>
                         <td>Others</td>
-                        <td class="text-end">1689</td>
+                        <td class="text-end others">Loading...</td>
                       </tr>
                     </tbody>
                   </table>

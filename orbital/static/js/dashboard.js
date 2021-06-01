@@ -192,6 +192,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
   // Pie chart
   new Chart(document.getElementById("chartjs-dashboard-pie"), {

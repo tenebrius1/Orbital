@@ -45,21 +45,9 @@ $(document).on("click", ".delete", function () {
       "company": $(this).parent().parent().siblings().closest(".company").text(),
       csrfmiddlewaretoken: getCookie('csrftoken'),
     },
-  })
-});
-
-// Save button AJAX Request
-$(document).on("click", ".btnSave", function () {
-  $.ajax({
-    type: 'POST',
-    url: "/accounts/editTransaction",
-    data: {
-      "name": $(this).parent().parent().siblings().closest(".name").text(),
-      "price": $(this).parent().parent().siblings().closest(".price").text(),
-      "date": $(this).parent().parent().siblings().closest(".date").text(),
-      "company": $(this).parent().parent().siblings().closest(".company").text(),
-      csrfmiddlewaretoken: getCookie('csrftoken'),
-    },
+    success: function (response) {
+      displayExpenses();
+    }
   })
 });
 
@@ -86,7 +74,7 @@ function displayExpenses() {
           responsive: !window.MSInputMethodContext,
           maintainAspectRatio: false,
           legend: {
-            display: false
+            display: false,
           },
           cutoutPercentage: 75
         }
@@ -104,6 +92,7 @@ function displayExpenses() {
 $(document).ready(displayExpenses());
 
 // Edit functions
+let items;
 function Save() {
   var par = $(this).parents("tr"); //tr 
   var tdItem = par.children("td.name");
@@ -113,10 +102,17 @@ function Save() {
   var tdEdit = par.find(".btnSave");
   var tdDelete = par.find(".cancel");
 
-  tdItem.html(tdItem.children("input[type=text]").val());
-  tdDate.html(tdDate.children("input[type=date]").val());
-  tdCompany.html(tdCompany.children("select#company").val())
-  tdPrice.html(tdPrice.children("input[type=text]").val());
+  // New values
+  nItem = tdItem.children("input[type=text]").val()
+  nDate = tdDate.children("input[type=date]").val().split("-")
+  nDate = nDate[2] + "/" + nDate[1] + "/" + nDate[0]
+  nCom = tdCompany.children("select#company").val()
+  nPrice = tdPrice.children("input[type=number]").val()
+
+  tdItem.html(nItem[0].toUpperCase() + nItem.substring(1));
+  tdDate.html(nDate);
+  tdCompany.html(nCom)
+  tdPrice.html("$" + parseFloat(nPrice).toFixed(2));
   tdEdit.replaceWith("<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
     "<i class='bi bi-pencil-square me-3'></i>" +
     "</a>");
@@ -125,6 +121,26 @@ function Save() {
     "</a>");
 
   $(".edit").bind("click", Edit);
+
+  // AJAX 
+  $.ajax({
+    type: 'POST',
+    url: "/accounts/editTransaction",
+    data: {
+      "oItem": items[0],
+      "oDate": items[1],
+      "oCom": items[2],
+      "oPrice": items[3],
+      "nItem": nItem,
+      "nDate": nDate,
+      "nCom": nCom,
+      "nPrice": nPrice,
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+    },
+    success: function (response) {
+      displayExpenses();
+    }
+  })
 };
 
 function Edit() {
@@ -151,12 +167,12 @@ function Edit() {
   let cmp = "'" + tdCompany.html() + "'"
   selectMenu = selectMenu.replace(cmp, cmp + " selected")
 
-  let items = [tdItem.html(), tdDate.html(), tdCompany.html(), tdPrice.html()]
+  items = [tdItem.html(), tdDate.html(), tdCompany.html(), tdPrice.html()]
 
   tdItem.html("<input type='text' class='name' value='" + tdItem.html() + "'/>");
-  tdDate.html("<input type='date' value='" + date + "' required/>");
+  tdDate.html("<input type='date' value='" + date + "'/>");
   tdCompany.html(selectMenu);
-  tdPrice.html("<input type='text' value='" + tdPrice.html() + "' required/>");
+  tdPrice.html("<input type='number' value='" + tdPrice.html().substring(1) + "' min='0' step='.01' />");
   tdSave.replaceWith("<a class='btnSave' title='Save' data-bs-toggle='tooltip' data-bs-placement='top'>" +
     "<i class='bi-check-square me-3'></i>" +
     "</a>");

@@ -93,7 +93,7 @@ def transaction(request):
 
         # Formats price to be in 2 decimal place
         price = request.POST["price"]
-        price_formatted =  float("{:.2f}".format(float(price)))\
+        price_formatted = float("{:.2f}".format(float(price)))
 
         # Formats date to be in the form of dd/mm/yyyy
         datelist = date.split("-")
@@ -118,7 +118,7 @@ def deleteTransaction(request):
 
         dlt = Transaction.objects.filter(item=item, date=date, price=price, company=company)[0]
         print(dlt)
-        # dlt.delete()
+        dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)
 
@@ -136,6 +136,22 @@ def displayExpenses(request):
             "amazon": amazon,
             "others": others,
         }, status=200)
+
+def editTransaction(request):
+    if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        oItem = request.POST.get("oItem").lower()
+        oDate = request.POST.get("oDate")
+        oPrice = request.POST.get("oPrice")[1:]
+        oCom = request.POST.get("oCom")
+        oEntry = Transaction.objects.get(item=oItem, date=oDate, price=oPrice, company=oCom)
+
+        oEntry.item = request.POST.get("nItem").lower()
+        oEntry.date = request.POST.get("nDate")
+        oEntry.price = float("{:.2f}".format(float(request.POST.get("nPrice"))))
+        oEntry.company = request.POST.get("nCom")
+        oEntry.save()
+
+        return JsonResponse({"success": ""}, status=200)
 
 
 @login_required(login_url='/accounts/login')

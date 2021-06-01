@@ -14,4 +14,5 @@ urlpatterns = [
     # Handles AJAX requests
     path('deleteTransaction', views.deleteTransaction, name='deleteTransaction'),
     path('displayExpenses', views.displayExpenses, name='displayExpenses'),
+    path('editTransaction', views.editTransaction, name='editTransaction'),
 ]
