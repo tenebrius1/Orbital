@@ -56,6 +56,8 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+LOGIN_REDIRECT_URL = '/accounts/dashboard'
+
 SITE_ID = 1
 
 
