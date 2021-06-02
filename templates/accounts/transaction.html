@@ -8,6 +8,7 @@
 <link href="{% static 'css/app.css' %}" rel="stylesheet">
 <link href="{% static 'css/transaction.css' %}" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -205,7 +206,7 @@
                   <table class="table mb-0">
                     <tbody>
                       <tr>
-                        <td>Amazon 
+                        <td>Amazon
                           <i class="bi bi-circle-fill" style="color:#dc3545"></i>
                         </td>
                         <td class="text-end amazon">Loading...</td>
@@ -228,6 +229,10 @@
                         </td>
                         <td class="text-end others">Loading...</td>
                       </tr>
+                      <tr>
+                        <td>Total Spendings</td>
+                        <td class="text-end total">Loading...</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -243,10 +248,12 @@
               <table class="table table-hover my-0" id='transaction_data'>
                 <thead>
                   <tr>
-                    <th onclick="sortTable(0)" style="cursor:pointer">Item</th>
-                    <th class="d-none d-xl-table-cell" onclick="sortDate(1)" style="cursor:pointer">Date bought</th>
-                    <th class="d-none d-xl-table-cell" onclick="sortTable(2)" style="cursor:pointer">Company</th>
-                    <th class="d-none d-md-table-cell" onclick="sortPrice(3)" style="cursor:pointer">Price</th>
+                    <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">Item</th>
+                    <th class="d-none d-xl-table-cell sortable" onclick="sortDate(1)" style="cursor:pointer">Date bought
+                    </th>
+                    <th class="d-none d-xl-table-cell sortable" onclick="sortTable(2)" style="cursor:pointer">Company
+                    </th>
+                    <th class="d-none d-md-table-cell sortable" onclick="sortPrice(3)" style="cursor:pointer">Price</th>
                     <th id="actions"></th>
                   </tr>
                 </thead>

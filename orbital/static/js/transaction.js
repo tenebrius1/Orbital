@@ -80,10 +80,15 @@ function displayExpenses() {
         }
       });
 
+      var totalspent = parseFloat(response["amazon"] ? response["amazon"] : "0.00") 
+                        + parseFloat(response["lazada"] ? response["lazada"] : "0.00") 
+                        + parseFloat(response["shopee"] ? response["shopee"] : "0.00") 
+                        + parseFloat(response["others"] ? response["others"] : "0.00");    
       $(".amazon").text("$" + (response["amazon"] ? response["amazon"] : "0.00"));
       $(".lazada").text("$" + (response["lazada"] ? response["lazada"] : "0.00"));
       $(".shopee").text("$" + (response["shopee"] ? response["shopee"] : "0.00"));
       $(".others").text("$" + (response["others"] ? response["others"] : "0.00"));
+      $(".total").text("$" + totalspent.toString());
     },
   })
 }
@@ -405,3 +410,19 @@ function sortDate(n) {
     }
   }
 }
+
+var $sortable = $('.sortable');
+
+$sortable.on('click', function(){
+  
+  var $this = $(this);
+  var asc = $this.hasClass('asc');
+  var desc = $this.hasClass('desc');
+  $sortable.removeClass('asc').removeClass('desc');
+  if (desc || (!asc && !desc)) {
+    $this.addClass('asc');
+  } else {
+    $this.addClass('desc');
+  }
+  
+});
