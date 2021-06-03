@@ -128,10 +128,10 @@
         <div class="row">
           <div class="col-12 col-md-4 col-xxl-4 d-flex">
             <div class="card flex-fill w-100">
-              <div class="card-header">
+              <div class="card-header" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
                 <h5 class="card-title mb-0">Expenses</h5>
               </div>
-              <div class="card-body d-flex">
+              <div class="card-body d-flex" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
                 <div class="align-self-center w-100">
                   <div class="py-3">
                     <div class="chart chart-xs">
@@ -141,19 +141,27 @@
                   <table class="table mb-0">
                     <tbody>
                       <tr>
-                        <td>Amazon</td>
+                        <td>Amazon 
+                          <i class="bi bi-circle-fill" style="color:#dc3545"></i>
+                        </td>
                         <td class="text-end amazon">Loading...</td>
                       </tr>
                       <tr>
-                        <td>Lazada</td>
+                        <td>Lazada
+                          <i class="bi bi-circle-fill" style="color:#3b7ddd"></i>
+                        </td>
                         <td class="text-end lazada">Loading...</td>
                       </tr>
                       <tr>
-                        <td>Shopee</td>
+                        <td>Shopee
+                          <i class="bi bi-circle-fill" style="color:#fcb92c"></i>
+                        </td>
                         <td class="text-end shopee">Loading...</td>
                       </tr>
                       <tr>
-                        <td>Others</td>
+                        <td>Others
+                          <i class="bi bi-circle-fill" style="color:#6c757d"></i>
+                        </td>
                         <td class="text-end others">Loading...</td>
                       </tr>
                     </tbody>
