@@ -18,7 +18,11 @@ def logout(request):
 
 @login_required(login_url='/accounts/login')
 def dashboard(request):
-    return render(request, "accounts/dashboard.html")
+    deliveries = Deliveries.objects.filter(user_id=request.user.id)
+    context = {
+        'deliveries': deliveries,
+    }
+    return render(request, "accounts/dashboard.html", context=context)
 
 
 def register(request):
@@ -154,8 +158,7 @@ def deleteTransaction(request):
         company = request.POST.get("company")
 
         dlt = Transaction.objects.filter(
-            item=item, date=date, price=price, company=company)[0]
-        print(dlt)
+            item=item, date=date, price=price, company=company, user_id=request.user.id)[0]
         dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)
@@ -228,10 +231,10 @@ def displayDeliveries(request):
 
 def deleteDelivery(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        item = request.POST.get("name").lower()
+        name = request.POST.get("name").lower()
         tkg_number = request.POST.get("tkg_number")
-        courier = request.POST.get("courier")
-        status = request.POST.get("status")
-        time_updated = request.POST.get("time_updated")
+
+        dlt = Deliveries.objects.filter(name=name, user_id=request.user.id)[0]
+        dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)

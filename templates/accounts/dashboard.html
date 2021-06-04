@@ -141,7 +141,7 @@
                   <table class="table mb-0">
                     <tbody>
                       <tr>
-                        <td>Amazon 
+                        <td>Amazon
                           <i class="bi bi-circle-fill" style="color:#dc3545"></i>
                         </td>
                         <td class="text-end amazon">Loading...</td>
@@ -221,69 +221,24 @@
                 <thead>
                   <tr>
                     <th>Item</th>
-                    <th class="d-none d-xl-table-cell">Order Date</th>
-                    <th class="d-none d-xl-table-cell">Delivery Date</th>
+                    <th class="d-none d-xl-table-cell">Tracking Number</th>
+                    <th class="d-none d-xl-table-cell">Courier</th>
                     <th>Status</th>
-                    <th class="d-none d-md-table-cell">Courier</th>
+                    <th class="d-none d-md-table-cell">Time Updated</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Project Apollo</td>
-                    <td class="d-none d-xl-table-cell">01/01/2021</td>
-                    <td class="d-none d-xl-table-cell">31/06/2021</td>
-                    <td><span class="badge bg-success">Done</span></td>
-                    <td class="d-none d-md-table-cell">Vanessa Tucker</td>
+                  {% for delivery in deliveries %}
+                  <tr class="data">
+                    <td class="name">{{ delivery.name|capfirst }}</td>
+                    <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
+                    <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
+                    <td class="d-none d-md-table-cell status">
+                      <span>Loading...</span>
+                    </td>
+                    <td class="d-none d-xl-table-cell time_updated">Loading...</td>
                   </tr>
-                  <tr>
-                    <td>Project Fireball</td>
-                    <td class="d-none d-xl-table-cell">01/01/2021</td>
-                    <td class="d-none d-xl-table-cell">31/06/2021</td>
-                    <td><span class="badge bg-danger">Cancelled</span></td>
-                    <td class="d-none d-md-table-cell">William Harris</td>
-                  </tr>
-                  <tr>
-                    <td>Project Hades</td>
-                    <td class="d-none d-xl-table-cell">01/01/2021</td>
-                    <td class="d-none d-xl-table-cell">31/06/2021</td>
-                    <td><span class="badge bg-success">Done</span></td>
-                    <td class="d-none d-md-table-cell">Sharon Lessman</td>
-                  </tr>
-                  <tr>
-                    <td>Project Nitro</td>
-                    <td class="d-none d-xl-table-cell">01/01/2021</td>
-                    <td class="d-none d-xl-table-cell">31/06/2021</td>
-                    <td><span class="badge bg-warning">In progress</span></td>
-                    <td class="d-none d-md-table-cell">Vanessa Tucker</td>
-                  </tr>
-                  <tr>
-                    <td>Project Phoenix</td>
-                    <td class="d-none d-xl-table-cell">01/01/2021</td>
-                    <td class="d-none d-xl-table-cell">31/06/2021</td>
-                    <td><span class="badge bg-success">Done</span></td>
-                    <td class="d-none d-md-table-cell">William Harris</td>
-                  </tr>
-                  <tr>
-                    <td>Project X</td>
-                    <td class="d-none d-xl-table-cell">01/01/2021</td>
-                    <td class="d-none d-xl-table-cell">31/06/2021</td>
-                    <td><span class="badge bg-success">Done</span></td>
-                    <td class="d-none d-md-table-cell">Sharon Lessman</td>
-                  </tr>
-                  <tr>
-                    <td>Project Romeo</td>
-                    <td class="d-none d-xl-table-cell">01/01/2021</td>
-                    <td class="d-none d-xl-table-cell">31/06/2021</td>
-                    <td><span class="badge bg-success">Done</span></td>
-                    <td class="d-none d-md-table-cell">Christina Mason</td>
-                  </tr>
-                  <tr>
-                    <td>Project Wombat</td>
-                    <td class="d-none d-xl-table-cell">01/01/2021</td>
-                    <td class="d-none d-xl-table-cell">31/06/2021</td>
-                    <td><span class="badge bg-warning">In progress</span></td>
-                    <td class="d-none d-md-table-cell">William Harris</td>
-                  </tr>
+                  {% endfor %}
                 </tbody>
               </table>
             </div>

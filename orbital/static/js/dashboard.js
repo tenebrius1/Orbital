@@ -193,8 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-
 function displayExpenses() {
   $.ajax({
     type: 'GET',
@@ -232,8 +230,39 @@ function displayExpenses() {
   })
 }
 
-// Display expenses
-$(document).ready(displayExpenses());
+function displayDeliveries() {
+  $.ajax({
+    type: 'GET',
+    url: "/accounts/displayDeliveries",
+    success: function (response) {
+      var rows = $('.data');
+      var columns;
+      for (var i = 0; i < rows.length; i++) {
+        columns = $(rows[i]).find('td');
+        state = response['response'][i]['delivery_status'];
+        if (state == "delivered") {
+          $(columns[3]).children("span").addClass("badge bg-success");
+          $(columns[3]).children("span").html(state);
+        } else if (state == "transit" || state == "pickup") {
+          $(columns[3]).children("span").addClass("badge bg-warning");
+          $(columns[3]).children("span").html(state);
+        } else if (state == "pendding") {
+          $(columns[3]).children("span").addClass("badge bg-secondary");
+          $(columns[3]).children("span").html("pending");
+        } else {
+          $(columns[3]).children("span").addClass("badge bg-danger");
+          $(columns[3]).children("span").html(state);
+        }
+        t = response['response'][i]['lastest_checkpoint_time'] ? response['response'][i]['lastest_checkpoint_time'].split("T") : "";
+        tt = t == "" ? "" : t[1].split("+");
+        $(columns[4]).html(tt == "" ? "---" : t[0] + " " + tt[0]);
+      }
+    },
+  })
+}
 
-
-
+// Display deliveries
+$(document).ready(function () {
+  displayExpenses();
+  displayDeliveries();
+});

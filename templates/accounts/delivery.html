@@ -166,12 +166,14 @@
                       </div>
                     </div>
                     <select class="form-select mb-3" name='courier' id='courier' required>
-                      <option value="">---Select platform---</option>
+                      <option value="" disabled>---Select platform---</option>
                       <option value="ninjavan,Ninja Van">Ninja Van</option>
                       <option value="singapore-post,SingPost">Singapore Post</option>
+                      <option value="singapore-speedpost,Speedpost">Singapore Speedpost</option>
                       <option value="roadbull,Roadbull">Roadbull</option>
                       <option value="zto-international,ZTO International">ZTO International</option>
                       <option value="jt-express-sg,J&T Express">J&T Express</option>
+                      <option value="qxpress,Qxpress">Qxpress</option>
                     </select>
                     <div class="invalid-feedback">
                       Please select one.
@@ -205,27 +207,11 @@
                 </tr>
               </thead>
               <tbody>
-                {% for i in range %}
-                <tr>
-                  <td>Speakers</td>
-                  <td class="d-none d-xl-table-cell">01/05/2021</td>
-                  <td class="d-none d-md-table-cell">Shopee</td>
-                  <td class="d-none d-md-table-cell">$69.90</td>
-                  <td class="d-none d-xl-table-cell">-</td>
-                  <td style="text-align: center;">
-                    <span>
-                      <a class="delete" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
-                        <i class="bi bi-trash-fill"></i>
-                      </a>
-                    </span>
-                  </td>
-                </tr>
-                {% endfor %}
                 {% for delivery in deliveries %}
                 <tr class="data">
                   <td class="name">{{ delivery.name|capfirst }}</td>
                   <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
-                  <td class="d-none d-md-table-cell courier">{{ delivery.courier_name|capfirst }}</td>
+                  <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
                   <td class="d-none d-md-table-cell status">
                     <span>Loading...</span>
                   </td>
