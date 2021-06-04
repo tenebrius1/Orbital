@@ -1,4 +1,5 @@
 import datetime
+import requests
 
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,8 @@ from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from .models import Transaction
+from .models import Deliveries, Transaction
+
 
 def logout(request):
     auth.logout(request)
@@ -33,7 +35,8 @@ def register(request):
 
             # Check email
             if User.objects.filter(email=email).exists():
-                messages.error(request, "Account already created, please login instead.")
+                messages.error(
+                    request, "Account already created, please login instead.")
                 return redirect("register")
             elif User.objects.filter(username=username).exists():
                 messages.error(request, "Username has already been taken.")
@@ -67,7 +70,8 @@ def login(request):
             username = request.POST["username"]
             password = request.POST["password"]
 
-            user = auth.authenticate(request, username=username, password=password)
+            user = auth.authenticate(
+                request, username=username, password=password)
             if user is not None:
                 auth.login(request, user)
                 return redirect("dashboard")
@@ -76,6 +80,7 @@ def login(request):
                 return redirect("login")
         else:
             return render(request, "accounts/login.html")
+
 
 @login_required(login_url='/accounts/login')
 def transaction(request):
@@ -101,11 +106,43 @@ def transaction(request):
         date = '{}/{}/{}'.format(*datelist)
 
         # Create and save new transaction
-        Transaction.objects.create(item=name, user_id=request.user.id, date=date, price=price_formatted, company=company)
+        Transaction.objects.create(
+            item=name, user_id=request.user.id, date=date, price=price_formatted, company=company)
 
         return redirect("transaction")
-    else: 
+    else:
         return render(request, "accounts/transaction.html", context=context)
+
+
+@login_required(login_url='/accounts/login')
+def price(request):
+    return render(request, "accounts/price.html")
+
+
+@login_required(login_url='/accounts/login')
+def delivery(request):
+    deliveries = Deliveries.objects.filter(user_id=request.user.id)
+    context = {
+        'deliveries': deliveries,
+        'range': range(1),
+    }
+
+    if request.method == "POST":
+        name = request.POST["name"].lower()
+        tkg_number = request.POST["tkg_number"]
+        courier_code = request.POST["courier"].split(",")[0]
+        courier_name = request.POST["courier"].split(",")[1]
+        Deliveries.objects.create(name=name, user_id=request.user.id, tkg_number=tkg_number,
+                                  courier_code=courier_code, courier_name=courier_name)
+
+        return redirect("delivery")
+    else:
+        return render(request, "accounts/delivery.html", context=context)
+
+
+@login_required(login_url='/accounts/login')
+def ship(request):
+    return render(request, "accounts/ship.html")
 
 
 # Handles AJAX Requests
@@ -116,19 +153,25 @@ def deleteTransaction(request):
         price = request.POST.get("price")[1:]
         company = request.POST.get("company")
 
-        dlt = Transaction.objects.filter(item=item, date=date, price=price, company=company)[0]
+        dlt = Transaction.objects.filter(
+            item=item, date=date, price=price, company=company)[0]
         print(dlt)
         dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)
 
+
 def displayExpenses(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         transactions = Transaction.objects.filter(user_id=request.user.id)
-        lazada = transactions.filter(company="Lazada").aggregate(Sum('price'))['price__sum']
-        shopee = transactions.filter(company="Shopee").aggregate(Sum('price'))['price__sum']
-        amazon = transactions.filter(company="Amazon").aggregate(Sum('price'))['price__sum']
-        others = transactions.filter(company="Others").aggregate(Sum('price'))['price__sum']
+        lazada = transactions.filter(company="Lazada").aggregate(
+            Sum('price'))['price__sum']
+        shopee = transactions.filter(company="Shopee").aggregate(
+            Sum('price'))['price__sum']
+        amazon = transactions.filter(company="Amazon").aggregate(
+            Sum('price'))['price__sum']
+        others = transactions.filter(company="Others").aggregate(
+            Sum('price'))['price__sum']
 
         return JsonResponse({
             "lazada": lazada,
@@ -137,31 +180,58 @@ def displayExpenses(request):
             "others": others,
         }, status=200)
 
+
 def editTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         oItem = request.POST.get("oItem").lower()
         oDate = request.POST.get("oDate")
         oPrice = request.POST.get("oPrice")[1:]
         oCom = request.POST.get("oCom")
-        oEntry = Transaction.objects.get(item=oItem, date=oDate, price=oPrice, company=oCom)
+        oEntry = Transaction.objects.get(
+            item=oItem, date=oDate, price=oPrice, company=oCom)
 
         oEntry.item = request.POST.get("nItem").lower()
         oEntry.date = request.POST.get("nDate")
-        oEntry.price = float("{:.2f}".format(float(request.POST.get("nPrice"))))
+        oEntry.price = float("{:.2f}".format(
+            float(request.POST.get("nPrice"))))
         oEntry.company = request.POST.get("nCom")
         oEntry.save()
 
         return JsonResponse({"success": ""}, status=200)
 
 
-@login_required(login_url='/accounts/login')
-def price(request):
-    return render(request, "accounts/price.html")
+def displayDeliveries(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        # Extract all tracking numbers
+        deliveries = Deliveries.objects.filter(user_id=request.user.id)
+        tkg_numbers = [delivery.tkg_number for delivery in deliveries]
+        tracking_numbers = ""
+        for number in tkg_numbers:
+            tracking_numbers += number + ","
 
-@login_required(login_url='/accounts/login')
-def delivery(request):
-    return render(request, "accounts/delivery.html")
+        header = {
+            "Content-Type": "application/json",
+            "Tracking-Api-Key": "1468cec6-71f5-4cfe-9669-c9a80ef3705f",
+        }
 
-@login_required(login_url='/accounts/login')
-def ship(request):
-    return render(request, "accounts/ship.html")
+        params = {
+            "tracking_numbers": tracking_numbers
+        }
+
+        r = requests.get(
+            url="https://api.trackingmore.com/v3/trackings/get", headers=header, params=params)
+
+        return JsonResponse({
+            "response": r.json()['data'],
+        }, status=200)
+
+
+def deleteDelivery(request):
+    if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        item = request.POST.get("name").lower()
+        tkg_number = request.POST.get("tkg_number")
+        courier = request.POST.get("courier")
+        status = request.POST.get("status")
+        time_updated = request.POST.get("time_updated")
+
+        return JsonResponse({"success": ""}, status=200)
