@@ -139,6 +139,18 @@ def delivery(request):
         Deliveries.objects.create(name=name, user_id=request.user.id, tkg_number=tkg_number,
                                   courier_code=courier_code, courier_name=courier_name)
 
+        header = {
+            "Content-Type": "application/json",
+            "Tracking-Api-Key": "1468cec6-71f5-4cfe-9669-c9a80ef3705f",
+        }
+
+        params = {
+            "tracking_number": tkg_number,
+            "courier_code": courier_code,
+        }
+
+        r = requests.post(url="https://api.trackingmore.com/v3/trackings/realtime", headers=header, json=params)
+
         return redirect("delivery")
     else:
         return render(request, "accounts/delivery.html", context=context)
@@ -234,7 +246,7 @@ def deleteDelivery(request):
         name = request.POST.get("name").lower()
         tkg_number = request.POST.get("tkg_number")
 
-        dlt = Deliveries.objects.filter(name=name, user_id=request.user.id)[0]
+        dlt = Deliveries.objects.filter(name=name, tkg_number=tkg_number, user_id=request.user.id)[0]
         dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)
