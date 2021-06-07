@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 
 <link href="{% static 'css/app.css' %}" rel="stylesheet">
-<link href="{% static 'css/transaction.css' %}" rel="stylesheet">
+<link href="{% static 'css/delivery.css' %}" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
@@ -197,14 +197,11 @@
               <thead>
                 <tr>
                   <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">Item</th>
-                  <th class="d-none d-xl-table-cell sortable" onclick="sortDate(1)" style="cursor:pointer">Tracking
+                  <th class="d-none d-xl-table-cell sortable" onclick="sortTable(1)" style="cursor:pointer">Tracking
                     Number</th>
-                  <th class="d-none d-md-table-cell sortable" onclick="sortTable(2)" style="cursor:pointer">Courier
-                  </th>
-                  <th class="d-none d-md-table-cell sortable" onclick="sortPrice(3)" style="cursor:pointer">Status
-                  </th>
-                  <th class="d-none d-xl-table-cell sortable" onclick="sortPrice(3)" style="cursor:pointer">Time
-                    Updated
+                  <th class="d-none d-md-table-cell sortable" onclick="sortTable(2)" style="cursor:pointer">Courier</th>
+                  <th class="d-none d-md-table-cell">Status</th>
+                  <th class="d-none d-xl-table-cell">Time Updated
                   </th>
                   <th id="actions"></th>
                 </tr>
