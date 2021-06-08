@@ -204,6 +204,20 @@ h1, h2, h3, h4, h5, h6 {
   visibility: visible;
 }
 
+.login, .login:hover {
+  background-color: #ef6603;
+  border-color: #ef6603;
+}
+
+.signup {
+  border-color: #ef6603;
+}
+
+.signup:hover {
+  background-color: #ef6603;
+  border-color: #ef6603;
+}
+
 @media (max-width: 1366px) {
   .navbar .dropdown .dropdown ul {
     left: -90%;
