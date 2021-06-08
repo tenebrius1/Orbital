@@ -276,3 +276,4 @@ fabric.properties
 .idea
 /staticfiles
 /node_modules
+.env

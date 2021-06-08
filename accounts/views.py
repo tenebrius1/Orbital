@@ -1,5 +1,6 @@
 import datetime
 import requests
+import os
 
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
@@ -141,7 +142,7 @@ def delivery(request):
 
         header = {
             "Content-Type": "application/json",
-            "Tracking-Api-Key": "1468cec6-71f5-4cfe-9669-c9a80ef3705f",
+            "Tracking-Api-Key": os.environ['TRACKING_API_KEY'],
         }
 
         params = {
@@ -226,7 +227,7 @@ def displayDeliveries(request):
 
         header = {
             "Content-Type": "application/json",
-            "Tracking-Api-Key": "1468cec6-71f5-4cfe-9669-c9a80ef3705f",
+            "Tracking-Api-Key": os.environ['TRACKING_API_KEY'],
         }
 
         params = {
