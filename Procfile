@@ -1,1 +1,1 @@
-web: gunicorn orbital.wsgi
+web: gunicorn orbital.wsgi --preload

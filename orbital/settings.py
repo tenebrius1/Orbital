@@ -12,28 +12,30 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 import django_heroku
 from pathlib import Path
-from dotenv import load_dotenv
+from environs import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv()
+# Set up environ
+env = Env()
+env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG')
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['shopbud.herokuapp.com', '127.0.0.1:8000']
-
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'pages.apps.PagesConfig',
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
@@ -48,7 +50,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-    'whitenoise.runserver_nostatic',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -63,16 +64,15 @@ LOGIN_REDIRECT_URL = '/accounts/dashboard'
 
 SITE_ID = 1
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'orbital.urls'
@@ -100,15 +100,8 @@ WSGI_APPLICATION = 'orbital.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST')
-    }
+    'default': env.dj_db_url('DATABASE_URL')
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -152,17 +145,30 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'orbital/static')
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# HTTPS settings (ONLY ENABLE IF YOUR WEBSITE HAS A VALID SSL CERTIFICATE)
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+
+# HSTS settings (ONLY ENABLE IF YOUR WEBSITE HAS A VALID SSL CERTIFICATE)
+# SECURE_HSTS_SECONDS = 31536000 # 1 Year
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import dj_database_url
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
