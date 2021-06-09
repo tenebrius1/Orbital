@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+    'scraping',
 ]
 
 AUTHENTICATION_BACKENDS = [

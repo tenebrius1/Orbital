@@ -1,6 +1,7 @@
 import datetime
 import requests
 import os
+from environs import Env
 
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
@@ -10,7 +11,11 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from .models import Deliveries, Transaction
+from scraping.models import Price
 
+# Set up environ
+env = Env()
+env.read_env()
 
 def logout(request):
     auth.logout(request)
@@ -121,7 +126,25 @@ def transaction(request):
 
 @login_required(login_url='/accounts/login')
 def price(request):
-    return render(request, "accounts/price.html")
+    prices = Price.objects.filter(user_id=request.user.id)
+    context = {
+        'prices': prices,
+        'range': range(1),
+    }
+
+    if request.method == "POST":
+        name = request.POST["name"].lower()
+        url = request.POST["url"]
+        company = request.POST["company"]
+
+        # first scrape
+
+        Price.objects.create(name=name, user_id=request.user.id, url=url, company=company, priceArr=[], dateArr=[])
+
+
+        return redirect("price")
+    else:
+        return render(request, "accounts/price.html", context=context)
 
 
 @login_required(login_url='/accounts/login')
@@ -142,7 +165,7 @@ def delivery(request):
 
         header = {
             "Content-Type": "application/json",
-            "Tracking-Api-Key": os.environ['TRACKING_API_KEY'],
+            "Tracking-Api-Key": env.str('TRACKING_API_KEY'),
         }
 
         params = {
@@ -160,6 +183,10 @@ def delivery(request):
 @login_required(login_url='/accounts/login')
 def ship(request):
     return render(request, "accounts/ship.html")
+
+@login_required(login_url='/accounts/login')
+def settings(request):
+    return render(request, "accounts/settings.html")
 
 
 # Handles AJAX Requests
@@ -227,7 +254,7 @@ def displayDeliveries(request):
 
         header = {
             "Content-Type": "application/json",
-            "Tracking-Api-Key": os.environ['TRACKING_API_KEY'],
+            "Tracking-Api-Key": env.str('TRACKING_API_KEY'),
         }
 
         params = {
