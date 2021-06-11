@@ -1,6 +1,10 @@
+from datetime import datetime
+
 from django.core.management.base import BaseCommand
-from scraping.models import Price
 from scraping.lazada import checkLazadaPrice
+from scraping.models import Price
+from scraping.shopee import checkShopeePrice
+from scraping.amazon import checkAmazonPrice
 
 
 class Command(BaseCommand):
@@ -8,4 +12,23 @@ class Command(BaseCommand):
 
     # define logic of command
     def handle(self, *args, **options):
-        price = checkLazadaPrice("https://www.lazada.sg/products/jabra-elite-active-75t-active-noise-cancellation-true-wireless-sports-earbuds-i659814460-s2001098625.html?spm=a2o42.searchlist.list.9.4dca2277LOJtCb&search=1&freeshipping=1")
+        # Update DB
+        entries = Price.objects.all()
+        curr_date = datetime.now().strftime("%m/%d/%Y")
+
+        # Loops through each entry in the database and updates them
+        for entry in entries:
+            if "lazada" in entry.url:
+                price = float("{:.2f}".format(float(checkLazadaPrice(entry.url)[1:])))
+            elif "shopee" in entry.url:
+                price = float("{:.2f}".format(float(checkShopeePrice(entry.url)[1:])))
+            elif "amazon" in entry.url:
+                price = float("{:.2f}".format(float(checkAmazonPrice(entry.url)[1:])))
+            else:
+                pass
+            
+            entry.priceArr.append(price)
+            entry.dateArr.append(curr_date)
+            entry.save()
+        
+        self.stdout.write('job complete')

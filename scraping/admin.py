@@ -3,7 +3,7 @@ from .models import Price
 
 class PriceAdmin(admin.ModelAdmin):
     list_display = ('user', 'name', 'company', 'url')
-    list_filter = ('user', 'url')
+    list_filter = ('user', 'company')
     search_fields = ('user__username', 'name', 'url')
     list_per_page = 20
 

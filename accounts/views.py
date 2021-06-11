@@ -156,7 +156,7 @@ def delivery(request):
     }
 
     if request.method == "POST":
-        name = request.POST["name"].lower()
+        name = request.POST["name"]
         tkg_number = request.POST["tkg_number"]
         courier_code = request.POST["courier"].split(",")[0]
         courier_name = request.POST["courier"].split(",")[1]
@@ -173,7 +173,7 @@ def delivery(request):
             "courier_code": courier_code,
         }
 
-        r = requests.post(
+        requests.post(
             url="https://api.trackingmore.com/v3/trackings/realtime", headers=header, json=params)
 
         return redirect("delivery")
@@ -209,7 +209,6 @@ def settings(request):
     else:
         return render(request, "accounts/settings.html")
 
-
 def forgetpassword(request):
     if request.method == "POST":
         email = request.POST["email"]
@@ -227,8 +226,6 @@ def resetpasswordsuccess(request):
     return render(request, "accounts/resetpasswordsuccess.html")
 
 # Handles AJAX Requests
-
-
 def deleteTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         item = request.POST.get("name").lower()
