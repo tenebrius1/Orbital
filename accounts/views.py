@@ -1,17 +1,16 @@
 import datetime
-import requests
-import os
-from environs import Env
 
+import requests
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from environs import Env
+from scraping.models import Price
 
 from .models import Deliveries, Transaction
-from scraping.models import Price
 
 # Set up environ
 env = Env()
@@ -263,6 +262,7 @@ def displayDeliveries(request):
 
         r = requests.get(
             url="https://api.trackingmore.com/v3/trackings/get", headers=header, params=params)
+        print(r.json()['data'][2])
 
         return JsonResponse({
             "response": r.json()['data'],
