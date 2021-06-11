@@ -1,32 +1,11 @@
-# import json
-# from urllib.request import urlopen
+from django.core.management.base import BaseCommand
+from scraping.models import Price
+from scraping.lazada import checkLazadaPrice
 
-# from bs4 import BeautifulSoup
-# from django.core.management.base import BaseCommand
-# from scraping.models import Job
 
-# class Command(BaseCommand):
-#     # define logic of command
-#     def handle(self, url):        
-#       # collect html
-#       html = urlopen(url)  
-#       # convert to soup
-#       soup = BeautifulSoup(html, 'lxml')        
-#       price = soup.find()
+class Command(BaseCommand):
+    help = "collect price from shopping platforms"
 
-#       for p in postings:
-#             url = p.find('a', class_='posting-btn-submit')['href']
-#             title = p.find('h5').text
-#             location = p.find('span', class_='sort-by-location').text
-            
-#             # check if url in db
-#             try:
-#                 # save in db
-#                 Job.objects.create(
-#                     url=url,
-#                     title=title,
-#                     location=location
-#                 )
-#                 print('%s added' % (title,))
-#             except:
-#                 print('%s already exists' % (title,))
+    # define logic of command
+    def handle(self, *args, **options):
+        price = checkLazadaPrice("https://www.lazada.sg/products/jabra-elite-active-75t-active-noise-cancellation-true-wireless-sports-earbuds-i659814460-s2001098625.html?spm=a2o42.searchlist.list.9.4dca2277LOJtCb&search=1&freeshipping=1")
