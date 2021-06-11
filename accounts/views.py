@@ -16,6 +16,7 @@ from .models import Deliveries, Transaction
 env = Env()
 env.read_env()
 
+
 def logout(request):
     auth.logout(request)
     return redirect("index")
@@ -138,8 +139,8 @@ def price(request):
 
         # first scrape
 
-        Price.objects.create(name=name, user_id=request.user.id, url=url, company=company, priceArr=[], dateArr=[])
-
+        Price.objects.create(name=name, user_id=request.user.id,
+                             url=url, company=company, priceArr=[], dateArr=[])
 
         return redirect("price")
     else:
@@ -172,7 +173,8 @@ def delivery(request):
             "courier_code": courier_code,
         }
 
-        r = requests.post(url="https://api.trackingmore.com/v3/trackings/realtime", headers=header, json=params)
+        r = requests.post(
+            url="https://api.trackingmore.com/v3/trackings/realtime", headers=header, json=params)
 
         return redirect("delivery")
     else:
@@ -183,12 +185,50 @@ def delivery(request):
 def ship(request):
     return render(request, "accounts/ship.html")
 
+
 @login_required(login_url='/accounts/login')
 def settings(request):
-    return render(request, "accounts/settings.html")
+    u = User.objects.get(username=request.user.username)
+    if request.method == "POST":
+        # Get form values
+        username = request.POST["newname"]
+        password = request.POST["newpw"]
 
+        u.set_password(password)
+        u.save()
+
+        auth.login(
+            request, u, backend="django.contrib.auth.backends.ModelBackend"
+        )
+
+        return redirect("settings")
+
+        # Redirect user to login page after registration
+        # user.save()
+        # return redirect("login")
+    else:
+        return render(request, "accounts/settings.html")
+
+
+def forgetpassword(request):
+    if request.method == "POST":
+        email = request.POST["email"]
+        # Check email
+        if User.objects.filter(email=email).exists() == False: 
+            messages.error(
+                request, "Email does not exist.")
+            return redirect("forgetpassword")
+        else:
+            return redirect("resetpasswordsuccess")
+
+    return render(request, "accounts/forgetpassword.html")
+
+def resetpasswordsuccess(request):
+    return render(request, "accounts/resetpasswordsuccess.html")
 
 # Handles AJAX Requests
+
+
 def deleteTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         item = request.POST.get("name").lower()
@@ -274,7 +314,8 @@ def deleteDelivery(request):
         name = request.POST.get("name").lower()
         tkg_number = request.POST.get("tkg_number")
 
-        dlt = Deliveries.objects.filter(name=name, tkg_number=tkg_number, user_id=request.user.id)[0]
+        dlt = Deliveries.objects.filter(
+            name=name, tkg_number=tkg_number, user_id=request.user.id)[0]
         dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)
