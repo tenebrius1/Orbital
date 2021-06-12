@@ -299,7 +299,6 @@ def displayDeliveries(request):
 
         r = requests.get(
             url="https://api.trackingmore.com/v3/trackings/get", headers=header, params=params)
-        print(r.json()['data'][2])
 
         return JsonResponse({
             "response": r.json()['data'],
@@ -308,7 +307,7 @@ def displayDeliveries(request):
 
 def deleteDelivery(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        name = request.POST.get("name").lower()
+        name = request.POST.get("name")
         tkg_number = request.POST.get("tkg_number")
 
         dlt = Deliveries.objects.filter(
