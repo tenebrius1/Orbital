@@ -18,7 +18,7 @@ def checkLazadaPrice(url):
     options.add_argument('--disable-gpu')
     options.add_argument('--log-level=2')
     options.add_argument('--disable-software-rasterizer')
-    options.binary_location = env.str('GOOGLE_CHROME_SHIM')
+    options.binary_location = env.str('GOOGLE_CHROME_BIN')
     driver = webdriver.Chrome(executable_path=env.str('CHROMEDRIVER_PATH'),options=options)
     driver.get(url)
     timeout = 1
