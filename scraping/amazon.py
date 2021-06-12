@@ -1,10 +1,9 @@
+from environs import Env
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from environs import Env
 
 # Set up environ
 env = Env()
@@ -12,7 +11,7 @@ env.read_env()
 
 
 def checkAmazonPrice(url):
-    options = Options()
+    options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--no-sandbox')
