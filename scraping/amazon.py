@@ -4,6 +4,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from environs import Env
+
+# Set up environ
+env = Env()
+env.read_env()
 
 
 def checkAmazonPrice(url):
@@ -14,7 +19,8 @@ def checkAmazonPrice(url):
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-software-rasterizer')
     options.add_argument('--log-level=2')
-    driver = webdriver.Chrome(options=options)
+    options.binary_location(env.str('GOOGLE_CHROME_BIN'))
+    driver = webdriver.Chrome(executable_path=env.str('CHROMEDRIVER_PATH') ,options=options)
     driver.get(url)
     timeout = 1
 
