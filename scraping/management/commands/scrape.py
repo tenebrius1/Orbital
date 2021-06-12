@@ -18,14 +18,14 @@ class Command(BaseCommand):
 
         # Loops through each entry in the database and updates them
         for entry in entries:
-            if "lazada" in entry.url:
-                price = float("{:.2f}".format(float(checkLazadaPrice(entry.url)[1:])))
-            elif "shopee" in entry.url:
-                price = float("{:.2f}".format(float(checkShopeePrice(entry.url)[1:])))
-            elif "amazon" in entry.url:
-                price = float("{:.2f}".format(float(checkAmazonPrice(entry.url)[2:])))
-            else:
-                pass
+            # if "lazada" in entry.url:
+            #    price = float("{:.2f}".format(float(checkLazadaPrice(entry.url)[1:])))
+            # elif "shopee" in entry.url:
+            #    price = float("{:.2f}".format(float(checkShopeePrice(entry.url)[1:])))
+            # elif "amazon" in entry.url:
+            #    price = float("{:.2f}".format(float(checkAmazonPrice(entry.url)[2:])))
+            # else:
+            #    pass
             
             entry.priceArr.append(price)
             entry.dateArr.append(curr_date)
