@@ -18,7 +18,7 @@ def checkShopeePrice(url):
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-software-rasterizer')
     options.add_argument('--log-level=2')
-    options.binary_location = env.str('GOOGLE_CHROME_BIN')
+    options.binary_location = env.str('GOOGLE_CHROME_SHIM')
     driver = webdriver.Chrome(executable_path=env.str('CHROMEDRIVER_PATH'),options=options)
     driver.get(url)
     timeout = 1

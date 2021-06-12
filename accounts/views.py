@@ -140,7 +140,6 @@ def price(request):
         # first scrape
         price = checkPrice(url)
         date = datetime.datetime.now().strftime("%m/%d/%Y")
-        print(date)
         Price.objects.create(name=name, user_id=request.user.id,
                              url=url, company=company, priceArr=[price], dateArr=[date])
 
