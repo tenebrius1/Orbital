@@ -27,8 +27,8 @@ class Command(BaseCommand):
             else:
                 pass
             
-            entry.priceArr.append(price)
-            entry.dateArr.append(curr_date)
+            entry.priceArr.append(10)
+            entry.dateArr.append("test")
             entry.save()
         
         self.stdout.write('job complete')
