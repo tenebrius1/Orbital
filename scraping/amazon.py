@@ -34,8 +34,7 @@ def checkAmazonPrice(url):
             except TimeoutException:
                 driver.refresh()
                 continue
-            price = driver.find_element(
-                By.ID, 'priceblock_ourprice')
+            price = driver.find_element(By.ID, 'priceblock_ourprice')
             found = True
         return price.text
     except TimeoutException:

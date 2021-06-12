@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from django.core.management.base import BaseCommand
+from scraping.amazon import checkAmazonPrice
 from scraping.lazada import checkLazadaPrice
 from scraping.models import Price
 from scraping.shopee import checkShopeePrice
-from scraping.amazon import checkAmazonPrice
 
 
 class Command(BaseCommand):
@@ -23,7 +23,7 @@ class Command(BaseCommand):
             elif "shopee" in entry.url:
                 price = float("{:.2f}".format(float(checkShopeePrice(entry.url)[1:])))
             elif "amazon" in entry.url:
-                price = float("{:.2f}".format(float(checkAmazonPrice(entry.url)[1:])))
+                price = float("{:.2f}".format(float(checkAmazonPrice(entry.url)[2:])))
             else:
                 pass
             

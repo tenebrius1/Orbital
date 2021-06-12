@@ -8,6 +8,7 @@ from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from environs import Env
+from scraping.checkPrice import checkPrice
 from scraping.models import Price
 
 from .models import Deliveries, Transaction
@@ -126,21 +127,22 @@ def transaction(request):
 
 @login_required(login_url='/accounts/login')
 def price(request):
-    prices = Price.objects.filter(user_id=request.user.id)
+    entries = Price.objects.filter(user_id=request.user.id)
     context = {
-        'prices': prices,
-        'range': range(1),
+        'entries': entries,
     }
 
     if request.method == "POST":
-        name = request.POST["name"].lower()
+        name = request.POST["name"]
         url = request.POST["url"]
         company = request.POST["company"]
 
         # first scrape
-
+        price = checkPrice(url)
+        date = datetime.datetime.now().strftime("%m/%d/%Y")
+        print(date)
         Price.objects.create(name=name, user_id=request.user.id,
-                             url=url, company=company, priceArr=[], dateArr=[])
+                             url=url, company=company, priceArr=[price], dateArr=[date])
 
         return redirect("price")
     else:

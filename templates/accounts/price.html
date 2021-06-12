@@ -174,7 +174,6 @@
                                             <option value="Shopee">Shopee</option>
                                             <option value="Lazada">Lazada</option>
                                             <option value="Amazon">Amazon</option>
-                                            <option value="Others">Others</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select one.
@@ -207,35 +206,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for entry in entries %}
                                 <tr class="data">
-                                    <td class="name">{{ delivery.name|capfirst }}</td>
-                                    <td class="d-none d-md-table-cell company">{{ delivery.courier_name }}</td>
+                                    <td class="name">{{ entry.name|capfirst }}</td>
+                                    <td class="d-none d-md-table-cell company">{{ entry.company }}</td>
                                     <td class="d-none d-md-table-cell price">
-                                        <span>Loading...</span>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <span>
-                                            <a class="graph" title="Show Graph" data-bs-toggle="tooltip"
-                                                data-bs-placement="top">
-                                                <i class="bi bi-graph-down me-3"></i>
-                                            </a>
-                                            <a class="cart" title="Buy Now" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" href="http://www.google.com">
-                                                <i class="bi bi-cart-plus me-3"></i>
-                                            </a>
-                                            <a class="delete" title="Delete" data-bs-toggle="tooltip"
-                                                data-bs-placement="top">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                {% for delivery in deliveries %}
-                                <tr class="data">
-                                    <td class="name">{{ delivery.name|capfirst }}</td>
-                                    <td class="d-none d-md-table-cell company">{{ delivery.courier_name }}</td>
-                                    <td class="d-none d-md-table-cell price">
-                                        <span>Loading...</span>
+                                        <span>${{ entry.priceArr|last }}</span>
                                     </td>
                                     <td style="text-align: center;">
                                         <span>
