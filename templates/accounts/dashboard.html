@@ -1,258 +1,136 @@
-{% extends 'base.html' %}
+{% extends 'dashboard_base.html' %}
 {% load static %}
 {% block header %}
 <link rel="preconnect" href="https://fonts.gstatic.com">
-
-<link href="{% static 'css/app.css' %}" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div class="wrapper">
-  <div class="main">
-    <nav class="navbar navbar-expand navbar-dark bg-dark navbar-bg" id="navbar">
-      <a class="navbar-brand" href="{% url 'dashboard' %}">ShopBud</a>
 
-      <div class="navbar-collapse collapse">
-        <ul class="navbar-nav navbar-align">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'transaction' %}">Transactions</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'delivery' %}">Deliveries</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'price' %}">PriceTrack</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'ship' %}">ShipTogether</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
-              <div class="position-relative">
-                <i class="align-middle" data-feather="bell"></i>
-                <span class="indicator">4</span>
-              </div>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-              <div class="dropdown-menu-header">
-                4 New Notifications
-              </div>
-              <div class="list-group">
-                <a href="#" class="list-group-item">
-                  <div class="row g-0 align-items-center">
-                    <div class="col-2">
-                      <i class="text-danger" data-feather="alert-circle"></i>
-                    </div>
-                    <div class="col-10">
-                      <div class="text-dark">Update completed</div>
-                      <div class="text-muted small mt-1">Restart server 12 to complete the
-                        update.</div>
-                      <div class="text-muted small mt-1">30m ago</div>
-                    </div>
-                  </div>
-                </a>
-                <a href="#" class="list-group-item">
-                  <div class="row g-0 align-items-center">
-                    <div class="col-2">
-                      <i class="text-warning" data-feather="bell"></i>
-                    </div>
-                    <div class="col-10">
-                      <div class="text-dark">Lorem ipsum</div>
-                      <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate
-                        hendrerit et.</div>
-                      <div class="text-muted small mt-1">2h ago</div>
-                    </div>
-                  </div>
-                </a>
-                <a href="#" class="list-group-item">
-                  <div class="row g-0 align-items-center">
-                    <div class="col-2">
-                      <i class="text-primary" data-feather="home"></i>
-                    </div>
-                    <div class="col-10">
-                      <div class="text-dark">Login from 192.186.1.8</div>
-                      <div class="text-muted small mt-1">5h ago</div>
-                    </div>
-                  </div>
-                </a>
-                <a href="#" class="list-group-item">
-                  <div class="row g-0 align-items-center">
-                    <div class="col-2">
-                      <i class="text-success" data-feather="user-plus"></i>
-                    </div>
-                    <div class="col-10">
-                      <div class="text-dark">New connection</div>
-                      <div class="text-muted small mt-1">Christina accepted your request.
-                      </div>
-                      <div class="text-muted small mt-1">14h ago</div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div class="dropdown-menu-footer">
-                <a href="#" class="text-muted">Show all notifications</a>
-              </div>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-              <i class="align-middle" data-feather="settings"></i>
-            </a>
-
-            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                class="bi bi-person-circle" viewBox="0 0 16 16">
-                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                <path fill-rule="evenodd"
-                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-              </svg>
-              <span class="ps-1">{{ request.user.first_name|upper }}</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i>
-                Profile</a>
-              <a class="dropdown-item" href="{% url 'settings' %}"><i class="align-middle me-1"
-                  data-feather="settings"></i> Settings</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <main class="content">
-      <div class="container-fluid p-0">
-        <h1 class="h3 mb-3">Welcome, <strong>{{ request.user.first_name|upper }}</strong></h1>
-        <div class="row">
-          <div class="col-12 col-md-4 col-xxl-4 d-flex">
-            <div class="card flex-fill w-100">
-              <div class="card-header" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
-                <h5 class="card-title mb-0">Expenses</h5>
-              </div>
-              <div class="card-body d-flex" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
-                <div class="align-self-center w-100">
-                  <div class="py-3">
-                    <div class="chart chart-xs">
-                      <canvas id="chartjs-dashboard-pie"></canvas>
-                    </div>
-                  </div>
-                  <table class="table mb-0">
-                    <tbody>
-                      <tr>
-                        <td>Amazon
-                          <i class="bi bi-circle-fill" style="color:#dc3545"></i>
-                        </td>
-                        <td class="text-end amazon">Loading...</td>
-                      </tr>
-                      <tr>
-                        <td>Lazada
-                          <i class="bi bi-circle-fill" style="color:#3b7ddd"></i>
-                        </td>
-                        <td class="text-end lazada">Loading...</td>
-                      </tr>
-                      <tr>
-                        <td>Shopee
-                          <i class="bi bi-circle-fill" style="color:#fcb92c"></i>
-                        </td>
-                        <td class="text-end shopee">Loading...</td>
-                      </tr>
-                      <tr>
-                        <td>Others
-                          <i class="bi bi-circle-fill" style="color:#6c757d"></i>
-                        </td>
-                        <td class="text-end others">Loading...</td>
-                      </tr>
-                    </tbody>
-                  </table>
+<main class="content">
+  <div class="container-fluid p-0">
+    <h1 class="h3 mb-3">Welcome, <strong>{{ request.user.first_name|upper }}</strong></h1>
+    <div class="row">
+      <div class="col-12 col-md-4 col-xxl-4 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
+            <h5 class="card-title mb-0">Expenses</h5>
+          </div>
+          <div class="card-body d-flex" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
+            <div class="align-self-center w-100">
+              <div class="py-3">
+                <div class="chart chart-xs">
+                  <canvas id="chartjs-dashboard-pie"></canvas>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="col-md-8 col-xxl-8 d-flex">
-            <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark"
-              data-bs-ride="carousel">
-
-              <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
-                <h5 class="card-title mb-0">Price Movement</h5>
-              </div>
-              <div class="card-body d-flex">
-                <div class="align-self-center w-100 ">
-                  <div class="carousel-inner d-flex" onclick="location.href=`{% url 'price' %}`" id="sbox">
-                    <div class="carousel-item active" data-bs-interval="10000">
-                      <div class="chart">
-                        <canvas id="chartjs-dashboard-line"></canvas>
-                      </div>
-
-                    </div>
-                    <div class="carousel-item" data-bs-interval="10000">
-                      <div class="chart chart-sm">
-                        <canvas id="chartjs-dashboard-line1"></canvas>
-                      </div>
-                    </div>
-                    <div class="carousel-item" data-bs-interval="10000">
-                      <div class="chart chart-sm">
-                        <canvas id="chartjs-dashboard-line2"></canvas>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                      aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                      aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                      aria-label="Slide 3"></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="d-flex">
-            <div class="card flex-fill">
-              <div class="card-header" onclick="location.href=`{% url 'delivery' %}`" id="sbox">
-                <h5 class="card-title mb-0">Delivery Tracker</h5>
-              </div>
-              <table class="table table-hover my-0" onclick="location.href=`{% url 'delivery' %}`" id="sbox">
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th class="d-none d-xl-table-cell">Tracking Number</th>
-                    <th class="d-none d-xl-table-cell">Courier</th>
-                    <th>Status</th>
-                    <th class="d-none d-md-table-cell">Time Updated</th>
-                  </tr>
-                </thead>
+              <table class="table mb-0">
                 <tbody>
-                  {% for delivery in deliveries %}
-                  <tr class="data">
-                    <td class="name">{{ delivery.name|capfirst }}</td>
-                    <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
-                    <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
-                    <td class="d-none d-md-table-cell status">
-                      <span>Loading...</span>
+                  <tr>
+                    <td>Amazon
+                      <i class="bi bi-circle-fill" style="color:#dc3545"></i>
                     </td>
-                    <td class="d-none d-xl-table-cell time_updated">Loading...</td>
+                    <td class="text-end amazon">Loading...</td>
                   </tr>
-                  {% endfor %}
+                  <tr>
+                    <td>Lazada
+                      <i class="bi bi-circle-fill" style="color:#3b7ddd"></i>
+                    </td>
+                    <td class="text-end lazada">Loading...</td>
+                  </tr>
+                  <tr>
+                    <td>Shopee
+                      <i class="bi bi-circle-fill" style="color:#fcb92c"></i>
+                    </td>
+                    <td class="text-end shopee">Loading...</td>
+                  </tr>
+                  <tr>
+                    <td>Others
+                      <i class="bi bi-circle-fill" style="color:#6c757d"></i>
+                    </td>
+                    <td class="text-end others">Loading...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-    </main>
+      <div class="col-md-8 col-xxl-8 d-flex">
+        <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark" data-bs-ride="carousel">
+
+          <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
+            <h5 class="card-title mb-0">Price Movement</h5>
+          </div>
+          <div class="card-body d-flex">
+            <div class="align-self-center w-100 ">
+              <div class="carousel-inner d-flex" onclick="location.href=`{% url 'price' %}`" id="sbox">
+                <div class="carousel-item active" data-bs-interval="10000">
+                  <div class="chart">
+                    <canvas id="chartjs-dashboard-line"></canvas>
+                  </div>
+
+                </div>
+                <div class="carousel-item" data-bs-interval="10000">
+                  <div class="chart chart-sm">
+                    <canvas id="chartjs-dashboard-line1"></canvas>
+                  </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="10000">
+                  <div class="chart chart-sm">
+                    <canvas id="chartjs-dashboard-line2"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                  aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                  aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                  aria-label="Slide 3"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="d-flex">
+        <div class="card flex-fill">
+          <div class="card-header" onclick="location.href=`{% url 'delivery' %}`" id="sbox">
+            <h5 class="card-title mb-0">Delivery Tracker</h5>
+          </div>
+          <table class="table table-hover my-0" onclick="location.href=`{% url 'delivery' %}`" id="sbox">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th class="d-none d-xl-table-cell">Tracking Number</th>
+                <th class="d-none d-xl-table-cell">Courier</th>
+                <th>Status</th>
+                <th class="d-none d-md-table-cell">Time Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for delivery in deliveries %}
+              <tr class="data">
+                <td class="name">{{ delivery.name|capfirst }}</td>
+                <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
+                <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
+                <td class="d-none d-md-table-cell status">
+                  <span>Loading...</span>
+                </td>
+                <td class="d-none d-xl-table-cell time_updated">Loading...</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</main>
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'js/app.js' %}"></script>
-<script src="https://unpkg.com/@adminkit/core@latest/dist/js/app.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
