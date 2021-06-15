@@ -184,8 +184,18 @@ def delivery(request):
 
 @login_required(login_url='/accounts/login')
 def ship(request):
-    return render(request, "accounts/ship.html")
+    if request.method == "POST":
+        name = request.POST["name"]
 
+        return redirect(f"ship/{name}")
+    else:
+        return render(request, "accounts/ship.html")
+
+def groupmainpage(request, group_name):
+    context = { 
+        'group_name': group_name
+    }
+    return render(request, "accounts/groupmainpage.html", context)
 
 @login_required(login_url='/accounts/login')
 def settings(request):

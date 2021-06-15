@@ -13,6 +13,7 @@ urlpatterns = [
     path('settings', views.settings,name='settings'),
     path('forgetpassword', views.forgetpassword, name='forgetpassword'),
     path('resetpasswordsuccess', views.resetpasswordsuccess, name='resetpasswordsuccess'),
+    path('ship/<group_name>', views.groupmainpage, name='groupmainpage'),
 
     # Handles AJAX requests
     path('deleteTransaction', views.deleteTransaction, name='deleteTransaction'),
