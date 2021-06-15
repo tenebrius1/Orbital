@@ -14,7 +14,7 @@
       </div>
       <div class="p-2 bd-highlight">
         <input class="form-control me-2" type="search" placeholder="Search groups..." aria-label="Search" id="search"
-          onkeyup="myFunction()">
+          onkeyup="search()">
       </div>
       <div class="p-2 bd-highlight">
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#create_group">
@@ -27,7 +27,7 @@
           Create Group
         </button>
         <div class="modal fade" id="create_group" tabindex="-1" aria-labelledby="create_group" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="create_grouplabel">Create a new group!</h5>
@@ -68,20 +68,26 @@
                       Please provide valid contact number.
                     </div>
                   </div>
-                  <div class="form-floating mb-3">
-                    <input class="form-control" id="base_shipping_fee" type="number" placeholder="base_shipping_fee"
-                      name='base_shipping_fee' min='0' step='.01' required>
-                    <label for="base_shipping_fee">Base Shipping Fee</label>
-                    <div class="invalid-feedback">
-                      Please provide base shipping fee.
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-floating mb-3">
+                        <input class="form-control" id="base_shipping_fee" type="number" placeholder="base_shipping_fee"
+                          name='base_shipping_fee' min='0' step='.01' required>
+                        <label for="base_shipping_fee">Base Shipping Fee</label>
+                        <div class="invalid-feedback">
+                          Please provide base shipping fee.
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input class="form-control" id="freeshipping" type="number" placeholder="freeshipping"
-                      name='freeshipping' min='0' step='.01' required>
-                    <label for="freeshipping">Free Shipping minimum (Put 0 if none)</label>
-                    <div class="invalid-feedback">
-                      Please provide base shipping fee, input 0 if there is none.
+                    <div class="col">
+                      <div class="form-floating mb-3">
+                        <input class="form-control" id="freeshipping" type="number" placeholder="freeshipping"
+                          name='freeshipping' min='0' step='.01' required>
+                        <label for="freeshipping">Free Shipping min (Put 0 if none)</label>
+                        <div class="invalid-feedback">
+                          Please provide base shipping fee, input 0 if there is none.
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </form>
@@ -98,6 +104,55 @@
     <div class="row">
       <div class="card flex-fill w-100">
         <div class="card-header">
+          <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#groups" type="button" role="tab"
+                aria-controls="groups" aria-selected="true">Groups</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#my-groups" type="button" role="tab"
+                aria-controls="my-groups" aria-selected="false">My Groups</button>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="groups" role="tabpanel" aria-labelledby="groups">
+              <table class="table table-hover my-0" id='group_data'>
+                <thead>
+                  <tr>
+                    <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">Group Name</th>
+                    <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
+                      Platform</th>
+                    <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
+                      No. of Members</th>
+                    <th>Location</th>
+                    <th>Shipping Prices/Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="data" onclick="redirect('zi hao')" style="cursor:pointer">
+                    <td class="name">Zi Hao</td>
+                    <td class="d-none d-xl-table-cell tkg_number">Asos</td>
+                    <td class="d-none d-md-table-cell courier">3</td>
+                    <td class="d-none d-md-table-cell status">Hougang</td>
+                    <td class="d-none d-xl-table-cell time_updated">$240</td>
+                  </tr>
+                  <tr class="data" style="cursor:pointer">
+                    <td class="name">Hello</td>
+                    <td class="d-none d-xl-table-cell tkg_number">JD</td>
+                    <td class="d-none d-md-table-cell courier">4</td>
+                    <td class="d-none d-md-table-cell status">Redhill</td>
+                    <td class="d-none d-xl-table-cell time_updated">$10</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="my-groups" role="tabpanel" aria-labelledby="my-groups">...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="card-header">
           <h5 class="card-title mb-0">GROUPS</h5>
         </div>
         <table class="table table-hover my-0" id='group_data'>
@@ -113,6 +168,20 @@
             </tr>
           </thead>
           <tbody>
+            <tr class="data" onclick="redirect('zi hao')" style="cursor:pointer">
+              <td class="name">Zi Hao</td>
+              <td class="d-none d-xl-table-cell tkg_number">Asos</td>
+              <td class="d-none d-md-table-cell courier">3</td>
+              <td class="d-none d-md-table-cell status">Hougang</td>
+              <td class="d-none d-xl-table-cell time_updated">$240</td>
+            </tr>
+            <tr class="data" style="cursor:pointer">
+              <td class="name">Hello</td>
+              <td class="d-none d-xl-table-cell tkg_number">JD</td>
+              <td class="d-none d-md-table-cell courier">4</td>
+              <td class="d-none d-md-table-cell status">Redhill</td>
+              <td class="d-none d-xl-table-cell time_updated">$10</td>
+            </tr>
             {% for delivery in deliveries %}
             <tr class="data">
               <td class="name">{{ delivery.name|capfirst }}</td>
@@ -128,9 +197,7 @@
         </table>
       </div>
     </div>
-  </div>
-  </div>
-  </div>
+  </div> -->
 </main>
 {% endblock %}
 
