@@ -39,7 +39,7 @@
                   {% csrf_token %}
                   <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="group-name" placeholder="item" name='name' required>
-                    <label for="item-name">Group name</label>
+                    <label for="group-name">Group name</label>
                     <div class="invalid-feedback">
                       Please provide group name.
                     </div>
@@ -61,7 +61,7 @@
                     </div>
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="tel" class="form-control" id="contact" placeholder="contatc" name='contact'
+                    <input type="tel" class="form-control" id="contact" placeholder="contact" name='contact'
                       pattern="[0-9]{8}" required>
                     <label for="location">Contact Number</label>
                     <div class="invalid-feedback">
@@ -87,6 +87,16 @@
                         <div class="invalid-feedback">
                           Please provide base shipping fee, input 0 if there is none.
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-floating mb-3">
+                      <input class="form-control" id="description" type="text" placeholder="description"
+                        name='description' min='0' step='.01' required>
+                      <label for="description">Short Description</label>
+                      <div class="invalid-feedback">
+                        Please input a short description.
                       </div>
                     </div>
                   </div>
@@ -130,19 +140,28 @@
                 </thead>
                 <tbody>
                   <tr class="data" onclick="redirect('zi hao')" style="cursor:pointer">
-                    <td class="name">Zi Hao</td>
-                    <td class="d-none d-xl-table-cell tkg_number">Asos</td>
-                    <td class="d-none d-md-table-cell courier">3</td>
-                    <td class="d-none d-md-table-cell status">Hougang</td>
+                    <td class="group_name">Zi Hao</td>
+                    <td class="d-none d-xl-table-cell platform">Asos</td>
+                    <td class="d-none d-md-table-cell members_count">3</td>
+                    <td class="d-none d-md-table-cell location">Hougang</td>
                     <td class="d-none d-xl-table-cell time_updated">$240</td>
                   </tr>
-                  <tr class="data" style="cursor:pointer">
-                    <td class="name">Hello</td>
-                    <td class="d-none d-xl-table-cell tkg_number">JD</td>
-                    <td class="d-none d-md-table-cell courier">4</td>
-                    <td class="d-none d-md-table-cell status">Redhill</td>
+                  <tr class="data" onclick="redirect('Hello')" style="cursor:pointer">
+                    <td class="group_name">Hello</td>
+                    <td class="d-none d-xl-table-cell platform">JD</td>
+                    <td class="d-none d-md-table-cell members_count">4</td>
+                    <td class="d-none d-md-table-cell location">Redhill</td>
                     <td class="d-none d-xl-table-cell time_updated">$10</td>
                   </tr>
+                  {% for group in groups %}
+                  <tr class="data">
+                    <td class="group_name">{{ group.group_name }}</td>
+                    <td class="d-none d-xl-table-cell platform">{{ group.platform }}</td>
+                    <td class="d-none d-md-table-cell members_count"></td>
+                    <td class="d-none d-md-table-cell location">{{ group.location }}</td>
+                    <td class="d-none d-xl-table-cell time_updated">$</td>
+                  </tr>
+                  {% endfor %}
                 </tbody>
               </table>
             </div>
@@ -151,53 +170,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="card-header">
-          <h5 class="card-title mb-0">GROUPS</h5>
-        </div>
-        <table class="table table-hover my-0" id='group_data'>
-          <thead>
-            <tr>
-              <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">Group Name</th>
-              <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
-                Platform</th>
-              <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
-                No. of Members</th>
-              <th>Location</th>
-              <th>Shipping Prices/Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="data" onclick="redirect('zi hao')" style="cursor:pointer">
-              <td class="name">Zi Hao</td>
-              <td class="d-none d-xl-table-cell tkg_number">Asos</td>
-              <td class="d-none d-md-table-cell courier">3</td>
-              <td class="d-none d-md-table-cell status">Hougang</td>
-              <td class="d-none d-xl-table-cell time_updated">$240</td>
-            </tr>
-            <tr class="data" style="cursor:pointer">
-              <td class="name">Hello</td>
-              <td class="d-none d-xl-table-cell tkg_number">JD</td>
-              <td class="d-none d-md-table-cell courier">4</td>
-              <td class="d-none d-md-table-cell status">Redhill</td>
-              <td class="d-none d-xl-table-cell time_updated">$10</td>
-            </tr>
-            {% for delivery in deliveries %}
-            <tr class="data">
-              <td class="name">{{ delivery.name|capfirst }}</td>
-              <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
-              <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
-              <td class="d-none d-md-table-cell status">
-                <span>Loading...</span>
-              </td>
-              <td class="d-none d-xl-table-cell time_updated">Loading...</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div> -->
 </main>
 {% endblock %}
 

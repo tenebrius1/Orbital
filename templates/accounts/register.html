@@ -34,22 +34,6 @@
         <form class="needs-validation" action="{% url 'register' %}" method='POST' novalidate>
           {% csrf_token %}
           <div class="row justify-content-center gx-1">
-            <div class="col-lg-2">
-              <div class="form-floating mb-3">
-                <input class="form-control form-control-sm rounded-pill" type="text" name="first_name" id="first_name"
-                  placeholder="first_name" required />
-                <label for="first_name">First Name</label>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="form-floating mb-3">
-                <input class="form-control form-control-sm rounded-pill" type="text" name="last_name" id="last_name"
-                  placeholder="last_name" required />
-                <label for="last_name">Last Name</label>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 col-lg-4">
               <input class="form-control form-control-sm rounded-pill" type="text" name="username" id="username"
                 placeholder="username" required />

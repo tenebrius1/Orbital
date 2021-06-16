@@ -48,6 +48,7 @@
               <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
                 Qty</th>
               <th>Price</th>
+              <th>URL</th>
               <th>Paid</th>
             </tr>
           </thead>
@@ -212,9 +213,12 @@
       </div>
     </div>
   </div>
+  <div id="disqus_thread"></div>
 </main>
 {% endblock %}
 
 {% block script %}
 <script src="{% static 'js/ship.js' %}"></script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript>
 {% endblock %}

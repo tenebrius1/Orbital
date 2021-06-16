@@ -11,7 +11,7 @@ from environs import Env
 from scraping.checkPrice import checkPrice
 from scraping.models import Price
 
-from .models import Deliveries, Transaction
+from .models import Deliveries, Transaction, Shipping, Group
 
 # Set up environ
 env = Env()
@@ -38,8 +38,6 @@ def register(request):
     else:
         if request.method == "POST":
             # Get form values
-            first_name = request.POST["first_name"]
-            last_name = request.POST["last_name"]
             username = request.POST["username"]
             email = request.POST["email"]
             password = request.POST["password"]
@@ -55,8 +53,6 @@ def register(request):
             else:
                 user = User.objects.create_user(
                     username=username,
-                    first_name=first_name,
-                    last_name=last_name,
                     email=email,
                     password=password,
                 )
@@ -186,16 +182,36 @@ def delivery(request):
 def ship(request):
     if request.method == "POST":
         name = request.POST["name"]
+        platform = request.POST["platform"]
+        location = request.POST["location"]
+        contact = request.POST['contact']
+        base_shipping = request.POST['base_shipping_fee']
+        free_shipping_min = request.POST['freeshipping']
+        description = request.POST['description']
+        owner = request.user.username
 
+        Shipping.objects.create(group_name=name, platform=platform, location=location,
+                                base_shipping=base_shipping, free_shipping_min=free_shipping_min, member_count=1)
+        Group.objects.create(
+            group_name=name, description=description, members=[owner], contacts=[contact], owner=owner)
         return redirect(f"ship/{name}")
     else:
-        return render(request, "accounts/ship.html")
+        groups = Shipping.objects.all()
+        mygroups = Group.objects.filter(
+            members__contains=[request.user.username])
+        context = {
+            'groups': groups,
+            'mygroups': mygroups,
+        }
+        return render(request, "accounts/ship.html", context)
+
 
 def groupmainpage(request, group_name):
-    context = { 
+    context = {
         'group_name': group_name
     }
     return render(request, "accounts/groupmainpage.html", context)
+
 
 @login_required(login_url='/accounts/login')
 def settings(request):
@@ -220,11 +236,12 @@ def settings(request):
     else:
         return render(request, "accounts/settings.html")
 
+
 def forgetpassword(request):
     if request.method == "POST":
         email = request.POST["email"]
         # Check email
-        if User.objects.filter(email=email).exists() == False: 
+        if User.objects.filter(email=email).exists() == False:
             messages.error(
                 request, "Email does not exist.")
             return redirect("forgetpassword")
@@ -233,10 +250,13 @@ def forgetpassword(request):
 
     return render(request, "accounts/forgetpassword.html")
 
+
 def resetpasswordsuccess(request):
     return render(request, "accounts/resetpasswordsuccess.html")
 
 # Handles AJAX Requests
+
+
 def deleteTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         item = request.POST.get("name").lower()
