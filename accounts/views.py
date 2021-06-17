@@ -195,10 +195,7 @@ def ship(request):
         Group.objects.create(
             group_name=name, description=description, members=[owner], contacts=[contact], owner=owner)
         
-        context = {
-            'info': Group.objects.filter(group_name=name)
-        }
-        return render(request, f"ship/{name}", )
+        return redirect(f'ship/{name}')
     else:
         groups = Shipping.objects.all()
         mygroups = Group.objects.filter(members__contains=[request.user.username])
@@ -208,8 +205,14 @@ def ship(request):
         }
         return render(request, "accounts/ship.html", context)
 
-# def deleteGroup(request):
-
+def deleteGroup(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        group_name = request.GET['name']
+        grp = Group.objects.get(pk=group_name)
+        grp.delete()
+        grp_ship = Shipping.objects.get(pk=group_name)
+        grp_ship.delete()
+        return JsonResponse({"success": ""}, status=200)
 
 def groupmainpage(request, group_name):
     context = {

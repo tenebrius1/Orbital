@@ -14,6 +14,7 @@ urlpatterns = [
     path('forgetpassword', views.forgetpassword, name='forgetpassword'),
     path('resetpasswordsuccess', views.resetpasswordsuccess, name='resetpasswordsuccess'),
     path('ship/<group_name>', views.groupmainpage, name='groupmainpage'),
+    path('deleteGroup', views.deleteGroup, name='deleteGroup'),
 
     # Handles AJAX requests
     path('deleteTransaction', views.deleteTransaction, name='deleteTransaction'),

@@ -48,3 +48,16 @@ function redirect(group_name) {
   s.setAttribute('data-timestamp', +new Date());
   (d.head || d.body).appendChild(s);
 })();
+
+$(document).on("click", ".delete", function () {
+  $.ajax({
+    type: 'GET',
+    url: "/accounts/deleteGroup",
+    data: {
+      "name": $('#group_name').text(),
+    },
+    success: function (response) {
+      location.href = '/accounts/ship'
+    }
+  })
+});
