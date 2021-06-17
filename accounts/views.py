@@ -194,11 +194,14 @@ def ship(request):
                                 base_shipping=base_shipping, free_shipping_min=free_shipping_min, member_count=1)
         Group.objects.create(
             group_name=name, description=description, members=[owner], contacts=[contact], owner=owner)
-        return redirect(f"ship/{name}")
+        
+        context = {
+            'info': Group.objects.filter(group_name=name)
+        }
+        return render(request, f"ship/{name}", )
     else:
         groups = Shipping.objects.all()
-        mygroups = Group.objects.filter(
-            members__contains=[request.user.username])
+        mygroups = Group.objects.filter(members__contains=[request.user.username])
         context = {
             'groups': groups,
             'mygroups': mygroups,
@@ -208,7 +211,7 @@ def ship(request):
 
 def groupmainpage(request, group_name):
     context = {
-        'group_name': group_name
+        'info': Group.objects.filter(group_name=group_name)[0]
     }
     return render(request, "accounts/groupmainpage.html", context)
 

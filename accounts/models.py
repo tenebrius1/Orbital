@@ -48,7 +48,7 @@ class Group(models.Model):
     scrnshot = ImageField()
     tkg_number = models.CharField(max_length=25, default='')
     courier = models.CharField(max_length=25, default='')
-    meeting_date = models.DateField(default=timezone.now())
+    meeting_date = models.DateField(default=timezone.now)
     quantity = ArrayField(models.PositiveSmallIntegerField(), default=list)
     owner = models.CharField(max_length=50)
     def __str__(self) -> str:

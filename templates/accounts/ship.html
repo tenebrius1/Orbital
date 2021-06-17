@@ -1,5 +1,6 @@
 {% extends 'dashboard_base.html' %}
 {% load static %}
+{% load mathfilters %}
 
 {% block title %}: ShipTogether{% endblock %}
 {% block header %}
@@ -135,37 +136,46 @@
                     <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
                       No. of Members</th>
                     <th>Location</th>
-                    <th>Shipping Prices/Details</th>
+                    <th>Shipping Price/Person</th>
+                    <th>Free Shipping with min. Spending</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="data" onclick="redirect('zi hao')" style="cursor:pointer">
-                    <td class="group_name">Zi Hao</td>
-                    <td class="d-none d-xl-table-cell platform">Asos</td>
-                    <td class="d-none d-md-table-cell members_count">3</td>
-                    <td class="d-none d-md-table-cell location">Hougang</td>
-                    <td class="d-none d-xl-table-cell time_updated">$240</td>
-                  </tr>
-                  <tr class="data" onclick="redirect('Hello')" style="cursor:pointer">
-                    <td class="group_name">Hello</td>
-                    <td class="d-none d-xl-table-cell platform">JD</td>
-                    <td class="d-none d-md-table-cell members_count">4</td>
-                    <td class="d-none d-md-table-cell location">Redhill</td>
-                    <td class="d-none d-xl-table-cell time_updated">$10</td>
-                  </tr>
                   {% for group in groups %}
-                  <tr class="data">
+                  <tr class="data" onclick="redirect(`{{ group.group_name }}`)" style="cursor:pointer">
                     <td class="group_name">{{ group.group_name }}</td>
-                    <td class="d-none d-xl-table-cell platform">{{ group.platform }}</td>
-                    <td class="d-none d-md-table-cell members_count"></td>
-                    <td class="d-none d-md-table-cell location">{{ group.location }}</td>
-                    <td class="d-none d-xl-table-cell time_updated">$</td>
+                    <td class="platform">{{ group.platform }}</td>
+                    <td class="members_count">{{ group.member_count }}</td>
+                    <td class="location">{{ group.location }}</td>
+                    <td class="price">${{ group.base_shipping|div:group.member_count }}</td>
+                    <td class="min_shipping">
+                      {% if group.free_shipping_min == 0 %}
+                      Not Available
+                      {% else %}
+                      Available
+                      {% endif %}
+                    </td>
                   </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
-            <div class="tab-pane fade" id="my-groups" role="tabpanel" aria-labelledby="my-groups">...</div>
+            <div class="tab-pane fade" id="my-groups" role="tabpanel" aria-labelledby="my-groups">
+              <table class="table table-hover my-0" id='my_group_data'>
+                <thead>
+                  <tr>
+                    <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">Group Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for group in mygroups %}
+                  <tr class="data" onclick="redirect(`{{ group.group_name }}`)" style="cursor:pointer">
+                    <td class="group_name">{{ group.group_name }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
