@@ -208,6 +208,8 @@ def ship(request):
         }
         return render(request, "accounts/ship.html", context)
 
+# def deleteGroup(request):
+
 
 def groupmainpage(request, group_name):
     context = {
@@ -258,8 +260,6 @@ def resetpasswordsuccess(request):
     return render(request, "accounts/resetpasswordsuccess.html")
 
 # Handles AJAX Requests
-
-
 def deleteTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         item = request.POST.get("name").lower()

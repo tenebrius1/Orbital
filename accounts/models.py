@@ -40,16 +40,21 @@ class Group(models.Model):
     group_name = models.CharField(max_length=200, primary_key=True)
     description = models.TextField()
     contacts = ArrayField(models.PositiveIntegerField())
-    users = ArrayField(models.CharField(max_length=50), default=list)
-    items = ArrayField(models.CharField(max_length=100), default=list)
-    prices = ArrayField(models.PositiveIntegerField(), default=list)
-    urls = ArrayField(models.URLField(max_length=500), default=list)
     members = ArrayField(models.CharField(max_length=100))
     scrnshot = ImageField()
     tkg_number = models.CharField(max_length=25, default='')
     courier = models.CharField(max_length=25, default='')
     meeting_date = models.DateField(default=timezone.now)
-    quantity = ArrayField(models.PositiveSmallIntegerField(), default=list)
     owner = models.CharField(max_length=50)
+    def __str__(self) -> str:
+        return self.group_name
+
+class Data(models.Model):
+    group_name = models.OneToOneField(Group, on_delete=CASCADE)
+    users = ArrayField(models.CharField(max_length=50), default=list)
+    items = ArrayField(models.CharField(max_length=100), default=list)
+    prices = ArrayField(models.PositiveIntegerField(), default=list)
+    urls = ArrayField(models.URLField(max_length=500), default=list)
+    quantity = ArrayField(models.PositiveSmallIntegerField(), default=list)
     def __str__(self) -> str:
         return self.group_name
