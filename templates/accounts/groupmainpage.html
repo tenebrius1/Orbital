@@ -15,7 +15,7 @@
       </div>
       {% if info.owner == request.user.username %}
       <div class="p-2 bd-highlight">
-        <button type="button" class="btn">
+        <button type="button" class="btn" onclick="redirect_locked(`{{ info.group_name }}`)">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lock-fill"
             viewBox="0 0 16 16">
             <path
@@ -95,9 +95,61 @@
               <div class="card-header">
                 <h5 class="card-title mb-0">Description</h5>
               </div>
-              <div class="card-body d-flex">
-                {{ info.description }}
-              </div>
+              <table class="table mb-0">
+                <tbody>
+                  <tr>
+                    <td>
+                      <i data-feather="shopping-bag"></i>
+                      Store:
+                    </td>
+                    <td>
+                      {{ store }}
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <i data-feather="briefcase"></i>
+
+                      Details:
+                    </td>
+                    <td>
+                      {{ info.description }}
+
+                    </td>
+
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <i data-feather="credit-card"></i>
+
+                      Shipping fee per member:
+                    </td>
+                    <td>
+                      $
+
+                    </td>
+
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <i data-feather="info"></i>
+                      Amount to free shipping:
+
+                    </td>
+                    <td>
+                      $
+
+                    </td>
+
+                  </tr>
+
+
+                </tbody>
+              </table>
+
             </div>
           </div>
           <div class='row'>
@@ -105,84 +157,152 @@
               <div class="card-header">
                 <h5 class="card-title mb-0">Members</h5>
               </div>
-              <div class="card-body d-flex">
-                <table class="table mb-0">
-                  <tbody>
-                    {% for member in info.members %}
-                    <tr class="data">
-                      <td>
-                        <i data-feather="user"></i>
-                        {{ member }}
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-8 col-xxl-8 d-flex">
-        <div class='container-fluid p-1'>
-          <div class='row d-flex'>
-            <div class="card flex-fill w-100">
-              <div class="card-header">
-                <h5 class="card-title mb-0">Items</h5>
-              </div>
-              <table class="table table-hover my-0" id='group_data'>
-                <thead>
-                  <tr>
-                    <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">User</th>
-                    <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
-                      Item</th>
-                    <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
-                      Qty</th>
-                    <th>Price</th>
-                    <th>URL</th>
-                  </tr>
-                </thead>
+              <table class="table mb-0">
                 <tbody>
+                  {% for member in info.members %}
                   <tr class="data">
-                    <td class="name">Zi Hao</td>
-                    <td class="d-none d-xl-table-cell tkg_number">Asos</td>
-                    <td class="d-none d-md-table-cell courier">3</td>
-                    <td class="d-none d-md-table-cell status">Hougang</td>
-                    <td class="d-none d-xl-table-cell time_updated">$240</td>
-                  </tr>
-                  <tr class="data">
-                    <td class="name">Hello</td>
-                    <td class="d-none d-xl-table-cell tkg_number">JD</td>
-                    <td class="d-none d-md-table-cell courier">4</td>
-                    <td class="d-none d-md-table-cell status">Redhill</td>
-                    <td class="d-none d-xl-table-cell time_updated">$10</td>
-                  </tr>
-                  {% for delivery in deliveries %}
-                  <tr class="data">
-                    <td class="name">{{ delivery.name|capfirst }}</td>
-                    <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
-                    <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
-                    <td class="d-none d-md-table-cell status">
-                      <span>Loading...</span>
+                    <td>
+                      <i data-feather="user"></i>
+                      {{ member }}
                     </td>
-                    <td class="d-none d-xl-table-cell time_updated">Loading...</td>
                   </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="col-md-8 col-xxl-8 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <div class="d-flex bd-highlight">
+              <div class="flex-grow-1 bd-highlight">
+                <h5 class="card-title">Items</h5>
+              </div>
+              <div class="bd-highlight">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#add_item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z">
+                    </path>
+                  </svg>
+                  Add item
+                </button>
+                <div class="modal fade" id="add_item" tabindex="-1" aria-labelledby="add_item"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="add_item_label">Add a new item!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form class="needs-validation" method='POST' action="{% url 'groupmainpage' info.group_name %}"
+                          id='add_item_form' novalidate>
+                          {% csrf_token %}
+                          <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="item-name" placeholder="item" name='name'
+                              required>
+                            <label for="item-name">Item name:</label>
+                            <div class="invalid-feedback">
+                              Please provide item name.
+                            </div>
+                          </div>
+                          <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="quantity" placeholder="quantity"
+                              name='quantity' min="1" step="1" required>
+                            <label for="quantity">Quantity:</label>
+                            <div class="invalid-feedback">
+                              Please provide quantity.
+                            </div>
+                          </div>
+                          <div class="form-floating mb-3">
+                            <input class="form-control" id="price" type="number" placeholder="price" name='price'
+                              min='0' step='.01' required>
+                            <label for="price">Price:</label>
+                            <div class="invalid-feedback">
+                              Please provide valid price.
+                            </div>
+                          </div>
+                          <div class="form-floating mb-3">
+                            <input type="url" class="form-control" id="url" placeholder="url" name='url' required>
+                            <label for="url">Product URL:</label>
+                            <div class="invalid-feedback">
+                              Please provide valid URL.
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" form="add_item_form">Add item</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <table class="table table-hover my-0" id='group_data'>
+            <thead>
+              <tr>
+                <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">User</th>
+                <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
+                  Item</th>
+                <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
+                  Qty</th>
+                <th>Price</th>
+                <th>URL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="data">
+                <td class="name">Zi Hao</td>
+                <td class="d-none d-xl-table-cell tkg_number">Asos</td>
+                <td class="d-none d-md-table-cell courier">3</td>
+                <td class="d-none d-md-table-cell status">Hougang</td>
+                <td class="d-none d-xl-table-cell time_updated">$240</td>
+              </tr>
+              <tr class="data">
+                <td class="name">Hello</td>
+                <td class="d-none d-xl-table-cell tkg_number">JD</td>
+                <td class="d-none d-md-table-cell courier">4</td>
+                <td class="d-none d-md-table-cell status">Redhill</td>
+                <td class="d-none d-xl-table-cell time_updated">$10</td>
+              </tr>
+              {% for delivery in deliveries %}
+              <tr class="data">
+                <td class="name">{{ delivery.name|capfirst }}</td>
+                <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
+                <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
+                <td class="d-none d-md-table-cell status">
+                  <span>Loading...</span>
+                </td>
+                <td class="d-none d-xl-table-cell time_updated">Loading...</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- <div class='container-fluid p-1'>
+
+          <div class='row'>
+            
+          </div>
           <div class='row'>
             <div class="d-flex bd-highlight">
               <div class="flex-fill bd-highlight">Shipping Fee per Member: </div>
               <div class="flex-fill bd-highlight">Amount to free shipping: </div>
               <div class="flex-fill bd-highlight text-end">
-                 
+
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>

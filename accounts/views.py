@@ -242,10 +242,23 @@ def leaveGroup(request):
 
 def groupmainpage(request, group_name):
     context = {
-        'info': Group.objects.filter(group_name=group_name)[0]
+        'info': Group.objects.filter(group_name=group_name)[0],
+        'store': Shipping.objects.filter(group_name=group_name)[0].platform
     }
-    return render(request, "accounts/groupmainpage.html", context)
+    if request.method == 'POST':
+        return redirect('groupmainpage', group_name=group_name)
+    else:
+        return render(request, "accounts/groupmainpage.html", context)
 
+def grouplocked(request, group_name):
+    context = {
+        'info': Group.objects.filter(group_name=group_name)[0],
+        'store': Shipping.objects.filter(group_name=group_name)[0].platform
+    }
+    if request.method == "POST":
+        return
+    else:    
+        return render(request, "accounts/grouplocked.html", context)
 
 @login_required(login_url='/accounts/login')
 def settings(request):
