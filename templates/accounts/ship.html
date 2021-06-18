@@ -63,8 +63,8 @@
                   </div>
                   <div class="form-floating mb-3">
                     <input type="tel" class="form-control" id="contact" placeholder="contact" name='contact'
-                      pattern="[0-9]{8}" required>
-                    <label for="location">Contact Number</label>
+                      pattern="[8-9]{1}[0-9]{7}" required>
+                    <label for="contact">Contact Number</label>
                     <div class="invalid-feedback">
                       Please provide valid contact number.
                     </div>
@@ -147,7 +147,7 @@
                     <td class="platform">{{ group.platform }}</td>
                     <td class="members_count">{{ group.member_count }}</td>
                     <td class="location">{{ group.location }}</td>
-                    <td class="price">${{ group.base_shipping|div:group.member_count }}</td>
+                    <td class="price">${{ group.base_shipping|div:group.member_count|floatformat:2 }}</td>
                     <td class="min_shipping">
                       {% if group.free_shipping_min == 0 %}
                       Not Available

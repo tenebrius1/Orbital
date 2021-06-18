@@ -214,6 +214,32 @@ def deleteGroup(request):
         grp_ship.delete()
         return JsonResponse({"success": ""}, status=200)
 
+def joinGroup(request):
+    if request.method == 'POST':
+        contact = request.POST['contact']
+        group_name = request.POST['group_name']
+        grp = Group.objects.get(pk=group_name)
+        group_shipping = Shipping.objects.get(pk=group_name)
+        grp.members.append(request.user.username)
+        grp.contacts.append(contact)
+        grp.save()
+        group_shipping.member_count += 1
+        group_shipping.save()
+        return redirect(f'ship/{group_name}')
+
+def leaveGroup(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        group_name = request.GET['name']
+        grp = Group.objects.get(pk=group_name)
+        grp_shipping = Shipping.objects.get(pk=group_name)
+        index = grp.members.index(request.user.username)
+        grp.contacts.pop(index)
+        grp.members.remove(request.user.username)
+        grp.save()
+        grp_shipping.member_count -= 1
+        grp_shipping.save()
+        return JsonResponse({"success": ""}, status=200)
+
 def groupmainpage(request, group_name):
     context = {
         'info': Group.objects.filter(group_name=group_name)[0]

@@ -61,3 +61,16 @@ $(document).on("click", ".delete", function () {
     }
   })
 });
+
+$(document).on("click", ".leave", function () {
+  $.ajax({
+    type: 'GET',
+    url: "/accounts/leaveGroup",
+    data: {
+      "name": $('#group_name').text(),
+    },
+    success: function (response) {
+      location.href = '/accounts/ship'
+    }
+  })
+});

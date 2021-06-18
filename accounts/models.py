@@ -46,6 +46,7 @@ class Group(models.Model):
     courier = models.CharField(max_length=25, default='')
     meeting_date = models.DateField(default=timezone.now)
     owner = models.CharField(max_length=50)
+    is_locked = models.BooleanField(default=False)
     def __str__(self) -> str:
         return self.group_name
 
@@ -56,5 +57,6 @@ class Data(models.Model):
     prices = ArrayField(models.PositiveIntegerField(), default=list)
     urls = ArrayField(models.URLField(max_length=500), default=list)
     quantity = ArrayField(models.PositiveSmallIntegerField(), default=list)
+    paid = ArrayField(models.BooleanField(), default=list)
     def __str__(self) -> str:
         return self.group_name
