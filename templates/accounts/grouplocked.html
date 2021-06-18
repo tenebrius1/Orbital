@@ -1,0 +1,282 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}: ShipTogether{% endblock %}
+{% block header %}
+<link href="{% static 'css/ship.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="content">
+  <div class="container-fluid p-0">
+    <div class="d-flex bd-highlight">
+      <div class="p-2 flex-grow-1 bd-highlight">
+        <h1 class="h2">{{ info.group_name }}</h1>
+      </div>
+      {% if info.owner == request.user.username %}
+      <div class="p-2 bd-highlight">
+        <button type="button" class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lock-fill"
+            viewBox="0 0 16 16">
+            <path
+              d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+          </svg>
+          Lock group
+        </button>
+      </div>
+      <div class="p-2 bd-highlight">
+        <button type="button" class="btn delete">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill"
+            viewBox="0 0 16 16">
+            <path
+              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+          </svg>
+          Delete group
+        </button>
+      </div>
+      {% elif request.user.username not in info.members %}
+      <div class="p-2 bd-highlight">
+        <button type="button" class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-person-plus-fill"
+            viewBox="0 0 16 16">
+            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+            <path fill-rule="evenodd"
+              d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+          </svg>
+          Join Group
+        </button>
+      </div>
+      {% else %}
+      <div class="p-2 bd-highlight">
+        <button type="button" class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-door-open-fill"
+            viewBox="0 0 16 16">
+            <path
+              d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+          </svg>
+          Leave Group
+        </button>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-4 col-xxl-4 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Description</h5>
+          </div>
+          <div class="card-body d-flex">
+            {{ info.description }}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 col-xxl-8 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Items</h5>
+          </div>
+          <table class="table table-hover my-0" id='group_data'>
+            <thead>
+              <tr>
+                <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">User</th>
+                <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
+                  Item</th>
+                <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
+                  Qty</th>
+                <th>Price</th>
+                <th>URL</th>
+                <!-- <th class="text-center">Paid</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="data">
+                <td class="name">Zi Hao</td>
+                <td class="d-none d-xl-table-cell tkg_number">Asos</td>
+                <td class="d-none d-md-table-cell courier">3</td>
+                <td class="d-none d-md-table-cell status">Hougang</td>
+                <td class="d-none d-xl-table-cell time_updated">$240</td>
+                <!-- <td class="d-flex justify-content-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="paid" value="True">
+                  </div>
+                </td> -->
+              </tr>
+              <tr class="data">
+                <td class="name">Hello</td>
+                <td class="d-none d-xl-table-cell tkg_number">JD</td>
+                <td class="d-none d-md-table-cell courier">4</td>
+                <td class="d-none d-md-table-cell status">Redhill</td>
+                <td class="d-none d-xl-table-cell time_updated">$10</td>
+              </tr>
+              {% for delivery in deliveries %}
+              <tr class="data">
+                <td class="name">{{ delivery.name|capfirst }}</td>
+                <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
+                <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
+                <td class="d-none d-md-table-cell status">
+                  <span>Loading...</span>
+                </td>
+                <td class="d-none d-xl-table-cell time_updated">Loading...</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-4 col-xxl-4 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Members' details</h5>
+          </div>
+          <div class="card-body d-flex">
+            <table class="table mb-0">
+              <tbody>
+                {% for member in info.members %}
+                <tr class="data">
+                  <td>
+                    <i data-feather="user"></i>
+                    {{ member }}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8 col-xxl-8 d-flex">
+        <div class="container-fluid p-0">
+          <div class='row pb-4 px-2'>
+            <div class="d-flex bd-highlight">
+              <div class="flex-fill bd-highlight">Shipping Fee per Member: </div>
+              <div class="flex-fill bd-highlight">Amount to free shipping: </div>
+              <div class="flex-fill bd-highlight text-end">
+                <i data-feather="edit"></i>
+                Edit Order details</div>
+            </div>
+          </div>
+          <div class='row'>
+            <div class="col-12 col-md-6 col-xxl-6 d-flex">
+              <div class="card flex-fill w-100">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Order details</h5>
+                </div>
+                <div class="card-body d-flex">
+                  <table class="table mb-0">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <i data-feather="hash"></i>
+                          Tracking Number:
+                        </td>
+                        <td>{{ info.tkg_number }}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <i data-feather="truck"></i>
+  
+                          Courier:
+                        </td>
+                        <td>{{ info.courier }}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <i data-feather="calendar"></i>
+                          Meetup/Collection Date:
+                        </td>
+                        <td>{{ info.meeting_date }}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <i data-feather="map-pin"></i>
+                          Meetup Address:
+                        </td>
+                        <td>-</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-md-6 col-xxl-6 d-flex">
+              <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark"
+                data-bs-ride="carousel">
+  
+                <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
+                  <h5 class="card-title mb-0">Order details (Screenshots)</h5>
+                </div>
+                <div class="card-body d-flex">
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+      </div>
+
+      <!-- <div class="col-12 col-md-4 col-xxl-4 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Order details</h5>
+          </div>
+          <div class="card-body d-flex">
+            <table class="table mb-0">
+              <tbody>
+                <tr>
+                  <td>
+                    <i data-feather="hash"></i>
+                    Tracking Number:
+                  </td>
+                  <td>{{ info.tkg_number }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <i data-feather="truck"></i>
+
+                    Courier:
+                  </td>
+                  <td>{{ info.courier }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <i data-feather="calendar"></i>
+                    Meetup/Collection Date:
+                  </td>
+                  <td>{{ info.meeting_date }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-xxl-4 d-flex">
+        <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark" data-bs-ride="carousel">
+
+          <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
+            <h5 class="card-title mb-0">Screenshots</h5>
+          </div>
+          <div class="card-body d-flex">
+
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <div id="disqus_thread"></div>
+</main>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/ship.js' %}"></script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript>
+{% endblock %}
