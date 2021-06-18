@@ -18,6 +18,7 @@ urlpatterns = [
     path('joinGroup', views.joinGroup, name='joinGroup'),
     path('leaveGroup', views.leaveGroup, name='leaveGroup'),
     path('ship/<group_name>/locked', views.grouplocked, name='grouplocked'),
+    path('report', views.report, name='report'), 
 
     # Handles AJAX requests
     path('deleteTransaction', views.deleteTransaction, name='deleteTransaction'),
