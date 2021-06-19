@@ -30,7 +30,7 @@
                   Qty</th>
                 <th>Price</th>
                 <th>URL</th>
-                <!-- <th class="text-center">Paid</th> -->
+                <th class="text-center">Paid</th>
               </tr>
             </thead>
             <tbody>
@@ -40,6 +40,11 @@
                 <td class="d-none d-md-table-cell courier">3</td>
                 <td class="d-none d-md-table-cell status">Hougang</td>
                 <td class="d-none d-xl-table-cell time_updated">$240</td>
+                <td class="d-flex justify-content-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="paid" value="True">
+                  </div>
+                </td>
               </tr>
               <tr class="data">
                 <td class="name">Hello</td>
@@ -64,43 +69,231 @@
         </div>
       </div>
       <div class="col-12 col-md-5 col-xxl-5 d-flex">
-        <div class="card flex-fill w-100">
-          <div class="card-header">
-            <h5 class="card-title mb-0">Summary</h5>
+        <div class="container p-0">
+          <div class='row'>
+            <div class="card flex-fill w-100">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Summary</h5>
+              </div>
+              <table class="table mb-0">
+                <tbody>
+                  <tr>
+                    <td><i data-feather="shopping-bag"></i>
+                      Store:
+                    </td>
+                    <td>{{ store }}</td>
+                  </tr>
+                  <tr>
+                    <td><i data-feather="briefcase"></i>
+                      Details:
+                    </td>
+                    <td>{{ info.description }}</td>
+                  </tr>
+                  <tr>
+                    <td><i data-feather="credit-card"></i>
+                      Shipping fee per member:
+                    </td>
+                    <td>$</td>
+                  </tr>
+                  <tr>
+                    <td><i data-feather="info"></i>
+                      Total Amount:
+                    </td>
+                    <td>$</td>
+                  </tr>
+                  <tr>
+                    <td><i data-feather="user"></i>
+                      Member details:
+                    </td>
+                    <td>
+                      <a href="#exampleModal" data-bs-toggle="modal" data-bs-target="#exampleModal"> Click to show </a>
+                      <!-- Modal -->
+                      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Members</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <table class="table mb-0">
+                                <tbody>
+                                  {% for member in info.members %}
+                                  <tr class="data">
+                                    <td>
+                                      <i data-feather="user"></i>
+                                      {{ member }}
+                                    </td>
+                                    <td>
+                                      contact
+                                    </td>
+                                  </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+            </div>
           </div>
-          <table class="table mb-0">
-            <tbody>
-              <tr>
-                <td><i data-feather="shopping-bag"></i>
-                  Store:
-                </td>
-                <td>{{ shipping.platform }}</td>
-              </tr>
-              <tr>
-                <td><i data-feather="briefcase"></i>
-                  Details:
-                </td>
-                <td>{{ info.description }}</td>
-              </tr>
-              <tr>
-                <td><i data-feather="credit-card"></i>
-                  Shipping fee per member:
-                </td>
-                <td>$</td>
-              </tr>
-              <tr>
-                <td><i data-feather="info"></i>
-                  Total Amount:
-                </td>
-                <td>$</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class='row'>
+            <div class="card flex-fill w-100">
+              <div class="card-header">
+                <div class="d-flex bd-highlight">
+                  <div class="flex-grow-1 bd-highlight">
+                    <h5 class="card-title">Order Details</h5>
+                  </div>
+                  <div class="bd-highlight">
+                    <a href="#edit" data-bs-toggle="modal" data-bs-target="#edit">
+                      <i class="bi bi-pencil-square me-3"></i>
+                    </a>
+                    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="edit_label">Edit order details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <form class="needs-validation" method='POST'
+                              action="{% url 'groupmainpage' info.group_name %}" id='edit_form' novalidate>
+                              {% csrf_token %}
+                              <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="tkg_number" placeholder="tkg_num"
+                                  name='tkg_number' required>
+                                <label for="tkg_number">Tracking Number:</label>
+                                <div class="invalid-feedback">
+                                  Please provide item name.
+                                </div>
+                              </div>
+                              <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="courier" placeholder="courier"
+                                  name='courier' required>
+                                <label for="courier">Courier:</label>
+                                <div class="invalid-feedback">
+                                  Please provide quantity.
+                                </div>
+                              </div>
+                              <div class="form-floating mb-3">
+                                <input class="form-control" id="date" type="date" placeholder="date" name='date'
+                                  required>
+                                <label for="date">Meetup date:</label>
+                              </div>
+                              <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="address" placeholder="address"
+                                  name='address' required>
+                                <label for="address">Address:</label>
+                                <div class="invalid-feedback">
+                                  Please provide valid URL.
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" form="edit_form">Add item</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table class="table mb-0">
+                <tbody>
+                  <tr>
+                    <td><i data-feather="hash"></i>
+                      Tracking Number:
+                    </td>
+                    <td>{{ info.tkg_number }}</td>
+                  </tr>
+                  <tr>
+                    <td><i data-feather="truck"></i>
+                      Courier:
+                    </td>
+                    <td>{{ info.courier }}</td>
+                  </tr>
+                  <tr>
+                    <td><i data-feather="calendar"></i>
+                      Meetup/Collection Date:
+                    </td>
+                    <td>{{ info.meeting_date }}</td>
+                  </tr>
+                  <tr>
+                    <td><i data-feather="map-pin"></i>
+                      Meetup Address:
+                    </td>
+                    <td>-</td>
+                  </tr>
+                  <tr>
+                    <td><i data-feather="image"></i>
+                      Order Proof(Screenshots):
+                    </td>
+                    <td>
+                      Click to show
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-4 col-xxl-4 d-flex">
+      <!-- <div class="col-12 col-md-4 col-xxl-4 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Members' details</h5>
+          </div>
+          <div class="card-body d-flex">
+            <table class="table mb-0">
+              <tbody>
+                {% for member in info.members %}
+                <tr class="data">
+                  <td>
+                    <i data-feather="user"></i>
+                    {{ member }}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 col-xxl-8 d-flex">
+        <div class="container-fluid p-0">
+          <div class='row'>
+            <div class="col-md-6 col-xxl-6 d-flex">
+              <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark"
+                data-bs-ride="carousel">
+                <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
+                  <h5 class="card-title mb-0">Order details (Screenshots)</h5>
+                </div>
+                <div class="card-body d-flex">
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-xxl-6 d-flex">
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="col-12 col-md-4 col-xxl-4 d-flex">
         <div class="card flex-fill w-100">
           <div class="card-header">
             <h5 class="card-title mb-0">Members' details</h5>
@@ -173,7 +366,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <div id="disqus_thread"></div>

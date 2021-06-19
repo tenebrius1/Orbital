@@ -1,4 +1,5 @@
 import datetime
+import re
 
 import requests
 from django.contrib import auth, messages
@@ -11,7 +12,7 @@ from environs import Env
 from scraping.checkPrice import checkPrice
 from scraping.models import Price
 
-from .models import Deliveries, Transaction, Shipping, Group
+from .models import Data, Deliveries, Transaction, Shipping, Group
 
 # Set up environ
 env = Env()
@@ -242,11 +243,24 @@ def lockGroup(request):
         return JsonResponse({"success": ""}, status=200)
 
 def groupmainpage(request, group_name):
+    group = Group.objects.get(group_name=group_name)
     context = {
         'info': Group.objects.filter(group_name=group_name)[0],
-        'shipping': Shipping.objects.filter(group_name=group_name)[0]
+        'shipping': Shipping.objects.filter(group_name=group_name)[0],
+        'data': Data.objects.filter(group_name=group_name)
     }
     if request.method == 'POST':
+        user = request.user.username
+        name = request.POST['name']
+        quantity = request.POST['quantity']
+        price = request.POST['price']
+        url = request.POST['url']
+        paid = False
+        data = None
+        if len(Data.objects.filter(group_name=group))== 0:
+            data = Data.objects.create()
+        else:
+            data = Data.objects.filter(group_name=group)
         return redirect('groupmainpage', group_name=group_name)
     else:
         return render(request, "accounts/groupmainpage.html", context)
@@ -284,6 +298,8 @@ def settings(request):
     else:
         return render(request, "accounts/settings.html")
 
+def report(request):
+    return render(request, "accounts/report.html")
 
 def forgetpassword(request):
     if request.method == "POST":
