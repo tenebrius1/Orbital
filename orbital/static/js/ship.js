@@ -17,17 +17,19 @@
 
 function search() {
   // Declare variables
-  var input, tr, table, i, group_name;
+  var input, tr, table, i;
   input = document.getElementById('search').value.toLowerCase();
   table = document.getElementById('group_data');
   tr = table.getElementsByTagName('tr');
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toLowerCase().indexOf(input) > -1) {
+    td_name = tr[i].getElementsByTagName("td")[0];
+    td_location = tr[i].getElementsByTagName("td")[3];
+    if (td_name || td_location) {
+      txtValue = td_name.textContent || td_name.innerText
+      txtValue_Location = td_location.textContent || td_location.innerText
+      if (txtValue.toLowerCase().indexOf(input) > -1 || txtValue_Location.toLowerCase().indexOf(input) > -1) {
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";
@@ -75,6 +77,19 @@ $(document).on("click", ".leave", function () {
     },
     success: function (response) {
       location.href = '/accounts/ship'
+    }
+  })
+});
+
+$(document).on("click", ".lock", function () {
+  $.ajax({
+    type: 'GET',
+    url: "/accounts/lockGroup",
+    data: {
+      "name": $('#group_name').text(),
+    },
+    success: function (response) {
+      redirect_locked($('#group_name').text());
     }
   })
 });

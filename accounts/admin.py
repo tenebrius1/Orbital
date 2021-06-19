@@ -32,8 +32,9 @@ class DataTabularInline(admin.TabularInline):
 
 class GroupAdmin(admin.ModelAdmin):
     inlines = [DataTabularInline]
-    list_display = ('group_name', 'owner')
+    list_display = ('group_name', 'owner', 'is_locked')
     list_filter = ('owner', 'group_name')
+    list_editable = ('is_locked',)
     search_fields = ('group_name','owner')
     list_per_page = 20
 

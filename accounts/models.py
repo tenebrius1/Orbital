@@ -26,16 +26,6 @@ class Deliveries(models.Model):
     def __str__(self) -> str:
         return self.tkg_number
 
-class Shipping(models.Model):
-    group_name = models.CharField(max_length=200, primary_key=True)
-    platform = models.CharField(max_length=50)
-    location = models.CharField(max_length=200)
-    base_shipping = models.DecimalField(max_digits=4, decimal_places=2)
-    free_shipping_min = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    member_count = models.PositiveSmallIntegerField()
-    def __str__(self) -> str:
-        return self.group_name
-
 class Group(models.Model):
     group_name = models.CharField(max_length=200, primary_key=True)
     description = models.TextField()
@@ -46,7 +36,19 @@ class Group(models.Model):
     courier = models.CharField(max_length=25, default='')
     meeting_date = models.DateField(default=timezone.now)
     owner = models.CharField(max_length=50)
+    address = models.CharField(max_length=255, default='')
     is_locked = models.BooleanField(default=False)
+    def __str__(self) -> str:
+        return self.group_name
+
+class Shipping(models.Model):
+    group = models.ForeignKey(Group, on_delete=CASCADE)
+    group_name = models.CharField(max_length=200, primary_key=True)
+    platform = models.CharField(max_length=50)
+    location = models.CharField(max_length=200)
+    base_shipping = models.DecimalField(max_digits=4, decimal_places=2)
+    free_shipping_min = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    member_count = models.PositiveSmallIntegerField()
     def __str__(self) -> str:
         return self.group_name
 

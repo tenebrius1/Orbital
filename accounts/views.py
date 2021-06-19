@@ -17,11 +17,9 @@ from .models import Deliveries, Transaction, Shipping, Group
 env = Env()
 env.read_env()
 
-
 def logout(request):
     auth.logout(request)
     return redirect("index")
-
 
 @login_required(login_url='/accounts/login')
 def dashboard(request):
@@ -30,7 +28,6 @@ def dashboard(request):
         'deliveries': deliveries,
     }
     return render(request, "accounts/dashboard.html", context=context)
-
 
 def register(request):
     if request.user.is_authenticated:
@@ -68,7 +65,6 @@ def register(request):
         else:
             return render(request, "accounts/register.html")
 
-
 def login(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
@@ -87,7 +83,6 @@ def login(request):
                 return redirect("login")
         else:
             return render(request, "accounts/login.html")
-
 
 @login_required(login_url='/accounts/login')
 def transaction(request):
@@ -120,7 +115,6 @@ def transaction(request):
     else:
         return render(request, "accounts/transaction.html", context=context)
 
-
 @login_required(login_url='/accounts/login')
 def price(request):
     entries = Price.objects.filter(user_id=request.user.id)
@@ -142,7 +136,6 @@ def price(request):
         return redirect("price")
     else:
         return render(request, "accounts/price.html", context=context)
-
 
 @login_required(login_url='/accounts/login')
 def delivery(request):
@@ -177,7 +170,6 @@ def delivery(request):
     else:
         return render(request, "accounts/delivery.html", context=context)
 
-
 @login_required(login_url='/accounts/login')
 def ship(request):
     if request.method == "POST":
@@ -190,10 +182,10 @@ def ship(request):
         description = request.POST['description']
         owner = request.user.username
 
-        Shipping.objects.create(group_name=name, platform=platform, location=location,
-                                base_shipping=base_shipping, free_shipping_min=free_shipping_min, member_count=1)
-        Group.objects.create(
+        grp = Group.objects.create(
             group_name=name, description=description, members=[owner], contacts=[contact], owner=owner)
+        Shipping.objects.create(group=grp, group_name=name, platform=platform, location=location,
+                                base_shipping=base_shipping, free_shipping_min=free_shipping_min, member_count=1)
         
         return redirect(f'ship/{name}')
     else:
@@ -240,10 +232,19 @@ def leaveGroup(request):
         grp_shipping.save()
         return JsonResponse({"success": ""}, status=200)
 
+def lockGroup(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        group_name = request.GET['name']
+        print(group_name)
+        grp = Group.objects.get(pk=group_name)
+        grp.is_locked = True
+        grp.save()
+        return JsonResponse({"success": ""}, status=200)
+
 def groupmainpage(request, group_name):
     context = {
         'info': Group.objects.filter(group_name=group_name)[0],
-        'store': Shipping.objects.filter(group_name=group_name)[0].platform
+        'shipping': Shipping.objects.filter(group_name=group_name)[0]
     }
     if request.method == 'POST':
         return redirect('groupmainpage', group_name=group_name)
@@ -253,7 +254,7 @@ def groupmainpage(request, group_name):
 def grouplocked(request, group_name):
     context = {
         'info': Group.objects.filter(group_name=group_name)[0],
-        'store': Shipping.objects.filter(group_name=group_name)[0].platform
+        'shipping': Shipping.objects.filter(group_name=group_name)[0],
     }
     if request.method == "POST":
         return

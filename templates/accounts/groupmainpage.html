@@ -1,5 +1,6 @@
 {% extends 'dashboard_base.html' %}
 {% load static %}
+{% load mathfilters %}
 
 {% block title %}: ShipTogether{% endblock %}
 {% block header %}
@@ -15,7 +16,7 @@
       </div>
       {% if info.owner == request.user.username %}
       <div class="p-2 bd-highlight">
-        <button type="button" class="btn" onclick="redirect_locked(`{{ info.group_name }}`)">
+        <button type="button" class="btn lock" onclick="redirect_locked(`{{ info.group_name }}`)">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lock-fill"
             viewBox="0 0 16 16">
             <path
@@ -37,9 +38,11 @@
       {% elif request.user.username not in info.members %}
       <div class="p-2 bd-highlight">
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#join_group">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-person-plus-fill"
+            viewBox="0 0 16 16">
+            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+            <path fill-rule="evenodd"
+              d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
           </svg>
           Join Group
         </button>
@@ -78,15 +81,16 @@
       {% else %}
       <div class="p-2 bd-highlight">
         <button type="button" class="btn leave">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-door-open-fill" viewBox="0 0 16 16">
-            <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-door-open-fill"
+            viewBox="0 0 16 16">
+            <path
+              d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
           </svg>
           Leave Group
         </button>
       </div>
       {% endif %}
     </div>
-
     <div class="row">
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
         <div class='container-fluid p-1'>
@@ -103,53 +107,34 @@
                       Store:
                     </td>
                     <td>
-                      {{ store }}
+                      {{ shipping.platform }}
                     </td>
-
                   </tr>
                   <tr>
                     <td>
                       <i data-feather="briefcase"></i>
-
                       Details:
                     </td>
-                    <td>
-                      {{ info.description }}
-
-                    </td>
-
+                    <td>{{ info.description }}</td>
                   </tr>
-
                   <tr>
                     <td>
                       <i data-feather="credit-card"></i>
-
-                      Shipping fee per member:
+                      Shipping fee/member:
                     </td>
-                    <td>
-                      $
-
-                    </td>
-
+                    <td>${{ shipping.base_shipping|div:shipping.member_count }}</td>
                   </tr>
-
+                  {% if shipping.free_shipping_min != 0 %}
                   <tr>
                     <td>
                       <i data-feather="info"></i>
                       Amount to free shipping:
-
                     </td>
-                    <td>
-                      $
-
-                    </td>
-
+                    <td>$</td>
                   </tr>
-
-
+                  {% endif %}
                 </tbody>
               </table>
-
             </div>
           </div>
           <div class='row'>
@@ -173,7 +158,6 @@
           </div>
         </div>
       </div>
-
       <div class="col-md-8 col-xxl-8 d-flex">
         <div class="card flex-fill w-100">
           <div class="card-header">
@@ -191,8 +175,7 @@
                   </svg>
                   Add item
                 </button>
-                <div class="modal fade" id="add_item" tabindex="-1" aria-labelledby="add_item"
-                  aria-hidden="true">
+                <div class="modal fade" id="add_item" tabindex="-1" aria-labelledby="add_item" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -245,7 +228,6 @@
                 </div>
               </div>
             </div>
-
           </div>
           <table class="table table-hover my-0" id='group_data'>
             <thead>
@@ -288,26 +270,8 @@
             </tbody>
           </table>
         </div>
-        <!-- <div class='container-fluid p-1'>
-
-          <div class='row'>
-            
-          </div>
-          <div class='row'>
-            <div class="d-flex bd-highlight">
-              <div class="flex-fill bd-highlight">Shipping Fee per Member: </div>
-              <div class="flex-fill bd-highlight">Amount to free shipping: </div>
-              <div class="flex-fill bd-highlight text-end">
-
-              </div>
-            </div>
-          </div>
-        </div> -->
-
       </div>
     </div>
-
-
   </div>
   <div id="disqus_thread"></div>
 </main>
@@ -317,4 +281,4 @@
 <script src="{% static 'js/ship.js' %}"></script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
     powered by Disqus.</a></noscript>
-{% endblock %} 
+{% endblock %}
