@@ -1,5 +1,6 @@
 {% extends 'dashboard_base.html' %}
 {% load static %}
+{% load mathfilters %}
 
 {% block title %}: ShipTogether{% endblock %}
 {% block header %}
@@ -15,60 +16,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-7 col-xxl-7 d-flex">
-        <div class="card flex-fill w-100">
-          <div class="card-header">
-            <h5 class="card-title mb-0">Items</h5>
-          </div>
-          <table class="table table-hover my-0" id='group_data'>
-            <thead>
-              <tr>
-                <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">User</th>
-                <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
-                  Item</th>
-                <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
-                  Qty</th>
-                <th>Price</th>
-                <th>URL</th>
-                <th class="text-center">Paid</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="data">
-                <td class="name">Zi Hao</td>
-                <td class="d-none d-xl-table-cell tkg_number">Asos</td>
-                <td class="d-none d-md-table-cell courier">3</td>
-                <td class="d-none d-md-table-cell status">Hougang</td>
-                <td class="d-none d-xl-table-cell time_updated">$240</td>
-                <td class="d-flex justify-content-center">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="paid" value="True">
-                  </div>
-                </td>
-              </tr>
-              <tr class="data">
-                <td class="name">Hello</td>
-                <td class="d-none d-xl-table-cell tkg_number">JD</td>
-                <td class="d-none d-md-table-cell courier">4</td>
-                <td class="d-none d-md-table-cell status">Redhill</td>
-                <td class="d-none d-xl-table-cell time_updated">$10</td>
-              </tr>
-              {% for delivery in deliveries %}
-              <tr class="data">
-                <td class="name">{{ delivery.name|capfirst }}</td>
-                <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
-                <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
-                <td class="d-none d-md-table-cell status">
-                  <span>Loading...</span>
-                </td>
-                <td class="d-none d-xl-table-cell time_updated">Loading...</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-12 col-md-5 col-xxl-5 d-flex">
+      <div class="col-12 col-md-4 col-xxl-4 d-flex">
         <div class="container p-0">
           <div class='row'>
             <div class="card flex-fill w-100">
@@ -81,7 +29,7 @@
                     <td><i data-feather="shopping-bag"></i>
                       Store:
                     </td>
-                    <td>{{ store }}</td>
+                    <td>{{ shipping.platform }}</td>
                   </tr>
                   <tr>
                     <td><i data-feather="briefcase"></i>
@@ -93,7 +41,7 @@
                     <td><i data-feather="credit-card"></i>
                       Shipping fee per member:
                     </td>
-                    <td>$</td>
+                    <td>${{ shipping.base_shipping|div:shipping.member_count }}</td>
                   </tr>
                   <tr>
                     <td><i data-feather="info"></i>
@@ -101,13 +49,12 @@
                     </td>
                     <td>$</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td><i data-feather="user"></i>
                       Member details:
                     </td>
                     <td>
                       <a href="#exampleModal" data-bs-toggle="modal" data-bs-target="#exampleModal"> Click to show </a>
-                      <!-- Modal -->
                       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
@@ -141,13 +88,54 @@
                         </div>
                       </div>
                     </td>
-                  </tr>
-
+                  </tr> -->
                 </tbody>
               </table>
-
             </div>
           </div>
+        </div>
+      </div>
+      <div class="col-md-8 col-xxl-8 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Items</h5>
+          </div>
+          <table class="table table-hover my-0" id='group_data'>
+            <thead>
+              <tr>
+                <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">User</th>
+                <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
+                  Item</th>
+                <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
+                  Qty</th>
+                <th>Price</th>
+                <th>URL</th>
+                <th class="text-center">Paid</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user, item, qty, price, url in table_data %}
+              <tr class="data">
+                <td class="user">{{ user }}</td>
+                <td class="d-none d-xl-table-cell item">{{ item }}</td>
+                <td class="d-none d-md-table-cell qty">{{ qty }}</td>
+                <td class="d-none d-md-table-cell price">{{ price }}</td>
+                <td class="d-none d-xl-table-cell time_updated">{{ url }}</td>
+                <td class=" justify-content-center">
+                  <div class="paid">
+                    <input class="form-check-input" type="checkbox" id="paid" value="True">
+                  </div>
+                </td>
+              </tr>
+              {% endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4 col-xxl-4 d-flex">
+        <div class="container p-0">
           <div class='row'>
             <div class="card flex-fill w-100">
               <div class="card-header">
@@ -155,6 +143,7 @@
                   <div class="flex-grow-1 bd-highlight">
                     <h5 class="card-title">Order Details</h5>
                   </div>
+                  {% if info.owner == request.user.username %}
                   <div class="bd-highlight">
                     <a href="#edit" data-bs-toggle="modal" data-bs-target="#edit">
                       <i class="bi bi-pencil-square me-3"></i>
@@ -209,6 +198,8 @@
                       </div>
                     </div>
                   </div>
+                  {% endif %}
+
                 </div>
               </div>
               <table class="table mb-0">
@@ -249,51 +240,19 @@
               </table>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <!-- <div class="col-12 col-md-4 col-xxl-4 d-flex">
-        <div class="card flex-fill w-100">
-          <div class="card-header">
-            <h5 class="card-title mb-0">Members' details</h5>
-          </div>
-          <div class="card-body d-flex">
-            <table class="table mb-0">
-              <tbody>
-                {% for member in info.members %}
-                <tr class="data">
-                  <td>
-                    <i data-feather="user"></i>
-                    {{ member }}
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-8 col-xxl-8 d-flex">
-        <div class="container-fluid p-0">
-          <div class='row'>
-            <div class="col-md-6 col-xxl-6 d-flex">
-              <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark"
-                data-bs-ride="carousel">
-                <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
-                  <h5 class="card-title mb-0">Order details (Screenshots)</h5>
-                </div>
-                <div class="card-body d-flex">
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-6 col-xxl-6 d-flex">
-            </div>
-          </div>
-        </div>
-      </div> -->
 
-      <!-- <div class="col-12 col-md-4 col-xxl-4 d-flex">
+        </div>
+      </div>
+      <div class="col-12 col-md-4 col-xxl-4 d-flex">
+        <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark" data-bs-ride="carousel">
+          <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
+            <h5 class="card-title mb-0">Order details (Screenshots)</h5>
+          </div>
+          <div class="card-body d-flex">
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 col-xxl-4 d-flex">
         <div class="card flex-fill w-100">
           <div class="card-header">
             <h5 class="card-title mb-0">Members' details</h5>
@@ -301,11 +260,14 @@
           <div class="card-body d-flex">
             <table class="table mb-0">
               <tbody>
-                {% for member in info.members %}
+                {% for name, num in member_details %}
                 <tr class="data">
                   <td>
                     <i data-feather="user"></i>
-                    {{ member }}
+                    {{ name }}
+                  </td>
+                  <td class='text-center'>
+                    {{ num }}
                   </td>
                 </tr>
                 {% endfor %}
@@ -314,59 +276,6 @@
           </div>
         </div>
       </div>
-      <div class="col-md-8 col-xxl-8 d-flex">
-        <div class="container-fluid p-0">
-          <div class='row'>
-            <div class="col-md-6 col-xxl-6 d-flex">
-              <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark"
-                data-bs-ride="carousel">
-                <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
-                  <h5 class="card-title mb-0">Order details (Screenshots)</h5>
-                </div>
-                <div class="card-body d-flex">
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-6 col-xxl-6 d-flex">
-              <div class="card flex-fill w-100">
-                <div class="card-header">
-                  <h5 class="card-title mb-0">Order details</h5>
-                </div>
-                <div class="card-body d-flex">
-                  <table class="table mb-0">
-                    <tbody>
-                      <tr>
-                        <td><i data-feather="hash"></i>
-                          Tracking Number:
-                        </td>
-                        <td>{{ info.tkg_number }}</td>
-                      </tr>
-                      <tr>
-                        <td><i data-feather="truck"></i>
-                          Courier:
-                        </td>
-                        <td>{{ info.courier }}</td>
-                      </tr>
-                      <tr>
-                        <td><i data-feather="calendar"></i>
-                          Meetup/Collection Date:
-                        </td>
-                        <td>{{ info.meeting_date }}</td>
-                      </tr>
-                      <tr>
-                        <td><i data-feather="map-pin"></i>
-                          Meetup Address:
-                        </td>
-                        <td>-</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
   <div id="disqus_thread"></div>

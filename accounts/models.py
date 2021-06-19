@@ -61,4 +61,4 @@ class Data(models.Model):
     quantity = ArrayField(models.PositiveSmallIntegerField(), default=list)
     paid = ArrayField(models.BooleanField(), default=list)
     def __str__(self) -> str:
-        return self.group_name
+        return self.group_name.group_name
