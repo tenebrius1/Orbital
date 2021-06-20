@@ -109,20 +109,20 @@
                 <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
                   Qty</th>
                 <th>Price</th>
-                <th>URL</th>
-                <th class="text-center">Paid</th>
+               <th class="text-center">Paid</th>
               </tr>
             </thead>
             <tbody>
               {% for user, item, qty, price, url in table_data %}
               <tr class="data">
                 <td class="user">{{ user }}</td>
-                <td class="d-none d-xl-table-cell item">{{ item }}</td>
+                <td class="d-none d-xl-table-cell item">
+                  <a href="{{ url }}"> {{ item }} </a>
+                  </td>
                 <td class="d-none d-md-table-cell qty">{{ qty }}</td>
-                <td class="d-none d-md-table-cell price">{{ price }}</td>
-                <td class="d-none d-xl-table-cell time_updated">{{ url }}</td>
-                <td class=" justify-content-center">
-                  <div class="paid">
+                <td class="d-none d-md-table-cell price">${{ price }}</td>
+                <td class="justify-content-center">
+                  <div class="paid text-center">
                     <input class="form-check-input" type="checkbox" id="paid" value="True">
                   </div>
                 </td>
@@ -157,10 +157,10 @@
                           </div>
                           <div class="modal-body">
                             <form class="needs-validation" method='POST'
-                              action="{% url 'groupmainpage' info.group_name %}" id='edit_form' novalidate>
+                              action="{% url 'grouplocked' info.group_name %}" id='edit_form' novalidate>
                               {% csrf_token %}
                               <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="tkg_number" placeholder="tkg_num"
+                                <input type="text" class="form-control" id="tkg_number" placeholder="tkg_number"
                                   name='tkg_number' required>
                                 <label for="tkg_number">Tracking Number:</label>
                                 <div class="invalid-feedback">
@@ -226,15 +226,7 @@
                     <td><i data-feather="map-pin"></i>
                       Meetup Address:
                     </td>
-                    <td>-</td>
-                  </tr>
-                  <tr>
-                    <td><i data-feather="image"></i>
-                      Order Proof(Screenshots):
-                    </td>
-                    <td>
-                      Click to show
-                    </td>
+                    <td> {{ info.address}} </td>
                   </tr>
                 </tbody>
               </table>

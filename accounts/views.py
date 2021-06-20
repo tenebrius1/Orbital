@@ -293,7 +293,12 @@ def grouplocked(request, group_name):
 
     }
     if request.method == "POST":
-        return
+        tkg_number = request.POST['tkg_number']
+        courier = request.POST['courier']
+        meetup = request.POST['date']
+        address = request.POST['address']
+        print(tkg_number + courier + meetup + address)
+        return redirect('grouplocked', group_name=group_name)
     else:    
         return render(request, "accounts/grouplocked.html", context)
 
