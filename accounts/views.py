@@ -289,15 +289,23 @@ def grouplocked(request, group_name):
         'info': Group.objects.filter(group_name=group_name)[0],
         'shipping': Shipping.objects.filter(group_name=group_name)[0],
         'member_details': zip(Group.objects.filter(group_name=group_name)[0].members, Group.objects.filter(group_name=group_name)[0].contacts),
-        'table_data': tabledata
+        'table_data': tabledata,
+        'date': Group.objects.filter(group_name=group_name)[0].meeting_date.isoformat(),
 
     }
     if request.method == "POST":
         tkg_number = request.POST['tkg_number']
         courier = request.POST['courier']
         meetup = request.POST['date']
+        date = datetime.date.fromisoformat(meetup)
         address = request.POST['address']
-        print(tkg_number + courier + meetup + address)
+
+        group.tkg_number = tkg_number
+        group.courier = courier
+        group.address = address
+        group.meeting_date = date
+        group.save()
+        
         return redirect('grouplocked', group_name=group_name)
     else:    
         return render(request, "accounts/grouplocked.html", context)

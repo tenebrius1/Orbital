@@ -4,7 +4,7 @@
 
 {% block title %}: ShipTogether{% endblock %}
 {% block header %}
-<link href="{% static 'css/ship.css' %}" rel="stylesheet">
+<link href="{% static 'css/groupmainpage.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -156,6 +156,9 @@
                   <tr class="data">
                     <td><i data-feather="user"></i>
                       {{ member }}
+                      {% if info.owner == member %}
+                      (Owner)
+                      {% endif %}
                     </td>
                   </tr>
                   {% endfor %}
@@ -242,22 +245,33 @@
             <thead>
               <tr>
                 <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">User</th>
-                <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
-                  Item</th>
-                <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
-                  Qty</th>
-                <th>Price</th>
-                <th>URL</th>
+                <th class="sortable " onclick="sortTable(1)" style="cursor:pointer">Item</th>
+                <th class='text-center'>Qty</th>
+                <th class='text-center'>Price</th>
+                <th class="text-center">Total</th>
+                <th id="actions"></th>
               </tr>
             </thead>
             <tbody>
               {% for user, item, qty, price, url in table_data %}
               <tr class="data">
                 <td class="user">{{ user }}</td>
-                <td class="d-none d-xl-table-cell item">{{ item }}</td>
-                <td class="d-none d-md-table-cell qty">{{ qty }}</td>
-                <td class="d-none d-md-table-cell price">${{ price }}</td>
-                <td class="d-none d-xl-table-cell url">{{ url }}</td>
+                <td class="d-none d-xl-table-cell item">
+                  <a href="{{ url }}"> {{ item|capfirst }} </a>  
+                </td>
+                <td class="d-none d-md-table-cell qty text-center">{{ qty }}</td>
+                <td class="d-none d-md-table-cell price text-center">${{ price }}</td>
+                <td class="d-none d-md-table-cell total text-center">${{ price|mul:qty }}</td>
+                <td class='text-center'>
+                  <span>
+                    <a class="edit" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
+                      <i class="bi bi-pencil-square me-3"></i>
+                    </a>
+                    <a class="delete_item" title="Delete Item" data-bs-toggle="tooltip" data-bs-placement="top">
+                      <i class="bi bi-trash-fill"></i>
+                    </a>
+                  </span>
+                </td>
               </tr>
               {% endfor %}
             </tbody>
@@ -271,7 +285,7 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'js/ship.js' %}"></script>
+<script src="{% static 'js/groupmainpage.js' %}"></script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
     powered by Disqus.</a></noscript>
 {% endblock %}
