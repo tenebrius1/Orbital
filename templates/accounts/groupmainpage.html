@@ -116,6 +116,12 @@
                     <td>{{ info.description }}</td>
                   </tr>
                   <tr>
+                    <td><i data-feather="map-pin"></i>
+                      Location:
+                    </td>
+                    <td>{{ shipping.location }}</td>
+                  </tr>
+                  <tr>
                     <td><i data-feather="credit-card"></i>
                       Shipping fee/member:
                     </td>
@@ -126,7 +132,13 @@
                     <td><i data-feather="info"></i>
                       Amount to free shipping:
                     </td>
-                    <td>${{ shipping.free_shipping_min }}</td>
+                    <td>
+                      {% if group.free_shipping_min == 0 %}
+                      Not Available
+                      {% else %}
+                      $
+                      {% endif %}
+                    </td>
                   </tr>
                   {% endif %}
                 </tbody>
@@ -160,6 +172,7 @@
               <div class="flex-grow-1 bd-highlight">
                 <h5 class="card-title">Items</h5>
               </div>
+              {% if request.user.username in info.members %}
               <div class="bd-highlight">
                 <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#add_item">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -222,6 +235,7 @@
                   </div>
                 </div>
               </div>
+              {% endif %}
             </div>
           </div>
           <table class="table table-hover my-0" id='group_data'>
@@ -237,29 +251,13 @@
               </tr>
             </thead>
             <tbody>
+              {% for user, item, qty, price, url in table_data %}
               <tr class="data">
-                <td class="name">Zi Hao</td>
-                <td class="d-none d-xl-table-cell tkg_number">Asos</td>
-                <td class="d-none d-md-table-cell courier">3</td>
-                <td class="d-none d-md-table-cell status">Hougang</td>
-                <td class="d-none d-xl-table-cell time_updated">$240</td>
-              </tr>
-              <tr class="data">
-                <td class="name">Hello</td>
-                <td class="d-none d-xl-table-cell tkg_number">JD</td>
-                <td class="d-none d-md-table-cell courier">4</td>
-                <td class="d-none d-md-table-cell status">Redhill</td>
-                <td class="d-none d-xl-table-cell time_updated">$10</td>
-              </tr>
-              {% for item in data %}
-              <tr class="data">
-                <td class="name">{{ delivery.name|capfirst }}</td>
-                <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
-                <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
-                <td class="d-none d-md-table-cell status">
-                  <span>Loading...</span>
-                </td>
-                <td class="d-none d-xl-table-cell time_updated">Loading...</td>
+                <td class="user">{{ user }}</td>
+                <td class="d-none d-xl-table-cell item">{{ item }}</td>
+                <td class="d-none d-md-table-cell qty">{{ qty }}</td>
+                <td class="d-none d-md-table-cell price">{{ price }}</td>
+                <td class="d-none d-xl-table-cell url">{{ url }}</td>
               </tr>
               {% endfor %}
             </tbody>

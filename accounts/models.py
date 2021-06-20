@@ -68,4 +68,4 @@ class Data(models.Model):
         return total
 
     def __str__(self) -> str:
-        return self.group_name
+        return self.group_name.group_name

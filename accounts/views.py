@@ -244,10 +244,16 @@ def lockGroup(request):
 
 def groupmainpage(request, group_name):
     group = Group.objects.get(group_name=group_name)
+    tabledata = None
+    if len(Data.objects.filter(group_name=group)) != 0:
+        tabledata = zip(Data.objects.filter(group_name=group_name)[0].users, Data.objects.filter(group_name=group_name)[0].items,
+        Data.objects.filter(group_name=group_name)[0].quantity, Data.objects.filter(group_name=group_name)[0].prices, 
+        Data.objects.filter(group_name=group_name)[0].urls)
     context = {
         'info': Group.objects.filter(group_name=group_name)[0],
         'shipping': Shipping.objects.filter(group_name=group_name)[0],
-        'data': Data.objects.filter(group_name=group_name)
+        'data': Data.objects.filter(group_name=group_name),
+        'table_data': tabledata
     }
     if request.method == 'POST':
         user = request.user.username
@@ -255,20 +261,36 @@ def groupmainpage(request, group_name):
         quantity = request.POST['quantity']
         price = request.POST['price']
         url = request.POST['url']
-        paid = False
         data = None
         if len(Data.objects.filter(group_name=group))== 0:
-            data = Data.objects.create()
+            data = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[False])
+            data.save()
         else:
-            data = Data.objects.filter(group_name=group)
+            data = Data.objects.filter(group_name=group)[0]
+            data.users.append(user)
+            data.items.append(name)
+            data.prices.append(price)
+            data.urls.append(url)
+            data.quantity.append(quantity)
+            data.paid.append(False)
+            data.save()
         return redirect('groupmainpage', group_name=group_name)
     else:
         return render(request, "accounts/groupmainpage.html", context)
 
 def grouplocked(request, group_name):
+    group = Group.objects.get(group_name=group_name)
+    tabledata = None
+    if len(Data.objects.filter(group_name=group)) != 0:
+        tabledata = zip(Data.objects.filter(group_name=group_name)[0].users, Data.objects.filter(group_name=group_name)[0].items,
+        Data.objects.filter(group_name=group_name)[0].quantity, Data.objects.filter(group_name=group_name)[0].prices, 
+        Data.objects.filter(group_name=group_name)[0].urls)
     context = {
         'info': Group.objects.filter(group_name=group_name)[0],
         'shipping': Shipping.objects.filter(group_name=group_name)[0],
+        'member_details': zip(Group.objects.filter(group_name=group_name)[0].members, Group.objects.filter(group_name=group_name)[0].contacts),
+        'table_data': tabledata
+
     }
     if request.method == "POST":
         return
