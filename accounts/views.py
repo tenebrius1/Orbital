@@ -224,6 +224,7 @@ def leaveGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         group_name = request.GET['name']
         grp = Group.objects.get(pk=group_name)
+        data = Data.objects.filter(group_name=group_name)
         grp_shipping = Shipping.objects.get(pk=group_name)
         index = grp.members.index(request.user.username)
         grp.contacts.pop(index)
@@ -231,6 +232,19 @@ def leaveGroup(request):
         grp.save()
         grp_shipping.member_count -= 1
         grp_shipping.save()
+        
+        # Deletes user's data when user leaves group
+        if len(data) != 0:
+            while request.user.username in data[0].users:
+                index = data[0].users.index(request.user.username)
+                data[0].items.pop(index)
+                data[0].urls.pop(index)
+                data[0].prices.pop(index)
+                data[0].quantity.pop(index)
+                data[0].paid.pop(index)
+                data[0].users.remove(request.user.username)
+            data[0].save()
+
         return JsonResponse({"success": ""}, status=200)
 
 def lockGroup(request):
@@ -244,15 +258,14 @@ def lockGroup(request):
 
 def groupmainpage(request, group_name):
     group = Group.objects.get(group_name=group_name)
+    data = Data.objects.filter(group_name=group_name)
     tabledata = None
-    if len(Data.objects.filter(group_name=group)) != 0:
-        tabledata = zip(Data.objects.filter(group_name=group_name)[0].users, Data.objects.filter(group_name=group_name)[0].items,
-        Data.objects.filter(group_name=group_name)[0].quantity, Data.objects.filter(group_name=group_name)[0].prices, 
-        Data.objects.filter(group_name=group_name)[0].urls)
+    if len(data) != 0:
+        tabledata = zip(data[0].users, data[0].items, data[0].quantity, data[0].prices, data[0].urls)
     context = {
-        'info': Group.objects.filter(group_name=group_name)[0],
+        'info': group,
         'shipping': Shipping.objects.filter(group_name=group_name)[0],
-        'data': Data.objects.filter(group_name=group_name),
+        'data': data[0] if len(data) != 0 else None,
         'table_data': tabledata
     }
     if request.method == 'POST':
@@ -262,7 +275,7 @@ def groupmainpage(request, group_name):
         price = request.POST['price']
         url = request.POST['url']
         data = None
-        if len(Data.objects.filter(group_name=group))== 0:
+        if len(data) == 0:
             data = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[False])
             data.save()
         else:
@@ -280,15 +293,18 @@ def groupmainpage(request, group_name):
 
 def grouplocked(request, group_name):
     group = Group.objects.get(group_name=group_name)
+    data = Data.objects.filter(group_name=group)
+    # Ensures that the group is locked before allowing members to access this page
+    # if not group.is_locked:
+    #     return redirect('groupmainpage', group_name=group_name)
+
     tabledata = None
-    if len(Data.objects.filter(group_name=group)) != 0:
-        tabledata = zip(Data.objects.filter(group_name=group_name)[0].users, Data.objects.filter(group_name=group_name)[0].items,
-        Data.objects.filter(group_name=group_name)[0].quantity, Data.objects.filter(group_name=group_name)[0].prices, 
-        Data.objects.filter(group_name=group_name)[0].urls)
+    if len(data) != 0:
+        tabledata = zip(data[0].users, data[0].items, data[0].quantity, data[0].prices,  data[0].urls, data[0].paid)
     context = {
-        'info': Group.objects.filter(group_name=group_name)[0],
+        'info': group,
         'shipping': Shipping.objects.filter(group_name=group_name)[0],
-        'member_details': zip(Group.objects.filter(group_name=group_name)[0].members, Group.objects.filter(group_name=group_name)[0].contacts),
+        'member_details': zip(group.members, group.contacts),
         'table_data': tabledata
 
     }
@@ -418,4 +434,14 @@ def deleteDelivery(request):
             name=name, tkg_number=tkg_number, user_id=request.user.id)[0]
         dlt.delete()
 
+        return JsonResponse({"success": ""}, status=200)
+
+def changePaidStatus(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        group_name = request.GET['name']
+        index = int(request.GET['index'])
+        paid = True if request.GET['paid'] == 'true' else False
+        data = Data.objects.get(group_name=group_name)
+        data.paid[index] = paid
+        data.save()
         return JsonResponse({"success": ""}, status=200)

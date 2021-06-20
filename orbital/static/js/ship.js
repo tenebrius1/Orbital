@@ -93,3 +93,29 @@ $(document).on("click", ".lock", function () {
     }
   })
 });
+
+$(".paid").change(function() {
+  index = $(this).parent().parent().index()
+  checkbox = $('.data').eq(index).find('input')
+  if ($(checkbox).is(':checked')) {
+    $.ajax({
+      type: 'GET',
+      url: "/accounts/changePaidStatus",
+      data: {
+        "name": $('#group_name').text(),
+        'index': index,
+        'paid': 'true'
+      },
+    })
+  } else {
+    $.ajax({
+      type: 'GET',
+      url: "/accounts/changePaidStatus",
+      data: {
+        "name": $('#group_name').text(),
+        'index': index,
+        'paid': 'false'
+      },
+    })
+  }
+});

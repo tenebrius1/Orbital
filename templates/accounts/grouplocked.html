@@ -12,7 +12,7 @@
   <div class="container-fluid p-0">
     <div class="d-flex bd-highlight">
       <div class="p-2 flex-grow-1 bd-highlight">
-        <h1 class="h2">{{ info.group_name }}</h1>
+        <h1 class="h2" id="group_name">{{ info.group_name }}</h1>
       </div>
     </div>
     <div class="row">
@@ -41,7 +41,7 @@
                     <td><i data-feather="credit-card"></i>
                       Shipping fee per member:
                     </td>
-                    <td>${{ shipping.base_shipping|div:shipping.member_count }}</td>
+                    <td>${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}</td>
                   </tr>
                   <tr>
                     <td><i data-feather="info"></i>
@@ -114,17 +114,31 @@
               </tr>
             </thead>
             <tbody>
-              {% for user, item, qty, price, url in table_data %}
+              {% for user, item, qty, price, url, paid in table_data %}
               <tr class="data">
                 <td class="user">{{ user }}</td>
                 <td class="d-none d-xl-table-cell item">{{ item }}</td>
                 <td class="d-none d-md-table-cell qty">{{ qty }}</td>
-                <td class="d-none d-md-table-cell price">{{ price }}</td>
+                <td class="d-none d-md-table-cell price">${{ price|floatformat:2 }}</td>
                 <td class="d-none d-xl-table-cell time_updated">{{ url }}</td>
-                <td class=" justify-content-center">
-                  <div class="paid">
-                    <input class="form-check-input" type="checkbox" id="paid" value="True">
+                <td>
+                  {% if request.user.username == info.owner %}
+                  <div class="d-flex justify-content-center paid">
+                    {% if paid %}
+                    <input class="form-check-input" type="checkbox" checked>
+                    {% else %}
+                    <input class="form-check-input" type="checkbox">
+                    {% endif %}
                   </div>
+                  {% else %}
+                  <div class="d-flex justify-content-center">
+                    {% if paid %}
+                    <i data-feather="check" color='green'></i>
+                    {% else %}
+                    <i data-feather="x" color='red'></i>
+                    {% endif %}
+                  </div>
+                  {% endif %}
                 </td>
               </tr>
               {% endfor%}
@@ -199,7 +213,6 @@
                     </div>
                   </div>
                   {% endif %}
-
                 </div>
               </div>
               <table class="table mb-0">
@@ -240,7 +253,6 @@
               </table>
             </div>
           </div>
-
         </div>
       </div>
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
@@ -259,6 +271,7 @@
           </div>
           <div class="card-body d-flex">
             <table class="table mb-0">
+              {% if info.owner == request.user.username %}
               <tbody>
                 {% for name, num in member_details %}
                 <tr class="data">
@@ -272,6 +285,18 @@
                 </tr>
                 {% endfor %}
               </tbody>
+              {% else %}
+              <tbody>
+                {% for name, num in member_details %}
+                <tr class="data">
+                  <td>
+                    <i data-feather="user"></i>
+                    {{ name }}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              {% endif %}
             </table>
           </div>
         </div>
