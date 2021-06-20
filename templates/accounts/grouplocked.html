@@ -4,7 +4,7 @@
 
 {% block title %}: ShipTogether{% endblock %}
 {% block header %}
-<link href="{% static 'css/ship.css' %}" rel="stylesheet">
+<link href="{% static 'css/grouplocked.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -106,22 +106,23 @@
                 <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">User</th>
                 <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
                   Item</th>
-                <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
-                  Qty</th>
-                <th>Price</th>
-                <th>URL</th>
-                <th class="text-center">Paid</th>
+                <th class="text-center">Qty</th>
+                <th class="text-center">Price</th>
+                <th class="text-center">Total</th>
+               <th class="text-center">Paid</th>
               </tr>
             </thead>
             <tbody>
               {% for user, item, qty, price, url, paid in table_data %}
               <tr class="data">
                 <td class="user">{{ user }}</td>
-                <td class="d-none d-xl-table-cell item">{{ item }}</td>
-                <td class="d-none d-md-table-cell qty">{{ qty }}</td>
-                <td class="d-none d-md-table-cell price">${{ price|floatformat:2 }}</td>
-                <td class="d-none d-xl-table-cell time_updated">{{ url }}</td>
-                <td>
+                <td class="d-none d-xl-table-cell item">
+                  <a href="{{ url }}"> {{ item|capfirst }} </a>
+                  </td>
+                <td class="d-none d-md-table-cell qty text-center">{{ qty }}</td>
+                <td class="d-none d-md-table-cell price text-center">${{ price|floatformat:2}}</td>
+                <td class="d-none d-md-table-cell total text-center">${{ price|mul:qty|floatformat:2 }}</td>
+                <td class="justify-content-center">
                   {% if request.user.username == info.owner %}
                   <div class="d-flex justify-content-center paid">
                     {% if paid %}
@@ -158,9 +159,9 @@
                     <h5 class="card-title">Order Details</h5>
                   </div>
                   {% if info.owner == request.user.username %}
-                  <div class="bd-highlight">
+                  <div class="bd-highlight text-end">
                     <a href="#edit" data-bs-toggle="modal" data-bs-target="#edit">
-                      <i class="bi bi-pencil-square me-3"></i>
+                      <i class="bi bi-pencil-square"></i>
                     </a>
                     <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
                       <div class="modal-dialog">
@@ -171,11 +172,11 @@
                           </div>
                           <div class="modal-body">
                             <form class="needs-validation" method='POST'
-                              action="{% url 'groupmainpage' info.group_name %}" id='edit_form' novalidate>
+                              action="{% url 'grouplocked' info.group_name %}" id='edit_form' novalidate>
                               {% csrf_token %}
                               <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="tkg_number" placeholder="tkg_num"
-                                  name='tkg_number' required>
+                                <input type="text" class="form-control" id="tkg_number" placeholder="tkg_number"
+                                  name='tkg_number' value="{{ info.tkg_number }}" required>
                                 <label for="tkg_number">Tracking Number:</label>
                                 <div class="invalid-feedback">
                                   Please provide item name.
@@ -183,7 +184,7 @@
                               </div>
                               <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="courier" placeholder="courier"
-                                  name='courier' required>
+                                  name='courier' value="{{ info.courier }}" required>
                                 <label for="courier">Courier:</label>
                                 <div class="invalid-feedback">
                                   Please provide quantity.
@@ -191,12 +192,12 @@
                               </div>
                               <div class="form-floating mb-3">
                                 <input class="form-control" id="date" type="date" placeholder="date" name='date'
-                                  required>
+                                value="{{ date }}"required>
                                 <label for="date">Meetup date:</label>
                               </div>
                               <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="address" placeholder="address"
-                                  name='address' required>
+                                  name='address' value="{{ info.address }}" required>
                                 <label for="address">Address:</label>
                                 <div class="invalid-feedback">
                                   Please provide valid URL.
@@ -227,11 +228,11 @@
                     <td><i data-feather="truck"></i>
                       Courier:
                     </td>
-                    <td>{{ info.courier }}</td>
+                    <td>{{ info.courier|capfirst }}</td>
                   </tr>
                   <tr>
                     <td><i data-feather="calendar"></i>
-                      Meetup/Collection Date:
+                      Meetup Date:
                     </td>
                     <td>{{ info.meeting_date }}</td>
                   </tr>
@@ -239,15 +240,7 @@
                     <td><i data-feather="map-pin"></i>
                       Meetup Address:
                     </td>
-                    <td>-</td>
-                  </tr>
-                  <tr>
-                    <td><i data-feather="image"></i>
-                      Order Proof(Screenshots):
-                    </td>
-                    <td>
-                      Click to show
-                    </td>
+                    <td> {{ info.address|capfirst }} </td>
                   </tr>
                 </tbody>
               </table>
@@ -278,6 +271,9 @@
                   <td>
                     <i data-feather="user"></i>
                     {{ name }}
+                    {% if info.owner == name %}
+                    <b> (Owner)</b>
+                    {% endif %}
                   </td>
                   <td class='text-center'>
                     {{ num }}
@@ -308,7 +304,7 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'js/ship.js' %}"></script>
+<script src="{% static 'js/grouplocked.js' %}"></script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
     powered by Disqus.</a></noscript>
 {% endblock %}

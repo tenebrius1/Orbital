@@ -1,5 +1,4 @@
 import datetime
-import re
 
 import requests
 from django.contrib import auth, messages
@@ -276,7 +275,10 @@ def groupmainpage(request, group_name):
         url = request.POST['url']
         data = None
         if len(data) == 0:
-            data = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[False])
+            if request.user.username == group.owner:
+                data = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[True])
+            else:
+                data = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[False])
             data.save()
         else:
             data = Data.objects.filter(group_name=group)[0]
@@ -285,7 +287,7 @@ def groupmainpage(request, group_name):
             data.prices.append(price)
             data.urls.append(url)
             data.quantity.append(quantity)
-            data.paid.append(False)
+            data.paid.append(False if request.user.username != group.owner else True)
             data.save()
         return redirect('groupmainpage', group_name=group_name)
     else:
@@ -305,11 +307,23 @@ def grouplocked(request, group_name):
         'info': group,
         'shipping': Shipping.objects.filter(group_name=group_name)[0],
         'member_details': zip(group.members, group.contacts),
-        'table_data': tabledata
-
+        'table_data': tabledata,
+        'date': group.meeting_date.isoformat(),
     }
     if request.method == "POST":
-        return
+        tkg_number = request.POST['tkg_number']
+        courier = request.POST['courier']
+        meetup = request.POST['date']
+        date = datetime.date.fromisoformat(meetup)
+        address = request.POST['address']
+
+        group.tkg_number = tkg_number
+        group.courier = courier
+        group.address = address
+        group.meeting_date = date
+        group.save()
+        
+        return redirect('grouplocked', group_name=group_name)
     else:    
         return render(request, "accounts/grouplocked.html", context)
 
