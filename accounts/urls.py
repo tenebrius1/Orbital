@@ -28,4 +28,6 @@ urlpatterns = [
     path('displayDeliveries', views.displayDeliveries, name='displayDeliveries'),
     path('deleteDelivery', views.deleteDelivery, name='deleteDelivery'),
     path('changePaidStatus', views.changePaidStatus, name='changePaidStatus'),
+    path('deleteItem', views.deleteItem, name='deleteItem'),
+
 ]

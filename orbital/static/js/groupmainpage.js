@@ -15,6 +15,22 @@
     })
 })()
 
+// Get CSRF token
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
   table = document.getElementById("group_data");
@@ -84,6 +100,24 @@ $sortable.on('click', function () {
     $this.addClass('desc');
   }
 
+});
+
+// Delete button AJAX Request
+$(document).on("click", ".delete_item", function () {
+  $(this).parents("tr").remove();
+  $.ajax({
+    type: 'POST',
+    url: "/accounts/deleteItem",
+    data: {
+      "user": $(this).parent().parent().siblings().closest(".user").text(),
+      "item": $(this).parent().parent().siblings().closest(".item").text(),
+      "price": $(this).parent().parent().siblings().closest(".price").text(),
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+    },
+    success: function (response) {
+      displayExpenses();
+    }
+  })
 });
 
 (function () {  // DON'T EDIT BELOW THIS LINE

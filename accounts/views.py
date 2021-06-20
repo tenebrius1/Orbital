@@ -458,4 +458,16 @@ def changePaidStatus(request):
         data = Data.objects.get(group_name=group_name)
         data.paid[index] = paid
         data.save()
+def deleteItem(request):
+    if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        user = request.POST.get("user").lower()
+        item = request.POST.get("item")
+        price = request.POST.get("price")[1:]
+
+        print(user)
+        print(item)
+        print(price)
+        
+        
+
         return JsonResponse({"success": ""}, status=200)
