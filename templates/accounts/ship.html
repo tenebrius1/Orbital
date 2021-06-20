@@ -48,7 +48,7 @@
                   <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="platform" placeholder="platform" name='platform'
                       required>
-                    <label for="platform">Platform</label>
+                    <label for="platform">Store</label>
                     <div class="invalid-feedback">
                       Please provide platform name.
                     </div>
@@ -56,7 +56,7 @@
                   <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="location" placeholder="location" name='location'
                       required>
-                    <label for="location">Location (to facilitate collection)</label>
+                    <label for="location">Meetup location/Mailing method (eg. normal, registered)</label>
                     <div class="invalid-feedback">
                       Please provide location.
                     </div>
@@ -132,10 +132,10 @@
                   <tr>
                     <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">Group Name</th>
                     <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
-                      Platform</th>
+                      Store</th>
                     <th class="sortable" onclick="sortTable(2)" style="cursor:pointer">
                       No. of Members</th>
-                    <th>Location</th>
+                    <th>Meetup Location/Mailing</th>
                     <th>Shipping Price/Person</th>
                     <th>Free Shipping with min. Spending</th>
                   </tr>
@@ -147,7 +147,7 @@
                     <td class="group_name">{{ group.group_name }}</td>
                     <td class="platform">{{ group.platform }}</td>
                     <td class="members_count">{{ group.member_count }}</td>
-                    <td class="location">{{ group.location }}</td>
+                    <td class="location">{{ group.location|title }}</td>
                     <td class="price">${{ group.base_shipping|div:group.member_count|floatformat:2 }}</td>
                     <td class="min_shipping">
                       {% if group.free_shipping_min == 0 %}

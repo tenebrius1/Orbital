@@ -60,5 +60,12 @@ class Data(models.Model):
     urls = ArrayField(models.URLField(max_length=500), default=list)
     quantity = ArrayField(models.PositiveSmallIntegerField(), default=list)
     paid = ArrayField(models.BooleanField(), default=list)
+
+    def total_price(self):
+        total = 0
+        for price in self.prices:
+            total += price
+        return total
+
     def __str__(self) -> str:
         return self.group_name

@@ -102,8 +102,7 @@
               <table class="table mb-0">
                 <tbody>
                   <tr>
-                    <td>
-                      <i data-feather="shopping-bag"></i>
+                    <td><i data-feather="shopping-bag"></i>
                       Store:
                     </td>
                     <td>
@@ -111,26 +110,23 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>
-                      <i data-feather="briefcase"></i>
+                    <td><i data-feather="briefcase"></i>
                       Details:
                     </td>
                     <td>{{ info.description }}</td>
                   </tr>
                   <tr>
-                    <td>
-                      <i data-feather="credit-card"></i>
+                    <td><i data-feather="credit-card"></i>
                       Shipping fee/member:
                     </td>
-                    <td>${{ shipping.base_shipping|div:shipping.member_count }}</td>
+                    <td>${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}</td>
                   </tr>
                   {% if shipping.free_shipping_min != 0 %}
                   <tr>
-                    <td>
-                      <i data-feather="info"></i>
+                    <td><i data-feather="info"></i>
                       Amount to free shipping:
                     </td>
-                    <td>$</td>
+                    <td>${{ shipping.free_shipping_min }}</td>
                   </tr>
                   {% endif %}
                 </tbody>
@@ -146,8 +142,7 @@
                 <tbody>
                   {% for member in info.members %}
                   <tr class="data">
-                    <td>
-                      <i data-feather="user"></i>
+                    <td><i data-feather="user"></i>
                       {{ member }}
                     </td>
                   </tr>
@@ -256,7 +251,7 @@
                 <td class="d-none d-md-table-cell status">Redhill</td>
                 <td class="d-none d-xl-table-cell time_updated">$10</td>
               </tr>
-              {% for delivery in deliveries %}
+              {% for item in data %}
               <tr class="data">
                 <td class="name">{{ delivery.name|capfirst }}</td>
                 <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>

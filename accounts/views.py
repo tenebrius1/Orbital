@@ -282,19 +282,12 @@ def settings(request):
         # Get form values
         username = request.POST["newname"]
         password = request.POST["newpw"]
-
         u.set_password(password)
         u.save()
-
         auth.login(
             request, u, backend="django.contrib.auth.backends.ModelBackend"
         )
-
         return redirect("settings")
-
-        # Redirect user to login page after registration
-        # user.save()
-        # return redirect("login")
     else:
         return render(request, "accounts/settings.html")
 
@@ -332,7 +325,6 @@ def deleteTransaction(request):
 
         return JsonResponse({"success": ""}, status=200)
 
-
 def displayExpenses(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         transactions = Transaction.objects.filter(user_id=request.user.id)
@@ -352,7 +344,6 @@ def displayExpenses(request):
             "others": others,
         }, status=200)
 
-
 def editTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         oItem = request.POST.get("oItem").lower()
@@ -370,7 +361,6 @@ def editTransaction(request):
         oEntry.save()
 
         return JsonResponse({"success": ""}, status=200)
-
 
 def displayDeliveries(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -396,7 +386,6 @@ def displayDeliveries(request):
         return JsonResponse({
             "response": r.json()['data'],
         }, status=200)
-
 
 def deleteDelivery(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
