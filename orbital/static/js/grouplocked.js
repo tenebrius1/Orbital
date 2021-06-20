@@ -71,9 +71,7 @@
   }
   
   var $sortable = $('.sortable');
-  
   $sortable.on('click', function () {
-  
     var $this = $(this);
     var asc = $this.hasClass('asc');
     var desc = $this.hasClass('desc');
@@ -83,7 +81,6 @@
     } else {
       $this.addClass('desc');
     }
-  
   });
   
   (function () {  // DON'T EDIT BELOW THIS LINE
@@ -94,3 +91,29 @@
     s.setAttribute('data-timestamp', +new Date());
     (d.head || d.body).appendChild(s);
   })();
+
+  $(".paid").change(function() {
+    index = $(this).parent().parent().index()
+    checkbox = $('.data').eq(index).find('input')
+    if ($(checkbox).is(':checked')) {
+      $.ajax({
+        type: 'GET',
+        url: "/accounts/changePaidStatus",
+        data: {
+          "name": $('#group_name').text(),
+          'index': index,
+          'paid': 'true'
+        },
+      })
+    } else {
+      $.ajax({
+        type: 'GET',
+        url: "/accounts/changePaidStatus",
+        data: {
+          "name": $('#group_name').text(),
+          'index': index,
+          'paid': 'false'
+        },
+      })
+    }
+  });
