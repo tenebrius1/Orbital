@@ -87,9 +87,7 @@ function sortTable(n) {
 }
 
 var $sortable = $('.sortable');
-
 $sortable.on('click', function () {
-
   var $this = $(this);
   var asc = $this.hasClass('asc');
   var desc = $this.hasClass('desc');
@@ -99,32 +97,29 @@ $sortable.on('click', function () {
   } else {
     $this.addClass('desc');
   }
-
 });
 
 // Delete button AJAX Request
 $(document).on("click", ".delete_item", function () {
   $(this).parents("tr").remove();
-  console.log($(this).parent().parent().siblings(".item"))
+  index = $(this).parent().parent().siblings().closest(".index").text()
   $.ajax({
     type: 'POST',
     url: "/accounts/deleteItem",
     data: {
-      "user": $(this).parent().parent().siblings().closest(".user").text(),
-      "item": $(this).parent().parent().siblings().closest(".item").text(),
-      "price": $(this).parent().parent().siblings().closest(".price").text(),
+      "index": index,
+      "name": $('#group_name').text(),
       csrfmiddlewaretoken: getCookie('csrftoken'),
     },
-    success: function (response) {
+    success: function(response) {
+      location.href = '/accounts/ship/' + $('#group_name').text()
     }
   })
 });
 
 (function () {  // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');
-
   s.src = 'https://shopbud.disqus.com/embed.js';
-
   s.setAttribute('data-timestamp', +new Date());
   (d.head || d.body).appendChild(s);
 })();

@@ -33,7 +33,7 @@
                   </tr>
                   <tr>
                     <td><i data-feather="briefcase"></i>
-                      Details:
+                      Description:
                     </td>
                     <td>{{ info.description }}</td>
                   </tr>
@@ -44,10 +44,14 @@
                     <td>${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}</td>
                   </tr>
                   <tr>
+                    {% if request.user.username in info.members %}
                     <td><i data-feather="info"></i>
                       Total Amount:
                     </td>
-                    <td>$</td>
+                    {% with shipping_fee=shipping.base_shipping|div:shipping.member_count %}
+                    <td>${{ user_total|addition:shipping_fee|floatformat:2 }}</td>
+                    {% endwith %}
+                    {% endif %}
                   </tr>
                   <!-- <tr>
                     <td><i data-feather="user"></i>
@@ -160,8 +164,8 @@
                   </div>
                   {% if info.owner == request.user.username %}
                   <div class="bd-highlight text-end">
-                    <a href="#edit" data-bs-toggle="modal" data-bs-target="#edit">
-                      <i class="bi bi-pencil-square"></i>
+                    <a href="#edit" data-bs-toggle="modal" data-bs-target="#edit" title="Edit details">
+                      <i data-feather='edit-3'></i>
                     </a>
                     <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
                       <div class="modal-dialog">
@@ -240,7 +244,7 @@
                     <td><i data-feather="map-pin"></i>
                       Meetup Address:
                     </td>
-                    <td> {{ info.address|capfirst }} </td>
+                    <td> {{ info.address|title }} </td>
                   </tr>
                 </tbody>
               </table>
@@ -249,11 +253,9 @@
         </div>
       </div>
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
-        <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark" data-bs-ride="carousel">
-          <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
-            <h5 class="card-title mb-0">Order details (Screenshots)</h5>
-          </div>
-          <div class="card-body d-flex">
+        <div class="card flex-fill">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Screenshot</h5>
           </div>
         </div>
       </div>
@@ -288,7 +290,17 @@
                   <td>
                     <i data-feather="user"></i>
                     {{ name }}
+                    {% if info.owner == name %}
+                    <b> (Owner)</b>
+                    {% endif %}
                   </td>
+                  {% if info.owner == name %}
+                  <td class='text-center'>
+                    {{ num }}
+                  </td>
+                  {% else %}
+                  <td class='text-center'></td>
+                  {% endif %}
                 </tr>
                 {% endfor %}
               </tbody>

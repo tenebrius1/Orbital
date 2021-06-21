@@ -257,6 +257,7 @@
             <tbody>
               {% for user, item, qty, price, url in table_data %}
               <tr class="data">
+                <td class="index" style="display:none;">{{ forloop.counter0 }}</td>
                 <td class="user">{{ user }}</td>
                 <td class="d-none d-xl-table-cell item"><a class="item" href="{{ url }}">{{ item|capfirst }}</a></td>
                 <td class="d-none d-md-table-cell qty text-center">{{ qty }}</td>
@@ -265,9 +266,9 @@
                 <td class='text-center'>
                   {% if user == request.user.username %}
                   <span>
-                    <a class="edit" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
+                    <!-- <a class="edit" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
                       <i class="bi bi-pencil-square me-3"></i>
-                    </a>
+                    </a> -->
                     <a class="delete_item" title="Delete Item" data-bs-toggle="tooltip" data-bs-placement="top">
                       <i class="bi bi-trash-fill"></i>
                     </a>

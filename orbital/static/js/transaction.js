@@ -10,7 +10,6 @@
           event.preventDefault()
           event.stopPropagation()
         }
-
         form.classList.add('was-validated')
       }, false)
     })
@@ -414,7 +413,6 @@ function sortDate(n) {
 var $sortable = $('.sortable');
 
 $sortable.on('click', function(){
-  
   var $this = $(this);
   var asc = $this.hasClass('asc');
   var desc = $this.hasClass('desc');
@@ -424,5 +422,4 @@ $sortable.on('click', function(){
   } else {
     $this.addClass('desc');
   }
-  
 });

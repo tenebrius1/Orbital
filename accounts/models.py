@@ -55,8 +55,8 @@ class Shipping(models.Model):
 class Data(models.Model):
     group_name = models.OneToOneField(Group, on_delete=CASCADE)
     users = ArrayField(models.CharField(max_length=50), default=list)
-    items = ArrayField(models.CharField(max_length=100), default=list)
-    prices = ArrayField(models.PositiveIntegerField(), default=list)
+    items = ArrayField(models.CharField(max_length=200), default=list)
+    prices = ArrayField(models.DecimalField(max_digits=6, decimal_places=2), default=list)
     urls = ArrayField(models.URLField(max_length=500), default=list)
     quantity = ArrayField(models.PositiveSmallIntegerField(), default=list)
     paid = ArrayField(models.BooleanField(), default=list)
