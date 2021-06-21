@@ -105,6 +105,7 @@ $sortable.on('click', function () {
 // Delete button AJAX Request
 $(document).on("click", ".delete_item", function () {
   $(this).parents("tr").remove();
+  console.log($(this).parent().parent().siblings(".item"))
   $.ajax({
     type: 'POST',
     url: "/accounts/deleteItem",
@@ -115,7 +116,6 @@ $(document).on("click", ".delete_item", function () {
       csrfmiddlewaretoken: getCookie('csrftoken'),
     },
     success: function (response) {
-      displayExpenses();
     }
   })
 });

@@ -273,22 +273,22 @@ def groupmainpage(request, group_name):
         quantity = request.POST['quantity']
         price = request.POST['price']
         url = request.POST['url']
-        data = None
+        adddata = None
         if len(data) == 0:
             if request.user.username == group.owner:
-                data = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[True])
+                adddata = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[True])
             else:
-                data = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[False])
-            data.save()
+                adddata = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[False])
+            adddata.save()
         else:
-            data = Data.objects.filter(group_name=group)[0]
-            data.users.append(user)
-            data.items.append(name)
-            data.prices.append(price)
-            data.urls.append(url)
-            data.quantity.append(quantity)
-            data.paid.append(False if request.user.username != group.owner else True)
-            data.save()
+            adddata = Data.objects.filter(group_name=group)[0]
+            adddata.users.append(user)
+            adddata.items.append(name)
+            adddata.prices.append(price)
+            adddata.urls.append(url)
+            adddata.quantity.append(quantity)
+            adddata.paid.append(False if request.user.username != group.owner else True)
+            adddata.save()
         return redirect('groupmainpage', group_name=group_name)
     else:
         return render(request, "accounts/groupmainpage.html", context)
@@ -458,16 +458,16 @@ def changePaidStatus(request):
         data = Data.objects.get(group_name=group_name)
         data.paid[index] = paid
         data.save()
+
 def deleteItem(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        user = request.POST.get("user").lower()
+        user = request.POST.get("user")
         item = request.POST.get("item")
         price = request.POST.get("price")[1:]
 
         print(user)
         print(item)
         print(price)
-        
         
 
         return JsonResponse({"success": ""}, status=200)
