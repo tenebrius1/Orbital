@@ -288,12 +288,14 @@
               </div>
             </div>
           </div>
+          {% if info.scrnshot.url != None %}
           <div class="card-body text-center">
             <a href="{{ info.scrnshot.url }}"
               data-glightbox="type: image; effect: fade; width: 450px; height: 150px; zoomable: true; draggable: true;">
               <img src="{{ info.scrnshot.url }}" alt="screenshot" width="" height="150px">
             </a>
           </div>
+          {% endif %}
         </div>
       </div>
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
