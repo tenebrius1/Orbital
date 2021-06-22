@@ -113,7 +113,7 @@
                 <th class="text-center">Qty</th>
                 <th class="text-center">Price</th>
                 <th class="text-center">Total</th>
-               <th class="text-center">Paid</th>
+                <th class="text-center">Paid</th>
               </tr>
             </thead>
             <tbody>
@@ -122,7 +122,7 @@
                 <td class="user">{{ user }}</td>
                 <td class="d-none d-xl-table-cell item">
                   <a href="{{ url }}"> {{ item|capfirst }} </a>
-                  </td>
+                </td>
                 <td class="d-none d-md-table-cell qty text-center">{{ qty }}</td>
                 <td class="d-none d-md-table-cell price text-center">${{ price|floatformat:2}}</td>
                 <td class="d-none d-md-table-cell total text-center">${{ price|mul:qty|floatformat:2 }}</td>
@@ -196,7 +196,7 @@
                               </div>
                               <div class="form-floating mb-3">
                                 <input class="form-control" id="date" type="date" placeholder="date" name='date'
-                                value="{{ date }}"required>
+                                  value="{{ date }}" required>
                                 <label for="date">Meetup date:</label>
                               </div>
                               <div class="form-floating mb-3">
@@ -255,7 +255,38 @@
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
         <div class="card flex-fill">
           <div class="card-header">
-            <h5 class="card-title mb-0">Screenshot</h5>
+            <div class="d-flex bd-highlight">
+              <div class="flex-grow-1 bd-highlight">
+                <h5 class="card-title">Screenshot</h5>
+              </div>
+              <div class="bd-highlight text-end">
+                <a href="#upload" data-bs-toggle="modal" data-bs-target="#upload" title="Edit details">
+                  <i data-feather='upload'></i>
+                </a>
+                <div class="modal fade" id="upload" tabindex="-1" aria-labelledby="upload" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="upload_label">Upload Screenshot</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form class="needs-validation" method='POST' action="{% url 'grouplocked' info.group_name %}"
+                          id='upload_form' novalidate>
+                          {% csrf_token %}
+                            <label for="img">Select image:</label>
+                            <input type="file" id="img" name="img" accept="image/*">
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" form="upload_form">Add item</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
