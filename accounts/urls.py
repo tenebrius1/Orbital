@@ -20,6 +20,7 @@ urlpatterns = [
     path('ship/<group_name>/locked', views.grouplocked, name='grouplocked'),
     path('lockGroup', views.lockGroup, name='lockGroup'),
     path('report', views.report, name='report'), 
+    path('uploadImage', views.uploadImage, name='uploadImage'),
 
     # Handles AJAX requests
     path('deleteTransaction', views.deleteTransaction, name='deleteTransaction'),

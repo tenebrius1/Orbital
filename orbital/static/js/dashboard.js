@@ -266,3 +266,11 @@ $(document).ready(function () {
   displayExpenses();
   displayDeliveries();
 });
+
+function redirect(group_name) {
+  location.href = "/accounts/ship/" + group_name;
+}
+
+function redirect_locked(group_name) {
+  location.href = "/accounts/ship/" + group_name + "/locked";
+}

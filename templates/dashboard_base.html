@@ -48,7 +48,7 @@
                 <a class="nav-link" href="{% url 'delivery' %}">Deliveries</a>
               </li>
               {% endif %}
-              {% if 'price' in request.path %}
+              <!-- {% if 'price' in request.path %}
               <li class="nav-item">
                 <a class="nav-link active" href="{% url 'price' %}">PriceTrack</a>
               </li>
@@ -56,7 +56,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'price' %}">PriceTrack</a>
               </li>
-              {% endif %}
+              {% endif %} -->
               {% if 'ship' in request.path %}
               <li class="nav-item">
                 <a class="nav-link active" href="{% url 'ship' %}">ShipTogether</a>

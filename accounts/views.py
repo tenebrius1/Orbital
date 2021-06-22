@@ -1,4 +1,5 @@
 import datetime
+from PIL import Image
 
 import requests
 from django.contrib import auth, messages
@@ -23,9 +24,15 @@ def logout(request):
 
 @login_required(login_url='/accounts/login')
 def dashboard(request):
+    mygroups = Group.objects.filter(members__contains=[request.user.username])
+    platform = list()
+    for i in range(len(mygroups)):
+        g = Shipping.objects.filter(group_name=mygroups[i].group_name)
+        platform.append(g[0].platform)
     deliveries = Deliveries.objects.filter(user_id=request.user.id)
     context = {
         'deliveries': deliveries,
+        'mygroups': zip(mygroups, platform),
     }
     return render(request, "accounts/dashboard.html", context=context)
 
@@ -126,7 +133,6 @@ def price(request):
         name = request.POST["name"]
         url = request.POST["url"]
         company = request.POST["company"]
-
         # first scrape
         price = checkPrice(url)
         date = datetime.datetime.now().strftime("%m/%d/%Y")
@@ -287,6 +293,15 @@ def grouplocked(request, group_name):
         return redirect('grouplocked', group_name=group_name)
     else:    
         return render(request, "accounts/grouplocked.html", context)
+
+def uploadImage(request):
+    if request.method == 'POST':
+        name = request.POST['group_name']
+        img = request.FILES['img']
+        group = Group.objects.get(group_name=name)
+        group.scrnshot = img
+        group.save()
+        return redirect('grouplocked', group_name=name)
 
 @login_required(login_url='/accounts/login')
 def settings(request):

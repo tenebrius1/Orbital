@@ -55,13 +55,41 @@
         </div>
       </div>
       <div class="col-md-8 col-xxl-8 d-flex">
-        <div class="card flex-fill w-100 carousel carousel-dark slide" id="carouselExampleDark" data-bs-ride="carousel">
-
-          <div class="card-header" onclick="location.href=`{% url 'price' %}`" id="sbox">
-            <h5 class="card-title mb-0">Price Movement</h5>
+        <div class="card flex-fill w-100">
+          <div class="card-header" onclick="location.href=`{% url 'ship' %}`" id="sbox">
+            <h5 class="card-title mb-0">ShipTogether</h5>
           </div>
-          <div class="card-body d-flex">
-            <div class="align-self-center w-100 ">
+            <table class="table table-hover my-0" id='my_group_data'>
+              <thead>
+                <tr>
+                  <th class="d-none d-md-table-cell">Group Name</th>
+                  <th class="d-none d-md-table-cell">Platform</th>
+                  <th class="d-none d-md-table-cell text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for group, platform in mygroups %}
+                {% if group.is_locked %}
+                <tr class="data" onclick="redirect_locked(`{{ group.group_name }}`)" style="cursor:pointer">
+                  <td class="d-none d-md-table-cell group_name">{{ group.group_name }}</td>
+                  <td class="d-none d-md-table-cell platform">{{ platform }}</td>
+                  <td class="d-none d-md-table-cell text-center">
+                    <span class="badge bg-success">Locked</span>
+                  </td>
+                </tr>
+                {% else %}
+                <tr class="data" onclick="redirect(`{{ group.group_name }}`)" style="cursor:pointer">
+                  <td class="d-none d-md-table-cell group_name">{{ group.group_name }}</td>
+                  <td class="d-none d-md-table-cell platform">{{ platform }}</td>
+                  <td class="d-none d-md-table-cell text-center">
+                    <span class="badge bg-danger text-center">Unlocked</span>
+                  </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+            <!-- <div class="align-self-center w-100 ">
               <div class="carousel-inner d-flex" onclick="location.href=`{% url 'price' %}`" id="sbox">
                 <div class="carousel-item active" data-bs-interval="10000">
                   <div class="chart">
@@ -88,8 +116,7 @@
                 <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
                   aria-label="Slide 3"></button>
               </div>
-            </div>
-          </div>
+            </div> -->
         </div>
       </div>
     </div>

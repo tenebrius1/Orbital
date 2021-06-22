@@ -31,7 +31,7 @@ class Group(models.Model):
     description = models.TextField()
     contacts = ArrayField(models.PositiveIntegerField())
     members = ArrayField(models.CharField(max_length=100))
-    scrnshot = ImageField()
+    scrnshot = ImageField(upload_to='screnshots')
     tkg_number = models.CharField(max_length=25, default='')
     courier = models.CharField(max_length=25, default='')
     meeting_date = models.DateField(default=timezone.now)
