@@ -4,7 +4,7 @@
 {% block title %}: Settings{% endblock %}
 {% block header %}
 <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="{% static 'css/price.css' %}" rel="stylesheet">
+<link href="{% static 'css/registration.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -18,27 +18,40 @@
             <h5 class="card-title mb-0">Private info</h5>
           </div>
           <div class="card-body">
+            <div class="row justify-content-lg-center">
+              <div class="col-auto">
+                {% include 'partials/_alerts.html' %}
+              </div>
+            </div>
             <form class="needs-validation" action="{% url 'settings' %}" method='POST' id='settings_form' novalidate>
               {% csrf_token %}
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="newname" placeholder="newname" name='newname' required>
-                <label for="newname">New Username</label>
+                <input type="text" class="form-control" id="newname" placeholder="newname" name='newname' value='{{ request.user.username }}' required>
+                <label for="newname">Username</label>
                 <div class="invalid-feedback">
                   Please provide username.
                 </div>
               </div>
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="currpw" placeholder="currpw" name='currpw' required>
-                <label for="currpw">Current Password</label>
-                <div class="invalid-feedback">
-                  Please provide correct password.
+              <div class="row justify-content-center gx-0">
+                <div class="form-floating mb-3 password">
+                  <input class="form-control" type="password" name="currpw" id="currpw"
+                    placeholder="currpw" required />
+                  <i class="bi bi-eye" id="togglePasswordCurr"></i>
+                  <label for="currpw">Current Password</label>
+                  <div class="invalid-feedback">
+                    Please enter correct password.
+                  </div>
                 </div>
               </div>
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="newpw" placeholder="newpw" name='newpw' required>
-                <label for="newpw">New Password</label>
-                <div class="invalid-feedback">
-                  Please enter your password.
+              <div class="row justify-content-center gx-0">
+                <div class="form-floating mb-3 password">
+                  <input class="form-control" type="password" name="newpw" id="newpw"
+                    placeholder="newpw" required />
+                  <i class="bi bi-eye" id="togglePasswordNew"></i>
+                  <label for="newpw">New Password</label>
+                  <div class="invalid-feedback">
+                    Please enter valid password.
+                  </div>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Save changes</button>
@@ -53,4 +66,27 @@
 
 {% block script %}
 <script src="{% static 'js/price.js' %}"></script>
+<script>
+  const togglePasswordCurr = document.querySelector('#togglePasswordCurr');
+  const passwordCurr = document.querySelector('#currpw');
+  togglePasswordCurr.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = passwordCurr.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordCurr.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('bi-eye-slash');
+    this.classList.toggle('bi-eye');
+  });
+
+  const togglePasswordNew = document.querySelector('#togglePasswordNew');
+  const password = document.querySelector('#newpw');
+  togglePasswordNew.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('bi-eye-slash');
+    this.classList.toggle('bi-eye');
+  });
+</script>
 {% endblock %}

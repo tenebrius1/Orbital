@@ -39,7 +39,7 @@
     cursor: pointer;
 }
 
-#password {
+#password, #newpw, #currpw {
     display: initial;
 }
 

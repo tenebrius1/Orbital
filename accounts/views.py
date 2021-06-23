@@ -318,13 +318,21 @@ def settings(request):
     if request.method == "POST":
         # Get form values
         username = request.POST["newname"]
+        currpw = request.POST["currpw"]
         password = request.POST["newpw"]
-        u.set_password(password)
-        u.save()
-        auth.login(
-            request, u, backend="django.contrib.auth.backends.ModelBackend"
-        )
-        return redirect("settings")
+        user = auth.authenticate(
+                request, username=request.user.username, password=currpw)
+        if user is not None:
+            u.set_password(password)
+            u.save()
+            auth.login(
+                request, u, backend="django.contrib.auth.backends.ModelBackend"
+            )
+            messages.success(request, "Your profile was updated successfully")
+            return redirect("settings")
+        else:
+            messages.error(request, "Invalid credentials")
+            return redirect("settings")
     else:
         return render(request, "accounts/settings.html")
 
