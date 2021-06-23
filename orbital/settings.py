@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 import django_heroku
+import cloudinary
+import cloudinary_storage
 from pathlib import Path
 from environs import Env
 
@@ -50,6 +52,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+    'cloudinary',
+    'cloudinary_storage',
     'scraping',
     'mathfilters',
 ]
@@ -154,8 +158,16 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media Files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# MEDIA_URL = '/media/'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env.str('CLOUD_NAME'),
+    'API_KEY': env.str('API_KEY'),
+    'API_SECRET': env.str('API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # HTTPS settings (ONLY ENABLE IF YOUR WEBSITE HAS A VALID SSL CERTIFICATE)
 # SESSION_COOKIE_SECURE = True

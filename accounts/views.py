@@ -1,5 +1,6 @@
 import datetime
 from PIL import Image
+import cloudinary
 
 import requests
 from django.contrib import auth, messages
@@ -17,6 +18,14 @@ from .models import Data, Deliveries, Transaction, Shipping, Group
 # Set up environ
 env = Env()
 env.read_env()
+
+# Cloudinary config
+cloudinary.config( 
+  cloud_name = env.str('CLOUD_NAME'), 
+  api_key = env.str('API_KEY'), 
+  api_secret = env.str('API_SECRET'),
+  secure = True
+)
 
 def logout(request):
     auth.logout(request)

@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.fields.files import ImageField
 from django.utils import timezone
+from cloudinary.models import CloudinaryField
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=CASCADE)
@@ -31,7 +32,7 @@ class Group(models.Model):
     description = models.TextField()
     contacts = ArrayField(models.PositiveIntegerField())
     members = ArrayField(models.CharField(max_length=100))
-    scrnshot = ImageField(upload_to='screnshots')
+    scrnshot = CloudinaryField('image')
     tkg_number = models.CharField(max_length=25, default='')
     courier = models.CharField(max_length=25, default='')
     meeting_date = models.DateField(default=timezone.now)
