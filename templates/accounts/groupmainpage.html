@@ -125,7 +125,11 @@
                     <td><i data-feather="credit-card"></i>
                       Shipping fee/member:
                     </td>
+                    {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
                     <td>${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}</td>
+                    {% else %}
+                    <td>$0.00</td>
+                    {% endif %}
                   </tr>
                   {% if shipping.free_shipping_min != 0 %}
                   <tr>
@@ -135,10 +139,10 @@
                     <td>
                       {% if data == None %}
                       ${{ shipping.free_shipping_min|floatformat:2 }}
-                      {% elif shipping.free_shipping_min|sub:data.total_price > 0  %}
+                      {% elif shipping.free_shipping_min|sub:data.total_price > 0 %}
                       ${{ shipping.free_shipping_min|sub:data.total_price }}
                       {% else %}
-                      $0
+                      $0.00
                       {% endif %}
                     </td>
                   </tr>
@@ -217,8 +221,9 @@
                           </div>
                           <div class="form-floating mb-3">
                             <input class="form-control" id="price" type="number" placeholder="price" name='price'
-                              min='0' step='.01' required>
+                              min='0' step='.01' aria-describedby="priceHelp" required>
                             <label for="price">Price:</label>
+                            <div id="priceHelp" class="form-text">Only enter the numerical price e.g 30.99</div>
                             <div class="invalid-feedback">
                               Please provide valid price.
                             </div>

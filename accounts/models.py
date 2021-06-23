@@ -64,8 +64,8 @@ class Data(models.Model):
 
     def total_price(self):
         total = 0
-        for price in self.prices:
-            total += price
+        for i in range(len(self.prices)):
+            total += self.quantity[i] * self.prices[i]
         return total
 
     def __str__(self) -> str:
