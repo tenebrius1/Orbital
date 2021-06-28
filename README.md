@@ -10,6 +10,6 @@ Do also watch our video demo at: [Link](https://drive.google.com/file/d/1utDdV6d
 User Guide: [Link](https://docs.google.com/document/d/1JZVMZeAFcHXlqNnLMF-RLc3LcniCeGb6bX5XiciqvBc/edit?usp=sharing)
 
 ## Milestones
-Milestone 1: [Link](https://docs.google.com/document/d/1Bxdnc4Bxgy6fQ3apDX9AP5ioE781fQBVPsX8obh0sew/edit?usp=sharing)
-Milestone 2: [Link](https://hackmd.io/@yiguan/shopbud)
+Milestone 1: [Link](https://docs.google.com/document/d/1Bxdnc4Bxgy6fQ3apDX9AP5ioE781fQBVPsX8obh0sew/edit?usp=sharing)<br>
+Milestone 2: [Link](https://hackmd.io/@yiguan/shopbud)<br>
 Milestone 3: *TO BE UPDATED*
