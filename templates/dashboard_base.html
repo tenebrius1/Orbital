@@ -13,8 +13,8 @@
     <link rel="icon" href="{% static 'img/shopbud.ico' %}">
 
     <!-- Vendor CSS Files -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -27,7 +27,6 @@
       <div class="main">
         <nav class="navbar navbar-expand navbar-dark bg-dark navbar-bg" id="navbar">
           <a class="navbar-brand" href="{% url 'dashboard' %}">ShopBud</a>
-
           <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
               {% if 'transaction' in request.path %}
@@ -138,7 +137,6 @@
                 <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                   <i class="align-middle" data-feather="settings"></i>
                 </a>
-
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                     class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -168,11 +166,10 @@
         <!-- Vendor JS Files -->
       </div>
     </div>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/app.js' %}"></script>
     <script src="https://unpkg.com/@adminkit/core@latest/dist/js/app.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     {% block script %} {% endblock %}
   </body>
-
 </html>

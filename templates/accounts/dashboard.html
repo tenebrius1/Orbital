@@ -70,7 +70,7 @@
               <tbody>
                 {% for group, platform in mygroups %}
                 {% if group.is_locked %}
-                <tr class="data" onclick="redirect_locked(`{{ group.group_name }}`)" style="cursor:pointer">
+                <tr onclick="redirect_locked(`{{ group.group_name }}`)" style="cursor:pointer">
                   <td class="d-none d-md-table-cell group_name">{{ group.group_name }}</td>
                   <td class="d-none d-md-table-cell platform">{{ platform }}</td>
                   <td class="d-none d-md-table-cell text-center">
@@ -78,7 +78,7 @@
                   </td>
                 </tr>
                 {% else %}
-                <tr class="data" onclick="redirect(`{{ group.group_name }}`)" style="cursor:pointer">
+                <tr onclick="redirect(`{{ group.group_name }}`)" style="cursor:pointer">
                   <td class="d-none d-md-table-cell group_name">{{ group.group_name }}</td>
                   <td class="d-none d-md-table-cell platform">{{ platform }}</td>
                   <td class="d-none d-md-table-cell text-center">

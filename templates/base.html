@@ -1,32 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>ShopBud{% block title %}{% endblock %}</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
 
-    <title>ShopBud{% block title %}{% endblock %}</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+        <link rel="icon" href="{% static 'img/shopbud.ico' %}">
 
-    <link rel="icon" href="{% static 'img/shopbud.ico' %}">
+        <!-- Vendor CSS Files -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        {% block header %}
+        {% endblock %}
+    </head>
 
-    <!-- Vendor CSS Files -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-    {% block header %}
-    {% endblock %}
-</head>
-
-<body>
-    <!-- Main Content -->
-    {% block content %} {% endblock %}
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
-    <!-- Vendor JS Files -->
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    {% block script %} {% endblock %}
-</body>
-
+    <body>
+        <!-- Main Content -->
+        {% block content %} {% endblock %}
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                class="bi bi-arrow-up-short"></i></a>
+        <!-- Vendor JS Files -->
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        {% block script %} {% endblock %}
+    </body>
 </html>

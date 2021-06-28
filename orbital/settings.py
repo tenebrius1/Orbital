@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 import django_heroku
-import cloudinary
-import cloudinary_storage
 from pathlib import Path
 from environs import Env
 
@@ -133,7 +131,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -147,7 +144,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
@@ -156,10 +152,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'orbital/static')
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Media Files
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-# MEDIA_URL = '/media/'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env.str('CLOUD_NAME'),
