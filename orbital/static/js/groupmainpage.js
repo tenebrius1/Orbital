@@ -117,6 +117,10 @@ $(document).on("click", ".delete_item", function () {
   })
 });
 
+function redirect_locked(group_name) {
+  location.href = "/accounts/ship/" + group_name + "/locked";
+}
+
 (function () {  // DON'T EDIT BELOW THIS LINE
   var d = document, s = d.createElement('script');
   s.src = 'https://shopbud.disqus.com/embed.js';

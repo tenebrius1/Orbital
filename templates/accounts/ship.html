@@ -75,6 +75,7 @@
                         <input class="form-control" id="base_shipping_fee" type="number" placeholder="base_shipping_fee"
                           name='base_shipping_fee' min='0' step='.01' required>
                         <label for="base_shipping_fee">Base Shipping Fee</label>
+                        <div id="priceHelp" class="form-text">Only enter the numerical price e.g 30.99</div>
                         <div class="invalid-feedback">
                           Please provide base shipping fee.
                         </div>
@@ -91,14 +92,12 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input class="form-control" id="description" type="text" placeholder="description"
-                        name='description' min='0' step='.01' required>
-                      <label for="description">Short Description</label>
-                      <div class="invalid-feedback">
-                        Please input a short description.
-                      </div>
+                  <div class="form-floating mb-3">
+                    <input class="form-control" id="description" type="text" placeholder="description"
+                      name='description' required>
+                    <label for="description">Short Description</label>
+                    <div class="invalid-feedback">
+                      Please input a short description.
                     </div>
                   </div>
                 </form>
