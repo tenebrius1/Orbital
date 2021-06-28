@@ -4,9 +4,9 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 **Proposed Level of Achievement:** Apollo 11
 
 ## ShopBud
-ShopBud is **LIVE** at [https://shopbud.herokuapp.com/](https://shopbud.herokuapp.com)
-Poster Link: [Link](https://drive.google.com/file/d/1VNAAU065_oKebyTNKvJZh6c0H6K-_scK/view?usp=sharing)
-Do also watch our video demo at: [Link](https://drive.google.com/file/d/1utDdV6d5n3X6Ny-rnd638mxAVd-JS5X4/view?usp=sharing)
+ShopBud is **LIVE** at [https://shopbud.herokuapp.com/](https://shopbud.herokuapp.com)\n
+Poster Link: [Link](https://drive.google.com/file/d/1VNAAU065_oKebyTNKvJZh6c0H6K-_scK/view?usp=sharing)\n
+Do also watch our video demo at: [Link](https://drive.google.com/file/d/1utDdV6d5n3X6Ny-rnd638mxAVd-JS5X4/view?usp=sharing)\n
 User Guide: [Link](https://docs.google.com/document/d/1JZVMZeAFcHXlqNnLMF-RLc3LcniCeGb6bX5XiciqvBc/edit?usp=sharing)
 
 ## Milestones
