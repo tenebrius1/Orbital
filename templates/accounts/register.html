@@ -30,7 +30,12 @@
             Start enhancing your shopping experience today!
           </p>
         </div>
-
+        <!-- Alerts -->
+        <div class="row justify-content-lg-center">
+          <div class="col-auto">
+            {% include 'partials/_alerts.html' %}
+          </div>
+        </div>
         <form class="needs-validation" action="{% url 'register' %}" method='POST' novalidate>
           {% csrf_token %}
           <div class="row justify-content-center gx-1">
@@ -62,12 +67,6 @@
               <div class="invalid-feedback">
                 Please enter your password.
               </div>
-            </div>
-          </div>
-          <!-- Alerts -->
-          <div class="row justify-content-lg-center">
-            <div class="col-auto">
-              {% include 'partials/_alerts.html' %}
             </div>
           </div>
           <div class="row justify-content-center">
