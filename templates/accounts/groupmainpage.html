@@ -205,12 +205,9 @@
                       <i data-feather="credit-card"></i>
                       Shipping fee/member:
                     </td>
-                    {% if shipping.free_shipping_min|sub:data.total_price > 0 or
-                    shipping.free_shipping_min == 0 %}
+                    {% if shipping.free_shipping_min|sub:data.total_price > 0 or shipping.free_shipping_min == 0 %}
                     <td>
-                      ${{
-                      shipping.base_shipping|div:shipping.member_count|floatformat:2
-                      }}
+                      ${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}
                     </td>
                     {% else %}
                     <td>$0.00</td>
@@ -223,11 +220,13 @@
                       Amount to free shipping:
                     </td>
                     <td>
-                      {% if data == None %} ${{
-                      shipping.free_shipping_min|floatformat:2 }} {% elif
-                      shipping.free_shipping_min|sub:data.total_price > 0 %} ${{
-                      shipping.free_shipping_min|sub:data.total_price }} {% else
-                      %} $0.00 {% endif %}
+                      {% if data == None %} 
+                      ${{ shipping.free_shipping_min|floatformat:2 }} 
+                      {% elif shipping.free_shipping_min|sub:data.total_price > 0 %} 
+                      ${{ shipping.free_shipping_min|sub:data.total_price }} 
+                      {% else %} 
+                      $0.00 
+                      {% endif %}
                     </td>
                   </tr>
                   {% endif %}
@@ -246,8 +245,10 @@
                   <tr class="data">
                     <td>
                       <i data-feather="user"></i>
-                      {{ member }} {% if info.owner == member %} (Owner) {%
-                      endif %}
+                      {{ member }} 
+                      {% if info.owner == member %} 
+                      (Owner) 
+                      {% endif %}
                     </td>
                   </tr>
                   {% endfor %}

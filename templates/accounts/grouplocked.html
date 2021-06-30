@@ -41,9 +41,7 @@
                     </td>
                     {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
                     <td>
-                      ${{
-                      shipping.base_shipping|div:shipping.member_count|floatformat:2
-                      }}
+                      ${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}
                     </td>
                     {% else %}
                     <td>$0.00</td>
@@ -56,15 +54,15 @@
                       Total Amount:
                     </td>
                     {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
-                    {% with
-                    shipping_fee=shipping.base_shipping|div:shipping.member_count
-                    %}
+                    {% with shipping_fee=shipping.base_shipping|div:shipping.member_count %}
                     <td>
                       ${{ user_total|addition:shipping_fee|floatformat:2 }}
                     </td>
-                    {% endwith %} {% else %}
+                    {% endwith %} 
+                    {% else %}
                     <td>${{ user_total|floatformat:2 }}</td>
-                    {% endif %} {% endif %}
+                    {% endif %} 
+                    {% endif %}
                   </tr>
                   <!-- <tr>
                     <td><i data-feather="user"></i>

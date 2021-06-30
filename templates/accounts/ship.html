@@ -285,13 +285,14 @@
                     <td class="members_count">{{ group.member_count }}</td>
                     <td class="location">{{ group.location|title }}</td>
                     <td class="price">
-                      ${{
-                      group.base_shipping|div:group.member_count|floatformat:2
-                      }}
+                      ${{ group.base_shipping|div:group.member_count|floatformat:2 }}
                     </td>
                     <td class="min_shipping">
-                      {% if group.free_shipping_min == 0 %} Not Available {%
-                      else %} Available {% endif %}
+                      {% if group.free_shipping_min == 0 %} 
+                      Not Available 
+                      {% else %} 
+                      Available 
+                      {% endif %}
                     </td>
                   </tr>
                   {% endif %} {% endfor %}
