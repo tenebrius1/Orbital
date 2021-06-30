@@ -1,46 +1,64 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
     <title>ShopBud{% block title %}{% endblock %}</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
 
-    <link rel="icon" href="{% static 'img/shopbud.ico' %}">
+    <link rel="icon" href="{% static 'img/shopbud.ico' %}" />
 
     <!-- Vendor CSS Files -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link href="{% static 'css/app.css' %}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    {% block header %}
-    {% endblock %}
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+    />
+    <link href="{% static 'css/app.css' %}" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    {% block header %} {% endblock %}
   </head>
 
   <body>
     <div class="wrapper">
       <div class="main">
-        <nav class="navbar navbar-expand navbar-dark bg-dark navbar-bg" id="navbar">
+        <nav
+          class="navbar navbar-expand navbar-dark bg-dark navbar-bg"
+          id="navbar"
+        >
           <a class="navbar-brand" href="{% url 'dashboard' %}">ShopBud</a>
           <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
               {% if 'transaction' in request.path %}
               <li class="nav-item">
-                <a class="nav-link active" href="{% url 'transaction' %}">Transactions</a>
+                <a class="nav-link active" href="{% url 'transaction' %}"
+                  >Transactions</a
+                >
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'transaction' %}">Transactions</a>
+                <a class="nav-link" href="{% url 'transaction' %}"
+                  >Transactions</a
+                >
               </li>
-              {% endif %}
-              {% if 'delivery' in request.path %}
+              {% endif %} {% if 'delivery' in request.path %}
               <li class="nav-item">
-                <a class="nav-link active" href="{% url 'delivery' %}">Deliveries</a>
+                <a class="nav-link active" href="{% url 'delivery' %}"
+                  >Deliveries</a
+                >
               </li>
               {% else %}
               <li class="nav-item">
@@ -58,7 +76,9 @@
               {% endif %} -->
               {% if 'ship' in request.path %}
               <li class="nav-item">
-                <a class="nav-link active" href="{% url 'ship' %}">ShipTogether</a>
+                <a class="nav-link active" href="{% url 'ship' %}"
+                  >ShipTogether</a
+                >
               </li>
               {% else %}
               <li class="nav-item">
@@ -66,26 +86,36 @@
               </li>
               {% endif %}
               <li class="nav-item dropdown">
-                <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+                <a
+                  class="nav-icon dropdown-toggle"
+                  href="#"
+                  id="alertsDropdown"
+                  data-bs-toggle="dropdown"
+                >
                   <div class="position-relative">
                     <i class="align-middle" data-feather="bell"></i>
                     <span class="indicator">4</span>
                   </div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-                  <div class="dropdown-menu-header">
-                    4 New Notifications
-                  </div>
+                <div
+                  class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                  aria-labelledby="alertsDropdown"
+                >
+                  <div class="dropdown-menu-header">4 New Notifications</div>
                   <div class="list-group">
                     <a href="#" class="list-group-item">
                       <div class="row g-0 align-items-center">
                         <div class="col-2">
-                          <i class="text-danger" data-feather="alert-circle"></i>
+                          <i
+                            class="text-danger"
+                            data-feather="alert-circle"
+                          ></i>
                         </div>
                         <div class="col-10">
                           <div class="text-dark">Update completed</div>
-                          <div class="text-muted small mt-1">Restart server 12 to complete the
-                            update.</div>
+                          <div class="text-muted small mt-1">
+                            Restart server 12 to complete the update.
+                          </div>
                           <div class="text-muted small mt-1">30m ago</div>
                         </div>
                       </div>
@@ -97,8 +127,9 @@
                         </div>
                         <div class="col-10">
                           <div class="text-dark">Lorem ipsum</div>
-                          <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate
-                            hendrerit et.</div>
+                          <div class="text-muted small mt-1">
+                            Aliquam ex eros, imperdiet vulputate hendrerit et.
+                          </div>
                           <div class="text-muted small mt-1">2h ago</div>
                         </div>
                       </div>
@@ -121,7 +152,8 @@
                         </div>
                         <div class="col-10">
                           <div class="text-dark">New connection</div>
-                          <div class="text-muted small mt-1">Christina accepted your request.
+                          <div class="text-muted small mt-1">
+                            Christina accepted your request.
                           </div>
                           <div class="text-muted small mt-1">14h ago</div>
                         </div>
@@ -134,15 +166,31 @@
                 </div>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                <a
+                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
                   <i class="align-middle" data-feather="settings"></i>
                 </a>
-                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                    class="bi bi-person-circle" viewBox="0 0 16 16">
+                <a
+                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    class="bi bi-person-circle"
+                    viewBox="0 0 16 16"
+                  >
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                    <path fill-rule="evenodd"
-                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                    <path
+                      fill-rule="evenodd"
+                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                    />
                   </svg>
                   <span class="ps-1">{{ request.user.username|upper }}</span>
                 </a>
@@ -150,10 +198,14 @@
                   <!-- <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
                       data-feather="user"></i>
                     Profile</a> -->
-                  <a class="dropdown-item" href="{% url 'settings' %}"><i class="align-middle me-1"
-                      data-feather="settings"></i> Settings</a>
-                  <a class="dropdown-item" href="{% url 'report' %}"><i class="align-middle me-1"
-                      data-feather="flag"></i> Report</a>
+                  <a class="dropdown-item" href="{% url 'settings' %}"
+                    ><i class="align-middle me-1" data-feather="settings"></i>
+                    Settings</a
+                  >
+                  <a class="dropdown-item" href="{% url 'report' %}"
+                    ><i class="align-middle me-1" data-feather="flag"></i>
+                    Report</a
+                  >
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
                 </div>

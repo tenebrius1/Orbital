@@ -1,22 +1,33 @@
 (function () {
-  'use strict'
+  "use strict";
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.needs-validation')
+  var forms = document.querySelectorAll(".needs-validation");
   // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener(
+      "submit",
+      function (event) {
         if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
+          event.preventDefault();
+          event.stopPropagation();
         }
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
 
 function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  var table,
+    rows,
+    switching,
+    i,
+    x,
+    y,
+    shouldSwitch,
+    dir,
+    switchcount = 0;
   table = document.getElementById("group_data");
   switching = true;
   // Set the sorting direction to ascending:
@@ -29,7 +40,7 @@ function sortTable(n) {
     rows = table.rows;
     /* Loop through all table rows (except the
     first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
+    for (i = 1; i < rows.length - 1; i++) {
       // Start by saying there should be no switching:
       shouldSwitch = false;
       /* Get the two elements you want to compare,
@@ -70,50 +81,52 @@ function sortTable(n) {
   }
 }
 
-var $sortable = $('.sortable');
-$sortable.on('click', function () {
+var $sortable = $(".sortable");
+$sortable.on("click", function () {
   var $this = $(this);
-  var asc = $this.hasClass('asc');
-  var desc = $this.hasClass('desc');
-  $sortable.removeClass('asc').removeClass('desc');
+  var asc = $this.hasClass("asc");
+  var desc = $this.hasClass("desc");
+  $sortable.removeClass("asc").removeClass("desc");
   if (desc || (!asc && !desc)) {
-    $this.addClass('asc');
+    $this.addClass("asc");
   } else {
-    $this.addClass('desc');
+    $this.addClass("desc");
   }
 });
 
-(function () {  // DON'T EDIT BELOW THIS LINE
-  var d = document, s = d.createElement('script');
+(function () {
+  // DON'T EDIT BELOW THIS LINE
+  var d = document,
+    s = d.createElement("script");
 
-  s.src = 'https://shopbud.disqus.com/embed.js';
+  s.src = "https://shopbud.disqus.com/embed.js";
 
-  s.setAttribute('data-timestamp', +new Date());
+  s.setAttribute("data-timestamp", +new Date());
   (d.head || d.body).appendChild(s);
 })();
 
 $(".paid").change(function () {
-  index = $(this).parent().parent().index()
-  checkbox = $('.data').eq(index).find('input')
-  if ($(checkbox).is(':checked')) {
+  index = $(this).parent().parent().index();
+  checkbox = $(".data").eq(index).find("input");
+  if ($(checkbox).is(":checked")) {
     $.ajax({
-      type: 'GET',
+      type: "GET",
       url: "/accounts/changePaidStatus",
       data: {
-        "name": $('#group_name').text(),
-        'index': index,
-        'paid': 'true'
+        name: $("#group_name").text(),
+        index: index,
+        paid: "true",
       },
-    })
+    });
   } else {
     $.ajax({
-      type: 'GET',
+      type: "GET",
       url: "/accounts/changePaidStatus",
       data: {
-        "name": $('#group_name').text(),
-        'index': index,
-        'paid': 'false'
+        name: $("#group_name").text(),
+        index: index,
+        paid: "false",
       },
-    })
+    });
   }
 });

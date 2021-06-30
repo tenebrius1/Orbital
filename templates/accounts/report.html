@@ -1,16 +1,11 @@
-{% extends 'dashboard_base.html' %}
-{% load static %}
-
-{% block title %}: Report{% endblock %}
-{% block header %}
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="{% static 'css/price.css' %}" rel="stylesheet">
-{% endblock %}
-
-{% block content %}
+{% extends 'dashboard_base.html' %} {% load static %} 
+{% block title %}: Report{% endblock %} {% block header %}
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link href="{% static 'css/price.css' %}" rel="stylesheet" />
+{% endblock %} {% block content %}
 <main class="content">
   <div class="container-fluid p-0">
-    <h1 class="h3 mb-3"> Report Issues</h1>
+    <h1 class="h3 mb-3">Report Issues</h1>
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -18,19 +13,40 @@
             <h5 class="card-title mb-0">Report</h5>
           </div>
           <div class="card-body">
-            <form class="needs-validation" action="{% url 'report' %}" method='POST' id='settings_form' novalidate>
+            <form
+              class="needs-validation"
+              action="{% url 'report' %}"
+              method="POST"
+              id="settings_form"
+              novalidate
+            >
               {% csrf_token %}
               <div class="input-group mb-3">
                 <span class="input-group-text">Title</span>
-                <textarea class="form-control" rows="1" aria-label="With textarea"></textarea>
+                <textarea
+                  class="form-control"
+                  rows="1"
+                  aria-label="With textarea"
+                ></textarea>
               </div>
               <div class="input-group mb-3">
                 <span class="input-group-text">Description</span>
-                <textarea class="form-control" rows="10" aria-label="With textarea"></textarea>
+                <textarea
+                  class="form-control"
+                  rows="10"
+                  aria-label="With textarea"
+                ></textarea>
               </div>
               <div class="row justify-content-center">
                 <div class="text-center mt-2">
-                  <button type="submit" form='settings_form' class="btn btn-block btn-danger" onclick="alert('Report successfully submitted')">Submit Report</button>
+                  <button
+                    type="submit"
+                    form="settings_form"
+                    class="btn btn-block btn-danger"
+                    onclick="alert('Report successfully submitted')"
+                  >
+                    Submit Report
+                  </button>
                 </div>
               </div>
             </form>
@@ -40,8 +56,6 @@
     </div>
   </div>
 </main>
-{% endblock %}
-
-{% block script %}
+{% endblock %} {% block script %}
 <script src="{% static 'js/price.js' %}"></script>
 {% endblock %}

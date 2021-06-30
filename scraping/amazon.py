@@ -1,5 +1,6 @@
 from requests_html import HTMLSession, AsyncHTMLSession
 
+
 def checkAmazonPrice(url):
     found = False
     while not found:

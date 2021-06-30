@@ -6,14 +6,17 @@ from django.db.models.fields.files import ImageField
 from django.utils import timezone
 from cloudinary.models import CloudinaryField
 
+
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=CASCADE)
     item = models.CharField(max_length=255)
     date = models.CharField(max_length=15)
     company = models.CharField(max_length=20)
     price = models.DecimalField(max_digits=6, decimal_places=2)
+
     def __str__(self) -> str:
         return self.item
+
 
 class Deliveries(models.Model):
     user = models.ForeignKey(User, on_delete=CASCADE)
@@ -21,11 +24,14 @@ class Deliveries(models.Model):
     tkg_number = models.CharField(max_length=25)
     courier_code = models.CharField(max_length=25)
     courier_name = models.CharField(max_length=25)
+
     class Meta:
         verbose_name = "Deliveries"
         verbose_name_plural = "Deliveries"
+
     def __str__(self) -> str:
         return self.tkg_number
+
 
 class Group(models.Model):
     group_name = models.CharField(max_length=200, primary_key=True)
@@ -39,8 +45,10 @@ class Group(models.Model):
     owner = models.CharField(max_length=50)
     address = models.CharField(max_length=255, default='')
     is_locked = models.BooleanField(default=False)
+
     def __str__(self) -> str:
         return self.group_name
+
 
 class Shipping(models.Model):
     group = models.ForeignKey(Group, on_delete=CASCADE)
@@ -48,16 +56,20 @@ class Shipping(models.Model):
     platform = models.CharField(max_length=50)
     location = models.CharField(max_length=200)
     base_shipping = models.DecimalField(max_digits=4, decimal_places=2)
-    free_shipping_min = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    free_shipping_min = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True)
     member_count = models.PositiveSmallIntegerField()
+
     def __str__(self) -> str:
         return self.group_name
+
 
 class Data(models.Model):
     group_name = models.OneToOneField(Group, on_delete=CASCADE)
     users = ArrayField(models.CharField(max_length=50), default=list)
     items = ArrayField(models.CharField(max_length=200), default=list)
-    prices = ArrayField(models.DecimalField(max_digits=6, decimal_places=2), default=list)
+    prices = ArrayField(models.DecimalField(
+        max_digits=6, decimal_places=2), default=list)
     urls = ArrayField(models.URLField(max_length=500), default=list)
     quantity = ArrayField(models.PositiveSmallIntegerField(), default=list)
     paid = ArrayField(models.BooleanField(), default=list)

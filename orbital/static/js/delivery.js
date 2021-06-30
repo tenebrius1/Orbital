@@ -1,27 +1,30 @@
 (function () {
-  'use strict'
+  "use strict";
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.needs-validation')
+  var forms = document.querySelectorAll(".needs-validation");
   // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener(
+      "submit",
+      function (event) {
         if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
+          event.preventDefault();
+          event.stopPropagation();
         }
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
 
 function getCookie(name) {
   let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+      if (cookie.substring(0, name.length + 1) === name + "=") {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
       }
@@ -32,14 +35,14 @@ function getCookie(name) {
 
 function displayDeliveries() {
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/accounts/displayDeliveries",
     success: function (response) {
-      var rows = $('.data');
+      var rows = $(".data");
       var columns;
       for (var i = 0; i < rows.length; i++) {
-        columns = $(rows[i]).find('td');
-        state = response['response'][i]['delivery_status'];
+        columns = $(rows[i]).find("td");
+        state = response["response"][i]["delivery_status"];
         if (state == "delivered") {
           $(columns[3]).children("span").addClass("badge bg-success");
           $(columns[3]).children("span").html(state);
@@ -53,12 +56,14 @@ function displayDeliveries() {
           $(columns[3]).children("span").addClass("badge bg-danger");
           $(columns[3]).children("span").html(state);
         }
-        t = response['response'][i]['lastest_checkpoint_time'] ? response['response'][i]['lastest_checkpoint_time'].split("T") : "";
+        t = response["response"][i]["lastest_checkpoint_time"]
+          ? response["response"][i]["lastest_checkpoint_time"].split("T")
+          : "";
         tt = t == "" ? "" : t[1].split("+");
         $(columns[4]).html(tt == "" ? "---" : t[0] + " " + tt[0]);
       }
     },
-  })
+  });
 }
 
 // Display deliveries
@@ -68,21 +73,34 @@ $(document).ready(displayDeliveries());
 $(document).on("click", ".delete", function () {
   $(this).parents("tr").remove();
   $.ajax({
-    type: 'POST',
+    type: "POST",
     url: "/accounts/deleteDelivery",
     data: {
-      "name": $(this).parent().parent().siblings().closest(".name").text(),
-      "tkg_number": $(this).parent().parent().siblings().closest(".tkg_number").text(),
-      csrfmiddlewaretoken: getCookie('csrftoken'),
+      name: $(this).parent().parent().siblings().closest(".name").text(),
+      tkg_number: $(this)
+        .parent()
+        .parent()
+        .siblings()
+        .closest(".tkg_number")
+        .text(),
+      csrfmiddlewaretoken: getCookie("csrftoken"),
     },
     success: function (response) {
       displayDeliveries();
-    }
-  })
+    },
+  });
 });
 
 function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  var table,
+    rows,
+    switching,
+    i,
+    x,
+    y,
+    shouldSwitch,
+    dir,
+    switchcount = 0;
   table = document.getElementById("transaction_data");
   switching = true;
   // Set the sorting direction to ascending:
@@ -95,7 +113,7 @@ function sortTable(n) {
     rows = table.rows;
     /* Loop through all table rows (except the
     first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
+    for (i = 1; i < rows.length - 1; i++) {
       // Start by saying there should be no switching:
       shouldSwitch = false;
       /* Get the two elements you want to compare,
@@ -124,7 +142,7 @@ function sortTable(n) {
       rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
       switching = true;
       // Each time a switch is done, increase this count by 1:
-      switchcount ++;
+      switchcount++;
     } else {
       /* If no switching has been done AND the direction is "asc",
       set the direction to "desc" and run the while loop again. */
@@ -136,18 +154,16 @@ function sortTable(n) {
   }
 }
 
-var $sortable = $('.sortable');
+var $sortable = $(".sortable");
 
-$sortable.on('click', function(){
-  
+$sortable.on("click", function () {
   var $this = $(this);
-  var asc = $this.hasClass('asc');
-  var desc = $this.hasClass('desc');
-  $sortable.removeClass('asc').removeClass('desc');
+  var asc = $this.hasClass("asc");
+  var desc = $this.hasClass("desc");
+  $sortable.removeClass("asc").removeClass("desc");
   if (desc || (!asc && !desc)) {
-    $this.addClass('asc');
+    $this.addClass("asc");
   } else {
-    $this.addClass('desc');
+    $this.addClass("desc");
   }
-  
 });

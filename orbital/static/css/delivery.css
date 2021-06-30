@@ -4,20 +4,23 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
 #actions {
-    width: 10%;
+  width: 10%;
 }
 
-.delete, .edit, .btnSave, .cancel {
-    color: unset;
+.delete,
+.edit,
+.btnSave,
+.cancel {
+  color: unset;
 }
 
 .delete:hover {
-    color: rgb(228, 74, 74);
+  color: rgb(228, 74, 74);
 }
 
 th.sortable {

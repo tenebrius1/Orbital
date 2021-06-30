@@ -3,7 +3,7 @@
 //   var gradient = ctx.createLinearGradient(0, 0, 0, 225);
 //   gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
 //   gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
-//   // Line chart
+//   Line chart
 //   new Chart(document.getElementById("chartjs-dashboard-line"), {
 //     type: "line",
 //     data: {
@@ -69,148 +69,33 @@
 //       }
 //     }
 //   });
-//   new Chart(document.getElementById("chartjs-dashboard-line1"), {
-//     type: "line",
-//     data: {
-//       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-//       datasets: [{
-//         label: "Sales ($)",
-//         fill: true,
-//         backgroundColor: gradient,
-//         borderColor: window.theme.primary,
-//         data: [
-//           2115,
-//           1562,
-//           1584,
-//           1892,
-//           1587,
-//           1923,
-//           2566,
-//           2448,
-//           2805,
-//           3438,
-//           2917,
-//           3327
-//         ]
-//       }]
-//     },
-//     options: {
-//       maintainAspectRatio: false,
-//       legend: {
-//         display: false
-//       },
-//       tooltips: {
-//         intersect: false
-//       },
-//       hover: {
-//         intersect: true
-//       },
-//       plugins: {
-//         filler: {
-//           propagate: false
-//         }
-//       },
-//       scales: {
-//         xAxes: [{
-//           reverse: true,
-//           gridLines: {
-//             color: "rgba(0,0,0,0.0)"
-//           }
-//         }],
-//         yAxes: [{
-//           ticks: {
-//             stepSize: 1000
-//           },
-//           display: true,
-//           borderDash: [3, 3],
-//           gridLines: {
-//             color: "rgba(0,0,0,0.0)"
-//           }
-//         }]
-//       }
-//     }
-//   });
-//   new Chart(document.getElementById("chartjs-dashboard-line2"), {
-//     type: "line",
-//     data: {
-//       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-//       datasets: [{
-//         label: "Sales ($)",
-//         fill: true,
-//         backgroundColor: gradient,
-//         borderColor: window.theme.primary,
-//         data: [
-//           2115,
-//           1562,
-//           1584,
-//           1892,
-//           1587,
-//           1923,
-//           2566,
-//           2448,
-//           2805,
-//           3438,
-//           2917,
-//           3327
-//         ]
-//       }]
-//     },
-//     options: {
-//       maintainAspectRatio: false,
-//       legend: {
-//         display: false
-//       },
-//       tooltips: {
-//         intersect: false
-//       },
-//       hover: {
-//         intersect: true
-//       },
-//       plugins: {
-//         filler: {
-//           propagate: false
-//         }
-//       },
-//       scales: {
-//         xAxes: [{
-//           reverse: true,
-//           gridLines: {
-//             color: "rgba(0,0,0,0.0)"
-//           }
-//         }],
-//         yAxes: [{
-//           ticks: {
-//             stepSize: 1000
-//           },
-//           display: true,
-//           borderDash: [3, 3],
-//           gridLines: {
-//             color: "rgba(0,0,0,0.0)"
-//           }
-//         }]
-//       }
-//     }
-//   });
 // });
 
 function displayExpenses() {
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/accounts/displayExpenses",
     success: function (response) {
       new Chart(document.getElementById("chartjs-dashboard-pie"), {
         type: "pie",
         data: {
           labels: ["Lazada", "Shopee", "Amazon", "Others"],
-          datasets: [{
-            data: [response["lazada"], response["shopee"], response["amazon"], response["others"]],
-            backgroundColor: [
-              window.theme.primary,
-              window.theme.warning,
-              window.theme.danger,
-            ],
-            borderWidth: 5
-          }]
+          datasets: [
+            {
+              data: [
+                response["lazada"],
+                response["shopee"],
+                response["amazon"],
+                response["others"],
+              ],
+              backgroundColor: [
+                window.theme.primary,
+                window.theme.warning,
+                window.theme.danger,
+              ],
+              borderWidth: 5,
+            },
+          ],
         },
         options: {
           responsive: !window.MSInputMethodContext,
@@ -219,28 +104,36 @@ function displayExpenses() {
             display: false,
           },
           cutoutPercentage: 75,
-        }
+        },
       });
 
-      $(".amazon").text("$" + (response["amazon"] ? response["amazon"] : "0.00"));
-      $(".lazada").text("$" + (response["lazada"] ? response["lazada"] : "0.00"));
-      $(".shopee").text("$" + (response["shopee"] ? response["shopee"] : "0.00"));
-      $(".others").text("$" + (response["others"] ? response["others"] : "0.00"));
+      $(".amazon").text(
+        "$" + (response["amazon"] ? response["amazon"] : "0.00")
+      );
+      $(".lazada").text(
+        "$" + (response["lazada"] ? response["lazada"] : "0.00")
+      );
+      $(".shopee").text(
+        "$" + (response["shopee"] ? response["shopee"] : "0.00")
+      );
+      $(".others").text(
+        "$" + (response["others"] ? response["others"] : "0.00")
+      );
     },
-  })
+  });
 }
 
 function displayDeliveries() {
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/accounts/displayDeliveries",
     success: function (response) {
-      var rows = $('.data');
+      var rows = $(".data");
       var columns;
       for (var i = 0; i < rows.length; i++) {
-        columns = $(rows[i]).find('td');
-        console.log(i)
-        state = response['response'][i]['delivery_status'];
+        columns = $(rows[i]).find("td");
+        console.log(i);
+        state = response["response"][i]["delivery_status"];
         if (state == "delivered") {
           $(columns[3]).children("span").addClass("badge bg-success");
           $(columns[3]).children("span").html(state);
@@ -254,13 +147,15 @@ function displayDeliveries() {
           $(columns[3]).children("span").addClass("badge bg-danger");
           $(columns[3]).children("span").html(state);
         }
-        t = response['response'][i]['lastest_checkpoint_time'] ? response['response'][i]['lastest_checkpoint_time'].split("T") : "";
+        t = response["response"][i]["lastest_checkpoint_time"]
+          ? response["response"][i]["lastest_checkpoint_time"].split("T")
+          : "";
         tt = t == "" ? "" : t[1].split("+");
         $(columns[4]).html(tt == "" ? "---" : t[0] + " " + tt[0]);
-        console.log('here')
+        console.log("here");
       }
     },
-  })
+  });
 }
 
 // Display deliveries

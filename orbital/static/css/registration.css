@@ -1,68 +1,71 @@
 .btn {
-    border-radius: 5em;
+  border-radius: 5em;
 }
 
 .divider-text {
-    position: relative;
-    text-align: center;
-    margin-top: 15px;
-    margin-bottom: 15px;
+  position: relative;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .divider-text span {
-    padding: 7px;
-    font-size: 12px;
-    position: relative;
-    z-index: 2;
+  padding: 7px;
+  font-size: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .divider-text:after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    border-bottom: 1px solid #ddd;
-    top: 55%;
-    left: 0;
-    z-index: 1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  top: 55%;
+  left: 0;
+  z-index: 1;
 }
 
 .or {
-    background-color: white;
+  background-color: white;
 }
 
 .container .a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .password i {
-    margin-left: -35px;
-    cursor: pointer;
+  margin-left: -35px;
+  cursor: pointer;
 }
 
-#password, #newpw, #currpw {
-    display: initial;
+#password,
+#newpw,
+#currpw {
+  display: initial;
 }
 
 .facebook {
-    background-color: #326FCB !important;
+  background-color: #326fcb !important;
 }
 
 .google {
-    background-color: #ED5432 !important;
+  background-color: #ed5432 !important;
 }
 
-.google a, .facebook a {
-    color: white;
+.google a,
+.facebook a {
+  color: white;
 }
 
 .was-validated .form-control:valid {
-    border-color: initial;
-    padding-right: initial;
-    background-image: none;
+  border-color: initial;
+  padding-right: initial;
+  background-image: none;
 }
 
 .password .form-control:invalid {
-    background-image: none;
+  background-image: none;
 }
 
 /* .box {

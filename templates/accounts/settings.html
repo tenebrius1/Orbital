@@ -1,13 +1,8 @@
-{% extends 'dashboard_base.html' %}
-{% load static %}
-
-{% block title %}: Settings{% endblock %}
-{% block header %}
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="{% static 'css/registration.css' %}" rel="stylesheet">
-{% endblock %}
-
-{% block content %}
+{% extends 'dashboard_base.html' %} {% load static %} 
+{% block title %}: Settings{% endblock %} {% block header %}
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link href="{% static 'css/registration.css' %}" rel="stylesheet" />
+{% endblock %} {% block content %}
 <main class="content">
   <div class="container-fluid p-0">
     <h1 class="h3 mb-3">Account Settings</h1>
@@ -19,23 +14,39 @@
           </div>
           <div class="card-body">
             <div class="row justify-content-lg-center">
-              <div class="col-auto">
-                {% include 'partials/_alerts.html' %}
-              </div>
+              <div class="col-auto">{% include 'partials/_alerts.html' %}</div>
             </div>
-            <form class="needs-validation" action="{% url 'settings' %}" method='POST' id='settings_form' novalidate>
+            <form
+              class="needs-validation"
+              action="{% url 'settings' %}"
+              method="POST"
+              id="settings_form"
+              novalidate
+            >
               {% csrf_token %}
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="newname" placeholder="newname" name='newname' value='{{ request.user.username }}' required>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="newname"
+                  placeholder="newname"
+                  name="newname"
+                  value="{{ request.user.username }}"
+                  required
+                />
                 <label for="newname">Username</label>
-                <div class="invalid-feedback">
-                  Please provide username.
-                </div>
+                <div class="invalid-feedback">Please provide username.</div>
               </div>
               <div class="row justify-content-center gx-0">
                 <div class="form-floating mb-3 password">
-                  <input class="form-control" type="password" name="currpw" id="currpw"
-                    placeholder="currpw" required />
+                  <input
+                    class="form-control"
+                    type="password"
+                    name="currpw"
+                    id="currpw"
+                    placeholder="currpw"
+                    required
+                  />
                   <i class="bi bi-eye" id="togglePasswordCurr"></i>
                   <label for="currpw">Current Password</label>
                   <div class="invalid-feedback">
@@ -45,8 +56,14 @@
               </div>
               <div class="row justify-content-center gx-0">
                 <div class="form-floating mb-3 password">
-                  <input class="form-control" type="password" name="newpw" id="newpw"
-                    placeholder="newpw" required />
+                  <input
+                    class="form-control"
+                    type="password"
+                    name="newpw"
+                    id="newpw"
+                    placeholder="newpw"
+                    required
+                  />
                   <i class="bi bi-eye" id="togglePasswordNew"></i>
                   <label for="newpw">New Password</label>
                   <div class="invalid-feedback">
@@ -54,7 +71,9 @@
                   </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">Save changes</button>
+              <button type="submit" class="btn btn-primary">
+                Save changes
+              </button>
             </form>
           </div>
         </div>
@@ -62,31 +81,31 @@
     </div>
   </div>
 </main>
-{% endblock %}
-
-{% block script %}
+{% endblock %} {% block script %}
 <script src="{% static 'js/price.js' %}"></script>
 <script>
-  const togglePasswordCurr = document.querySelector('#togglePasswordCurr');
-  const passwordCurr = document.querySelector('#currpw');
-  togglePasswordCurr.addEventListener('click', function (e) {
+  const togglePasswordCurr = document.querySelector("#togglePasswordCurr");
+  const passwordCurr = document.querySelector("#currpw");
+  togglePasswordCurr.addEventListener("click", function (e) {
     // toggle the type attribute
-    const type = passwordCurr.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordCurr.setAttribute('type', type);
+    const type =
+      passwordCurr.getAttribute("type") === "password" ? "text" : "password";
+    passwordCurr.setAttribute("type", type);
     // toggle the eye slash icon
-    this.classList.toggle('bi-eye-slash');
-    this.classList.toggle('bi-eye');
+    this.classList.toggle("bi-eye-slash");
+    this.classList.toggle("bi-eye");
   });
 
-  const togglePasswordNew = document.querySelector('#togglePasswordNew');
-  const password = document.querySelector('#newpw');
-  togglePasswordNew.addEventListener('click', function (e) {
+  const togglePasswordNew = document.querySelector("#togglePasswordNew");
+  const password = document.querySelector("#newpw");
+  togglePasswordNew.addEventListener("click", function (e) {
     // toggle the type attribute
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
+    const type =
+      password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
     // toggle the eye slash icon
-    this.classList.toggle('bi-eye-slash');
-    this.classList.toggle('bi-eye');
+    this.classList.toggle("bi-eye-slash");
+    this.classList.toggle("bi-eye");
   });
 </script>
 {% endblock %}

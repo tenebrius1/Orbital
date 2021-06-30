@@ -1,5 +1,6 @@
 from requests_html import HTMLSession
 
+
 def checkShopeePrice(url):
     found = False
     while not found:

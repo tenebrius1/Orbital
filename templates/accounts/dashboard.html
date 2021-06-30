@@ -1,21 +1,26 @@
-{% extends 'dashboard_base.html' %}
-{% load static %}
-{% block header %}
-<link rel="preconnect" href="https://fonts.gstatic.com">
-{% endblock %}
-
-{% block content %}
-
+{% extends 'dashboard_base.html' %} {% load static %} {% block header %}
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+{% endblock %} {% block content %}
 <main class="content">
   <div class="container-fluid p-0">
-    <h1 class="h3 mb-3">Welcome, <strong>{{ request.user.username|upper }}</strong></h1>
+    <h1 class="h3 mb-3">
+      Welcome, <strong>{{ request.user.username|upper }}</strong>
+    </h1>
     <div class="row">
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
         <div class="card flex-fill w-100">
-          <div class="card-header" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
+          <div
+            class="card-header"
+            onclick="location.href=`{% url 'transaction' %}`"
+            id="sbox"
+          >
             <h5 class="card-title mb-0">Expenses</h5>
           </div>
-          <div class="card-body d-flex" onclick="location.href=`{% url 'transaction' %}`" id="sbox">
+          <div
+            class="card-body d-flex"
+            onclick="location.href=`{% url 'transaction' %}`"
+            id="sbox"
+          >
             <div class="align-self-center w-100">
               <div class="py-3">
                 <div class="chart chart-xs">
@@ -25,26 +30,30 @@
               <table class="table mb-0">
                 <tbody>
                   <tr>
-                    <td>Amazon
-                      <i class="bi bi-circle-fill" style="color:#dc3545"></i>
+                    <td>
+                      Amazon
+                      <i class="bi bi-circle-fill" style="color: #dc3545"></i>
                     </td>
                     <td class="text-end amazon">Loading...</td>
                   </tr>
                   <tr>
-                    <td>Lazada
-                      <i class="bi bi-circle-fill" style="color:#3b7ddd"></i>
+                    <td>
+                      Lazada
+                      <i class="bi bi-circle-fill" style="color: #3b7ddd"></i>
                     </td>
                     <td class="text-end lazada">Loading...</td>
                   </tr>
                   <tr>
-                    <td>Shopee
-                      <i class="bi bi-circle-fill" style="color:#fcb92c"></i>
+                    <td>
+                      Shopee
+                      <i class="bi bi-circle-fill" style="color: #fcb92c"></i>
                     </td>
                     <td class="text-end shopee">Loading...</td>
                   </tr>
                   <tr>
-                    <td>Others
-                      <i class="bi bi-circle-fill" style="color:#6c757d"></i>
+                    <td>
+                      Others
+                      <i class="bi bi-circle-fill" style="color: #6c757d"></i>
                     </td>
                     <td class="text-end others">Loading...</td>
                   </tr>
@@ -56,40 +65,52 @@
       </div>
       <div class="col-md-8 col-xxl-8 d-flex">
         <div class="card flex-fill w-100">
-          <div class="card-header" onclick="location.href=`{% url 'ship' %}`" id="sbox">
+          <div
+            class="card-header"
+            onclick="location.href=`{% url 'ship' %}`"
+            id="sbox"
+          >
             <h5 class="card-title mb-0">ShipTogether (My Groups)</h5>
           </div>
-            <table class="table table-hover my-0" id='my_group_data'>
-              <thead>
-                <tr>
-                  <th class="d-none d-md-table-cell">Group Name</th>
-                  <th class="d-none d-md-table-cell">Platform</th>
-                  <th class="d-none d-md-table-cell text-center">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for group, platform in mygroups %}
-                {% if group.is_locked %}
-                <tr onclick="redirect_locked(`{{ group.group_name }}`)" style="cursor:pointer">
-                  <td class="d-none d-md-table-cell group_name">{{ group.group_name }}</td>
-                  <td class="d-none d-md-table-cell platform">{{ platform }}</td>
-                  <td class="d-none d-md-table-cell text-center">
-                    <span class="badge bg-success">Locked</span>
-                  </td>
-                </tr>
-                {% else %}
-                <tr onclick="redirect(`{{ group.group_name }}`)" style="cursor:pointer">
-                  <td class="d-none d-md-table-cell group_name">{{ group.group_name }}</td>
-                  <td class="d-none d-md-table-cell platform">{{ platform }}</td>
-                  <td class="d-none d-md-table-cell text-center">
-                    <span class="badge bg-danger text-center">Unlocked</span>
-                  </td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-              </tbody>
-            </table>
-            <!-- <div class="align-self-center w-100 ">
+          <table class="table table-hover my-0" id="my_group_data">
+            <thead>
+              <tr>
+                <th class="d-none d-md-table-cell">Group Name</th>
+                <th class="d-none d-md-table-cell">Platform</th>
+                <th class="d-none d-md-table-cell text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for group, platform in mygroups %} {% if group.is_locked %}
+              <tr
+                onclick="redirect_locked(`{{ group.group_name }}`)"
+                style="cursor: pointer"
+              >
+                <td class="d-none d-md-table-cell group_name">
+                  {{ group.group_name }}
+                </td>
+                <td class="d-none d-md-table-cell platform">{{ platform }}</td>
+                <td class="d-none d-md-table-cell text-center">
+                  <span class="badge bg-success">Locked</span>
+                </td>
+              </tr>
+              {% else %}
+              <tr
+                onclick="redirect(`{{ group.group_name }}`)"
+                style="cursor: pointer"
+              >
+                <td class="d-none d-md-table-cell group_name">
+                  {{ group.group_name }}
+                </td>
+                <td class="d-none d-md-table-cell platform">{{ platform }}</td>
+                <td class="d-none d-md-table-cell text-center">
+                  <span class="badge bg-danger text-center">Unlocked</span>
+                </td>
+              </tr>
+              {% endif %} {% endfor %}
+            </tbody>
+          </table>
+          <!-- <div class="align-self-center w-100 ">
               <div class="carousel-inner d-flex" onclick="location.href=`{% url 'price' %}`" id="sbox">
                 <div class="carousel-item active" data-bs-interval="10000">
                   <div class="chart">
@@ -120,14 +141,21 @@
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="d-flex">
         <div class="card flex-fill">
-          <div class="card-header" onclick="location.href=`{% url 'delivery' %}`" id="sbox">
+          <div
+            class="card-header"
+            onclick="location.href=`{% url 'delivery' %}`"
+            id="sbox"
+          >
             <h5 class="card-title mb-0">Delivery Tracker</h5>
           </div>
-          <table class="table table-hover my-0" onclick="location.href=`{% url 'delivery' %}`" id="sbox">
+          <table
+            class="table table-hover my-0"
+            onclick="location.href=`{% url 'delivery' %}`"
+            id="sbox"
+          >
             <thead>
               <tr>
                 <th>Item</th>
@@ -141,8 +169,12 @@
               {% for delivery in deliveries %}
               <tr class="data">
                 <td class="name">{{ delivery.name|capfirst }}</td>
-                <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
-                <td class="d-none d-md-table-cell courier">{{ delivery.courier_name }}</td>
+                <td class="d-none d-xl-table-cell tkg_number">
+                  {{ delivery.tkg_number }}
+                </td>
+                <td class="d-none d-md-table-cell courier">
+                  {{ delivery.courier_name }}
+                </td>
                 <td class="d-none d-md-table-cell status">
                   <span>Loading...</span>
                 </td>
@@ -156,8 +188,6 @@
     </div>
   </div>
 </main>
-{% endblock %}
-
-{% block script %}
+{% endblock %} {% block script %}
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

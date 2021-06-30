@@ -1,24 +1,18 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load socialaccount %}
-
-{% block title %}: Sign up!{% endblock %}
-{% block header %}
-<link href="{% static 'css/registration.css' %}" rel="stylesheet">
-<link href="{% static 'css/style.css' %}" rel="stylesheet">
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% load socialaccount %} 
+{% block title %}: Sign up!{% endblock %} {% block header %}
+<link href="{% static 'css/registration.css' %}" rel="stylesheet" />
+<link href="{% static 'css/style.css' %}" rel="stylesheet" />
+{% endblock %} {% block content %}
 <div id="header" class="d-flex align-items-center flex-wrap">
   <div class="container d-flex align-items-center justify-content-center">
-
     <div class="logo">
       <h1><a href="{% url 'index' %}">ShopBud</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html"><img src="img/logo.png" alt="" class="img-fluid"></a>-->
     </div>
   </div>
-</div><!-- End Header -->
+</div>
+<!-- End Header -->
 
 <div class="container-fluid box">
   <div class="row">
@@ -26,52 +20,67 @@
       <div class="m-3 m-lg-5">
         <div class="text-center mt-4">
           <h1>Sign Up</h1>
-          <p class="lead">
-            Start enhancing your shopping experience today!
-          </p>
+          <p class="lead">Start enhancing your shopping experience today!</p>
         </div>
         <!-- Alerts -->
         <div class="row justify-content-lg-center">
-          <div class="col-auto">
-            {% include 'partials/_alerts.html' %}
-          </div>
+          <div class="col-auto">{% include 'partials/_alerts.html' %}</div>
         </div>
-        <form class="needs-validation" action="{% url 'register' %}" method='POST' novalidate>
+        <form
+          class="needs-validation"
+          action="{% url 'register' %}"
+          method="POST"
+          novalidate
+        >
           {% csrf_token %}
           <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 col-lg-4">
-              <input class="form-control form-control-sm rounded-pill" type="text" name="username" id="username"
-                placeholder="username" required />
+              <input
+                class="form-control form-control-sm rounded-pill"
+                type="text"
+                name="username"
+                id="username"
+                placeholder="username"
+                required
+              />
               <label for="name">Username</label>
-              <div class="invalid-feedback">
-                Please enter a username.
-              </div>
+              <div class="invalid-feedback">Please enter a username.</div>
             </div>
           </div>
           <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 col-lg-4">
-              <input class="form-control form-control-sm rounded-pill" type="email" id="email" name="email"
-                placeholder="email" required />
+              <input
+                class="form-control form-control-sm rounded-pill"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="email"
+                required
+              />
               <label for="email">Email</label>
-              <div class="invalid-feedback">
-                Please enter a valid email.
-              </div>
+              <div class="invalid-feedback">Please enter a valid email.</div>
             </div>
           </div>
           <div class="row justify-content-center gx-1">
             <div class="form-floating mb-3 password col-lg-4">
-              <input class="form-control form-control-sm rounded-pill" type="password" name="password" id="password"
-                placeholder="password" required />
+              <input
+                class="form-control form-control-sm rounded-pill"
+                type="password"
+                name="password"
+                id="password"
+                placeholder="password"
+                required
+              />
               <i class="bi bi-eye" id="togglePassword"></i>
               <label for="pasword">Password</label>
-              <div class="invalid-feedback">
-                Please enter your password.
-              </div>
+              <div class="invalid-feedback">Please enter your password.</div>
             </div>
           </div>
           <div class="row justify-content-center">
             <div class="text-center">
-              <button type="submit" class="btn btn-block btn-success col-lg-1">Sign up</button>
+              <button type="submit" class="btn btn-block btn-success col-lg-1">
+                Sign up
+              </button>
             </div>
           </div>
           <p class="divider-text">
@@ -82,14 +91,19 @@
               <div class="col-lg-2 text-center">
                 <div class="p-2 border facebook rounded-pill">
                   <a href="{% provider_login_url 'facebook' method='oauth2' %}">
-                    <i class="bi bi-facebook" title="Facebook" class="justify-content-start"></i>
+                    <i
+                      class="bi bi-facebook"
+                      title="Facebook"
+                      class="justify-content-start"
+                    ></i>
                     Facebook
                   </a>
                 </div>
               </div>
               <div class="col-lg-2 text-center">
                 <div class="p-2 border google rounded-pill mt-2 mt-lg-0">
-                  <a href="/accounts/google/login/?process=login"><i class="bi bi-google" title="Google"></i>
+                  <a href="/accounts/google/login/?process=login"
+                    ><i class="bi bi-google" title="Google"></i>
                     Google
                   </a>
                 </div>
@@ -103,43 +117,40 @@
         </form>
       </div>
     </div>
-    <div class="col-12 col-lg-6 d-none d-lg-flex col-img">
-    </div>
+    <div class="col-12 col-lg-6 d-none d-lg-flex col-img"></div>
   </div>
 </div>
-{% endblock %}
-
-{% block script %}
+{% endblock %} {% block script %}
 <script>
   (function () {
-    'use strict'
-
+    "use strict";
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll('.needs-validation')
-
+    var forms = document.querySelectorAll(".needs-validation");
     // Loop over them and prevent submission
-    Array.prototype.slice.call(forms)
-      .forEach(function (form) {
-        form.addEventListener('submit', function (event) {
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener(
+        "submit",
+        function (event) {
           if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
+            event.preventDefault();
+            event.stopPropagation();
           }
-
-          form.classList.add('was-validated')
-        }, false)
-      })
-  })()
-
-  const togglePassword = document.querySelector('#togglePassword');
-  const password = document.querySelector('#password');
-  togglePassword.addEventListener('click', function (e) {
+          form.classList.add("was-validated");
+        },
+        false
+      );
+    });
+  })();
+  const togglePassword = document.querySelector("#togglePassword");
+  const password = document.querySelector("#password");
+  togglePassword.addEventListener("click", function (e) {
     // toggle the type attribute
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
+    const type =
+      password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
     // toggle the eye slash icon
-    this.classList.toggle('bi-eye-slash');
-    this.classList.toggle('bi-eye');
+    this.classList.toggle("bi-eye-slash");
+    this.classList.toggle("bi-eye");
   });
 </script>
 {% endblock %}

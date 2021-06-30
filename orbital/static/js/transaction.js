@@ -1,28 +1,31 @@
 (function () {
-  'use strict'
+  "use strict";
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.needs-validation')
+  var forms = document.querySelectorAll(".needs-validation");
   // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener(
+      "submit",
+      function (event) {
         if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
+          event.preventDefault();
+          event.stopPropagation();
         }
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
 
 // Get CSRF token
 function getCookie(name) {
   let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+      if (cookie.substring(0, name.length + 1) === name + "=") {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
       }
@@ -35,39 +38,46 @@ function getCookie(name) {
 $(document).on("click", ".delete", function () {
   $(this).parents("tr").remove();
   $.ajax({
-    type: 'POST',
+    type: "POST",
     url: "/accounts/deleteTransaction",
     data: {
-      "name": $(this).parent().parent().siblings().closest(".name").text(),
-      "price": $(this).parent().parent().siblings().closest(".price").text(),
-      "date": $(this).parent().parent().siblings().closest(".date").text(),
-      "company": $(this).parent().parent().siblings().closest(".company").text(),
-      csrfmiddlewaretoken: getCookie('csrftoken'),
+      name: $(this).parent().parent().siblings().closest(".name").text(),
+      price: $(this).parent().parent().siblings().closest(".price").text(),
+      date: $(this).parent().parent().siblings().closest(".date").text(),
+      company: $(this).parent().parent().siblings().closest(".company").text(),
+      csrfmiddlewaretoken: getCookie("csrftoken"),
     },
     success: function (response) {
       displayExpenses();
-    }
-  })
+    },
+  });
 });
 
 function displayExpenses() {
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/accounts/displayExpenses",
     success: function (response) {
       new Chart(document.getElementById("chartjs-dashboard-pie"), {
         type: "pie",
         data: {
           labels: ["Lazada", "Shopee", "Amazon", "Others"],
-          datasets: [{
-            data: [response["lazada"], response["shopee"], response["amazon"], response["others"]],
-            backgroundColor: [
-              window.theme.primary,
-              window.theme.warning,
-              window.theme.danger,
-            ],
-            borderWidth: 5
-          }]
+          datasets: [
+            {
+              data: [
+                response["lazada"],
+                response["shopee"],
+                response["amazon"],
+                response["others"],
+              ],
+              backgroundColor: [
+                window.theme.primary,
+                window.theme.warning,
+                window.theme.danger,
+              ],
+              borderWidth: 5,
+            },
+          ],
         },
         options: {
           responsive: !window.MSInputMethodContext,
@@ -75,30 +85,39 @@ function displayExpenses() {
           legend: {
             display: false,
           },
-          cutoutPercentage: 75
-        }
+          cutoutPercentage: 75,
+        },
       });
 
-      var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      
+      var formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+
         // These options are needed to round to whole numbers if that's what you want.
         //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
         //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
       });
 
-      var totalspent = parseFloat(response["amazon"] ? response["amazon"] : "0.00") 
-                        + parseFloat(response["lazada"] ? response["lazada"] : "0.00") 
-                        + parseFloat(response["shopee"] ? response["shopee"] : "0.00") 
-                        + parseFloat(response["others"] ? response["others"] : "0.00");    
-      $(".amazon").text("$" + (response["amazon"] ? response["amazon"] : "0.00"));
-      $(".lazada").text("$" + (response["lazada"] ? response["lazada"] : "0.00"));
-      $(".shopee").text("$" + (response["shopee"] ? response["shopee"] : "0.00"));
-      $(".others").text("$" + (response["others"] ? response["others"] : "0.00"));
+      var totalspent =
+        parseFloat(response["amazon"] ? response["amazon"] : "0.00") +
+        parseFloat(response["lazada"] ? response["lazada"] : "0.00") +
+        parseFloat(response["shopee"] ? response["shopee"] : "0.00") +
+        parseFloat(response["others"] ? response["others"] : "0.00");
+      $(".amazon").text(
+        "$" + (response["amazon"] ? response["amazon"] : "0.00")
+      );
+      $(".lazada").text(
+        "$" + (response["lazada"] ? response["lazada"] : "0.00")
+      );
+      $(".shopee").text(
+        "$" + (response["shopee"] ? response["shopee"] : "0.00")
+      );
+      $(".others").text(
+        "$" + (response["others"] ? response["others"] : "0.00")
+      );
       $(".total").text(formatter.format(totalspent).toString());
     },
-  })
+  });
 }
 
 // Display expenses
@@ -107,7 +126,7 @@ $(document).ready(displayExpenses());
 // Edit functions
 let items;
 function Save() {
-  var par = $(this).parents("tr"); //tr 
+  var par = $(this).parents("tr"); //tr
   var tdItem = par.children("td.name");
   var tdDate = par.children("td.date");
   var tdCompany = par.children("td.company");
@@ -116,86 +135,101 @@ function Save() {
   var tdDelete = par.find(".cancel");
 
   // New values
-  nItem = tdItem.children("input[type=text]").val()
-  nDate = tdDate.children("input[type=date]").val().split("-")
-  nDate = nDate[2] + "/" + nDate[1] + "/" + nDate[0]
-  nCom = tdCompany.children("select#company").val()
-  nPrice = tdPrice.children("input[type=number]").val()
+  nItem = tdItem.children("input[type=text]").val();
+  nDate = tdDate.children("input[type=date]").val().split("-");
+  nDate = nDate[2] + "/" + nDate[1] + "/" + nDate[0];
+  nCom = tdCompany.children("select#company").val();
+  nPrice = tdPrice.children("input[type=number]").val();
 
   tdItem.html(nItem[0].toUpperCase() + nItem.substring(1));
   tdDate.html(nDate);
-  tdCompany.html(nCom)
+  tdCompany.html(nCom);
   tdPrice.html("$" + parseFloat(nPrice).toFixed(2));
-  tdEdit.replaceWith("<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
-    "<i class='bi bi-pencil-square me-3'></i>" +
-    "</a>");
-  tdDelete.replaceWith("<a class='delete' title='Delete' data-bs-toggle='tooltip' data-bs-placement='top'>" +
-    "<i class='bi bi-trash-fill me-3'></i>" +
-    "</a>");
+  tdEdit.replaceWith(
+    "<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+      "<i class='bi bi-pencil-square me-3'></i>" +
+      "</a>"
+  );
+  tdDelete.replaceWith(
+    "<a class='delete' title='Delete' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+      "<i class='bi bi-trash-fill me-3'></i>" +
+      "</a>"
+  );
 
   $(".edit").bind("click", Edit);
 
-  // AJAX 
+  // AJAX
   $.ajax({
-    type: 'POST',
+    type: "POST",
     url: "/accounts/editTransaction",
     data: {
-      "oItem": items[0],
-      "oDate": items[1],
-      "oCom": items[2],
-      "oPrice": items[3],
-      "nItem": nItem,
-      "nDate": nDate,
-      "nCom": nCom,
-      "nPrice": nPrice,
-      csrfmiddlewaretoken: getCookie('csrftoken'),
+      oItem: items[0],
+      oDate: items[1],
+      oCom: items[2],
+      oPrice: items[3],
+      nItem: nItem,
+      nDate: nDate,
+      nCom: nCom,
+      nPrice: nPrice,
+      csrfmiddlewaretoken: getCookie("csrftoken"),
     },
     success: function (response) {
       displayExpenses();
-    }
-  })
-};
+    },
+  });
+}
 
 function Edit() {
-  var par = $(this).parents("tr"); //tr 
+  var par = $(this).parents("tr"); //tr
   var tdItem = par.children("td.name");
   var tdDate = par.children("td.date");
   var tdCompany = par.children("td.company");
   var tdPrice = par.children("td.price");
   var tdSave = par.find(".edit");
   var tdCancel = par.find(".delete");
-  
+
   // Extract and format original date
-  let date = tdDate.html().split("/")
-  date = date[2] + "-" + date[1] + "-" + date[0]
+  let date = tdDate.html().split("/");
+  date = date[2] + "-" + date[1] + "-" + date[0];
 
-  let selectMenu = "<select name='company' id='company' required>" +
-  "<option value=''>---Select platform---</option>" +
-  "<option value='Shopee'>Shopee</option>" +
-  "<option value='Lazada'>Lazada</option>" +
-  "<option value='Amazon'>Amazon</option>" +
-  "<option value='Others'>Others</option>" +
-  "</select>"
+  let selectMenu =
+    "<select name='company' id='company' required>" +
+    "<option value=''>---Select platform---</option>" +
+    "<option value='Shopee'>Shopee</option>" +
+    "<option value='Lazada'>Lazada</option>" +
+    "<option value='Amazon'>Amazon</option>" +
+    "<option value='Others'>Others</option>" +
+    "</select>";
   // Extract original selected company
-  let cmp = "'" + tdCompany.html() + "'"
-  selectMenu = selectMenu.replace(cmp, cmp + " selected")
+  let cmp = "'" + tdCompany.html() + "'";
+  selectMenu = selectMenu.replace(cmp, cmp + " selected");
 
-  items = [tdItem.html(), tdDate.html(), tdCompany.html(), tdPrice.html()]
+  items = [tdItem.html(), tdDate.html(), tdCompany.html(), tdPrice.html()];
 
-  tdItem.html("<input type='text' class='name' value='" + tdItem.html() + "'/>");
+  tdItem.html(
+    "<input type='text' class='name' value='" + tdItem.html() + "'/>"
+  );
   tdDate.html("<input type='date' value='" + date + "'/>");
   tdCompany.html(selectMenu);
-  tdPrice.html("<input type='number' value='" + tdPrice.html().substring(1) + "' min='0' step='.01' />");
-  tdSave.replaceWith("<a class='btnSave' title='Save' data-bs-toggle='tooltip' data-bs-placement='top'>" +
-    "<i class='bi-check-square me-3'></i>" +
-    "</a>");
-  tdCancel.replaceWith("<a class='cancel' title='Cancel' data-bs-toggle='tooltip' data-bs-placement='top'>" +
-    "<i class='bi bi-x-square me-3'></i>" +
-    "</a>");
+  tdPrice.html(
+    "<input type='number' value='" +
+      tdPrice.html().substring(1) +
+      "' min='0' step='.01' />"
+  );
+  tdSave.replaceWith(
+    "<a class='btnSave' title='Save' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+      "<i class='bi-check-square me-3'></i>" +
+      "</a>"
+  );
+  tdCancel.replaceWith(
+    "<a class='cancel' title='Cancel' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+      "<i class='bi bi-x-square me-3'></i>" +
+      "</a>"
+  );
 
   $(".btnSave").bind("click", Save);
   $(".cancel").bind("click", function () {
-    var par = $(this).parents("tr"); //tr 
+    var par = $(this).parents("tr"); //tr
     var tdItem = par.children("td.name");
     var tdDate = par.children("td.date");
     var tdCompany = par.children("td.company");
@@ -207,23 +241,35 @@ function Edit() {
     tdDate.html(items[1]);
     tdCompany.html(items[2]);
     tdPrice.html(items[3]);
-    tdEdit.replaceWith("<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
-      "<i class='bi bi-pencil-square me-3'></i>" +
-      "</a>");
-    tdDelete.replaceWith("<a class='delete' title='Delete' data-bs-toggle='tooltip' data-bs-placement='top'>" +
-      "<i class='bi bi-trash-fill me-3'></i>" +
-      "</a>");
+    tdEdit.replaceWith(
+      "<a class='edit' title='Edit' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+        "<i class='bi bi-pencil-square me-3'></i>" +
+        "</a>"
+    );
+    tdDelete.replaceWith(
+      "<a class='delete' title='Delete' data-bs-toggle='tooltip' data-bs-placement='top'>" +
+        "<i class='bi bi-trash-fill me-3'></i>" +
+        "</a>"
+    );
 
     $(".edit").bind("click", Edit);
   });
-};
+}
 
-$(function () { 
+$(function () {
   $(".edit").bind("click", Edit);
 });
 
 function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  var table,
+    rows,
+    switching,
+    i,
+    x,
+    y,
+    shouldSwitch,
+    dir,
+    switchcount = 0;
   table = document.getElementById("transaction_data");
   switching = true;
   // Set the sorting direction to ascending:
@@ -236,7 +282,7 @@ function sortTable(n) {
     rows = table.rows;
     /* Loop through all table rows (except the
     first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
+    for (i = 1; i < rows.length - 1; i++) {
       // Start by saying there should be no switching:
       shouldSwitch = false;
       /* Get the two elements you want to compare,
@@ -265,7 +311,7 @@ function sortTable(n) {
       rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
       switching = true;
       // Each time a switch is done, increase this count by 1:
-      switchcount ++;
+      switchcount++;
     } else {
       /* If no switching has been done AND the direction is "asc",
       set the direction to "desc" and run the while loop again. */
@@ -278,7 +324,15 @@ function sortTable(n) {
 }
 
 function sortPrice(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  var table,
+    rows,
+    switching,
+    i,
+    x,
+    y,
+    shouldSwitch,
+    dir,
+    switchcount = 0;
   table = document.getElementById("transaction_data");
   switching = true;
   // Set the sorting direction to ascending:
@@ -291,7 +345,7 @@ function sortPrice(n) {
     rows = table.rows;
     /* Loop through all table rows (except the
     first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
+    for (i = 1; i < rows.length - 1; i++) {
       // Start by saying there should be no switching:
       shouldSwitch = false;
       /* Get the two elements you want to compare,
@@ -303,13 +357,13 @@ function sortPrice(n) {
       var xprice = parseFloat(x.innerHTML.slice(1));
       var yprice = parseFloat(y.innerHTML.slice(1));
       if (dir == "asc") {
-        if (xprice>yprice) {
+        if (xprice > yprice) {
           // If so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
         }
       } else if (dir == "desc") {
-        if (xprice<yprice) {
+        if (xprice < yprice) {
           // If so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
@@ -322,7 +376,7 @@ function sortPrice(n) {
       rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
       switching = true;
       // Each time a switch is done, increase this count by 1:
-      switchcount ++;
+      switchcount++;
     } else {
       /* If no switching has been done AND the direction is "asc",
       set the direction to "desc" and run the while loop again. */
@@ -335,7 +389,15 @@ function sortPrice(n) {
 }
 
 function sortDate(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  var table,
+    rows,
+    switching,
+    i,
+    x,
+    y,
+    shouldSwitch,
+    dir,
+    switchcount = 0;
   table = document.getElementById("transaction_data");
   switching = true;
   // Set the sorting direction to ascending:
@@ -348,7 +410,7 @@ function sortDate(n) {
     rows = table.rows;
     /* Loop through all table rows (except the
     first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
+    for (i = 1; i < rows.length - 1; i++) {
       // Start by saying there should be no switching:
       shouldSwitch = false;
       /* Get the two elements you want to compare,
@@ -360,42 +422,42 @@ function sortDate(n) {
       var xDate = x.innerHTML.split("/");
       var yDate = y.innerHTML.split("/");
       if (dir == "asc") {
-        if (xDate[2]>yDate[2]) {
+        if (xDate[2] > yDate[2]) {
           // If so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
-        } 
-        if (xDate[2]==yDate[2]) {
-          if (xDate[1]>yDate[1]) {
+        }
+        if (xDate[2] == yDate[2]) {
+          if (xDate[1] > yDate[1]) {
             // If so, mark as a switch and break the loop:
             shouldSwitch = true;
             break;
           }
-          if (xDate[1]==yDate[1]) {
-            if (xDate[0]>yDate[0]) {
+          if (xDate[1] == yDate[1]) {
+            if (xDate[0] > yDate[0]) {
               // If so, mark as a switch and break the loop:
-            shouldSwitch = true;
-            break;
+              shouldSwitch = true;
+              break;
             }
           }
         }
       } else if (dir == "desc") {
-        if (xDate[2]<yDate[2]) {
+        if (xDate[2] < yDate[2]) {
           // If so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
-        } 
-        if (xDate[2]==yDate[2]) {
-          if (xDate[1]<yDate[1]) {
+        }
+        if (xDate[2] == yDate[2]) {
+          if (xDate[1] < yDate[1]) {
             // If so, mark as a switch and break the loop:
             shouldSwitch = true;
             break;
           }
-          if (xDate[1]==yDate[1]) {
-            if (xDate[0]<yDate[0]) {
+          if (xDate[1] == yDate[1]) {
+            if (xDate[0] < yDate[0]) {
               // If so, mark as a switch and break the loop:
-            shouldSwitch = true;
-            break;
+              shouldSwitch = true;
+              break;
             }
           }
         }
@@ -407,7 +469,7 @@ function sortDate(n) {
       rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
       switching = true;
       // Each time a switch is done, increase this count by 1:
-      switchcount ++;
+      switchcount++;
     } else {
       /* If no switching has been done AND the direction is "asc",
       set the direction to "desc" and run the while loop again. */
@@ -419,16 +481,16 @@ function sortDate(n) {
   }
 }
 
-var $sortable = $('.sortable');
+var $sortable = $(".sortable");
 
-$sortable.on('click', function(){
+$sortable.on("click", function () {
   var $this = $(this);
-  var asc = $this.hasClass('asc');
-  var desc = $this.hasClass('desc');
-  $sortable.removeClass('asc').removeClass('desc');
+  var asc = $this.hasClass("asc");
+  var desc = $this.hasClass("desc");
+  $sortable.removeClass("asc").removeClass("desc");
   if (desc || (!asc && !desc)) {
-    $this.addClass('asc');
+    $this.addClass("asc");
   } else {
-    $this.addClass('desc');
+    $this.addClass("desc");
   }
 });

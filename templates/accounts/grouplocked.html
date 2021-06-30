@@ -1,14 +1,8 @@
-{% extends 'dashboard_base.html' %}
-{% load static %}
-{% load mathfilters %}
-{% load cloudinary %}
-
-{% block title %}: ShipTogether{% endblock %}
+{% extends 'dashboard_base.html' %} {% load static %} {% load mathfilters %} 
+{% load cloudinary %} {% block title %}: ShipTogether{% endblock %} 
 {% block header %}
-<link href="{% static 'css/grouplocked.css' %}" rel="stylesheet">
-{% endblock %}
-
-{% block content %}
+<link href="{% static 'css/grouplocked.css' %}" rel="stylesheet" />
+{% endblock %} {% block content %}
 <main class="content">
   <div class="container-fluid p-0">
     <div class="d-flex bd-highlight">
@@ -19,7 +13,7 @@
     <div class="row">
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
         <div class="container p-0">
-          <div class='row'>
+          <div class="row">
             <div class="card flex-fill w-100">
               <div class="card-header">
                 <h5 class="card-title mb-0">Summary</h5>
@@ -27,40 +21,50 @@
               <table class="table mb-0">
                 <tbody>
                   <tr>
-                    <td><i data-feather="shopping-bag"></i>
+                    <td>
+                      <i data-feather="shopping-bag"></i>
                       Store:
                     </td>
                     <td>{{ shipping.platform }}</td>
                   </tr>
                   <tr>
-                    <td><i data-feather="briefcase"></i>
+                    <td>
+                      <i data-feather="briefcase"></i>
                       Description:
                     </td>
                     <td>{{ info.description }}</td>
                   </tr>
                   <tr>
-                    <td><i data-feather="credit-card"></i>
+                    <td>
+                      <i data-feather="credit-card"></i>
                       Shipping fee per member:
                     </td>
                     {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
-                    <td>${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}</td>
+                    <td>
+                      ${{
+                      shipping.base_shipping|div:shipping.member_count|floatformat:2
+                      }}
+                    </td>
                     {% else %}
                     <td>$0.00</td>
                     {% endif %}
                   </tr>
                   <tr>
                     {% if request.user.username in info.members %}
-                    <td><i data-feather="info"></i>
+                    <td>
+                      <i data-feather="info"></i>
                       Total Amount:
                     </td>
                     {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
-                    {% with shipping_fee=shipping.base_shipping|div:shipping.member_count %}
-                    <td>${{ user_total|addition:shipping_fee|floatformat:2 }}</td>
-                    {% endwith %}
-                    {% else %}
+                    {% with
+                    shipping_fee=shipping.base_shipping|div:shipping.member_count
+                    %}
+                    <td>
+                      ${{ user_total|addition:shipping_fee|floatformat:2 }}
+                    </td>
+                    {% endwith %} {% else %}
                     <td>${{ user_total|floatformat:2 }}</td>
-                    {% endif %}
-                    {% endif %}
+                    {% endif %} {% endif %}
                   </tr>
                   <!-- <tr>
                     <td><i data-feather="user"></i>
@@ -113,12 +117,23 @@
           <div class="card-header">
             <h5 class="card-title mb-0">Items</h5>
           </div>
-          <table class="table table-hover my-0" id='group_data'>
+          <table class="table table-hover my-0" id="group_data">
             <thead>
               <tr>
-                <th class="sortable asc" onclick="sortTable(0)" style="cursor:pointer">User</th>
-                <th class="sortable" onclick="sortTable(1)" style="cursor:pointer">
-                  Item</th>
+                <th
+                  class="sortable asc"
+                  onclick="sortTable(0)"
+                  style="cursor: pointer"
+                >
+                  User
+                </th>
+                <th
+                  class="sortable"
+                  onclick="sortTable(1)"
+                  style="cursor: pointer"
+                >
+                  Item
+                </th>
                 <th class="text-center">Qty</th>
                 <th class="text-center">Price</th>
                 <th class="text-center">Total</th>
@@ -132,24 +147,30 @@
                 <td class="d-none d-xl-table-cell item">
                   <a href="{{ url }}"> {{ item|capfirst }} </a>
                 </td>
-                <td class="d-none d-md-table-cell qty text-center">{{ qty }}</td>
-                <td class="d-none d-md-table-cell price text-center">${{ price|floatformat:2}}</td>
-                <td class="d-none d-md-table-cell total text-center">${{ price|mul:qty|floatformat:2 }}</td>
+                <td class="d-none d-md-table-cell qty text-center">
+                  {{ qty }}
+                </td>
+                <td class="d-none d-md-table-cell price text-center">
+                  ${{ price|floatformat:2}}
+                </td>
+                <td class="d-none d-md-table-cell total text-center">
+                  ${{ price|mul:qty|floatformat:2 }}
+                </td>
                 <td class="justify-content-center">
                   {% if request.user.username == info.owner %}
                   <div class="d-flex justify-content-center paid">
                     {% if paid %}
-                    <input class="form-check-input" type="checkbox" checked>
+                    <input class="form-check-input" type="checkbox" checked />
                     {% else %}
-                    <input class="form-check-input" type="checkbox">
+                    <input class="form-check-input" type="checkbox" />
                     {% endif %}
                   </div>
                   {% else %}
                   <div class="d-flex justify-content-center">
                     {% if paid %}
-                    <i data-feather="check" color='green'></i>
+                    <i data-feather="check" color="green"></i>
                     {% else %}
-                    <i data-feather="x" color='red'></i>
+                    <i data-feather="x" color="red"></i>
                     {% endif %}
                   </div>
                   {% endif %}
@@ -171,44 +192,95 @@
               </div>
               {% if info.owner == request.user.username %}
               <div class="bd-highlight text-end">
-                <a href="#edit" data-bs-toggle="modal" data-bs-target="#edit" title="Edit details">
-                  <i data-feather='edit-3'></i>
+                <a
+                  href="#edit"
+                  data-bs-toggle="modal"
+                  data-bs-target="#edit"
+                  title="Edit details"
+                >
+                  <i data-feather="edit-3"></i>
                 </a>
-                <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+                <div
+                  class="modal fade"
+                  id="edit"
+                  tabindex="-1"
+                  aria-labelledby="edit"
+                  aria-hidden="true"
+                >
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="edit_label">Edit order details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title" id="edit_label">
+                          Edit order details
+                        </h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
                       </div>
                       <div class="modal-body">
-                        <form class="needs-validation" method='POST' action="{% url 'grouplocked' info.group_name %}"
-                          id='edit_form' novalidate>
+                        <form
+                          class="needs-validation"
+                          method="POST"
+                          action="{% url 'grouplocked' info.group_name %}"
+                          id="edit_form"
+                          novalidate
+                        >
                           {% csrf_token %}
                           <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="tkg_number" placeholder="tkg_number"
-                              name='tkg_number' value="{{ info.tkg_number }}" required>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="tkg_number"
+                              placeholder="tkg_number"
+                              name="tkg_number"
+                              value="{{ info.tkg_number }}"
+                              required
+                            />
                             <label for="tkg_number">Tracking Number:</label>
                             <div class="invalid-feedback">
                               Please provide item name.
                             </div>
                           </div>
                           <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="courier" placeholder="courier" name='courier'
-                              value="{{ info.courier }}" required>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="courier"
+                              placeholder="courier"
+                              name="courier"
+                              value="{{ info.courier }}"
+                              required
+                            />
                             <label for="courier">Courier:</label>
                             <div class="invalid-feedback">
                               Please provide quantity.
                             </div>
                           </div>
                           <div class="form-floating mb-3">
-                            <input class="form-control" id="date" type="date" placeholder="date" name='date'
-                              value="{{ date }}" required>
+                            <input
+                              class="form-control"
+                              id="date"
+                              type="date"
+                              placeholder="date"
+                              name="date"
+                              value="{{ date }}"
+                              required
+                            />
                             <label for="date">Meetup date:</label>
                           </div>
                           <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="address" placeholder="address" name='address'
-                              value="{{ info.address }}" required>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="address"
+                              placeholder="address"
+                              name="address"
+                              value="{{ info.address }}"
+                              required
+                            />
                             <label for="address">Address:</label>
                             <div class="invalid-feedback">
                               Please provide valid URL.
@@ -217,8 +289,20 @@
                         </form>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success" form="edit_form">Add item</button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn btn-success"
+                          form="edit_form"
+                        >
+                          Add item
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -230,28 +314,32 @@
           <table class="table mb-0">
             <tbody>
               <tr>
-                <td><i data-feather="hash"></i>
+                <td>
+                  <i data-feather="hash"></i>
                   Tracking Number:
                 </td>
                 <td>{{ info.tkg_number }}</td>
               </tr>
               <tr>
-                <td><i data-feather="truck"></i>
+                <td>
+                  <i data-feather="truck"></i>
                   Courier:
                 </td>
                 <td>{{ info.courier|capfirst }}</td>
               </tr>
               <tr>
-                <td><i data-feather="calendar"></i>
+                <td>
+                  <i data-feather="calendar"></i>
                   Meetup Date:
                 </td>
                 <td>{{ info.meeting_date }}</td>
               </tr>
               <tr>
-                <td><i data-feather="map-pin"></i>
+                <td>
+                  <i data-feather="map-pin"></i>
                   Meetup Address:
                 </td>
-                <td> {{ info.address|title }} </td>
+                <td>{{ info.address|title }}</td>
               </tr>
             </tbody>
           </table>
@@ -265,31 +353,77 @@
                 <h5 class="card-title">Screenshot</h5>
               </div>
               <div class="bd-highlight text-end">
-                <a href="#upload" data-bs-toggle="modal" data-bs-target="#upload" title="Upload screenshot">
-                  <i data-feather='upload'></i>
+                <a
+                  href="#upload"
+                  data-bs-toggle="modal"
+                  data-bs-target="#upload"
+                  title="Upload screenshot"
+                >
+                  <i data-feather="upload"></i>
                 </a>
-                <div class="modal fade" id="upload" tabindex="-1" aria-labelledby="upload_label" aria-hidden="true"
-                  role="dialog">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
+                <div
+                  class="modal fade"
+                  id="upload"
+                  tabindex="-1"
+                  aria-labelledby="upload_label"
+                  aria-hidden="true"
+                  role="dialog"
+                >
+                  <div
+                    class="modal-dialog modal-dialog-centered"
+                    role="document"
+                  >
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="upload_label">Upload Screenshot</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title" id="upload_label">
+                          Upload Screenshot
+                        </h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
                       </div>
                       <div class="modal-body">
-                        <form method='POST' id='upload_form' action="{% url 'uploadImage' %}"
-                          enctype="multipart/form-data">
+                        <form
+                          method="POST"
+                          id="upload_form"
+                          action="{% url 'uploadImage' %}"
+                          enctype="multipart/form-data"
+                        >
                           {% csrf_token %}
                           <div class="d-flex justify-content-start">
                             <label class="me-1" for="img">Select image:</label>
-                            <input type="file" id="img" name="img" accept="image/*">
-                            <input type="hidden" name='group_name' value="{{ info.group_name }}">
+                            <input
+                              type="file"
+                              id="img"
+                              name="img"
+                              accept="image/*"
+                            />
+                            <input
+                              type="hidden"
+                              name="group_name"
+                              value="{{ info.group_name }}"
+                            />
                           </div>
                         </form>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success" form="upload_form">Upload</button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn btn-success"
+                          form="upload_form"
+                        >
+                          Upload
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -299,8 +433,10 @@
           </div>
           {% if info.scrnshot.url != None %}
           <div class="card-body text-center">
-            <a href="{{ info.scrnshot.url }}"
-              data-glightbox="type: image; effect: fade; width: 450px; height: 150px; zoomable: true; draggable: true;">
+            <a
+              href="{{ info.scrnshot.url }}"
+              data-glightbox="type: image; effect: fade; width: 450px; height: 150px; zoomable: true; draggable: true;"
+            >
               {% cloudinary info.scrnshot format='jpg' height='150' %}
             </a>
           </div>
@@ -319,14 +455,11 @@
               <tr class="data">
                 <td>
                   <i data-feather="user"></i>
-                  {{ name }}
-                  {% if info.owner == name %}
+                  {{ name }} {% if info.owner == name %}
                   <b> (Owner)</b>
                   {% endif %}
                 </td>
-                <td class='text-center'>
-                  {{ num }}
-                </td>
+                <td class="text-center">{{ num }}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -336,17 +469,14 @@
               <tr class="data">
                 <td>
                   <i data-feather="user"></i>
-                  {{ name }}
-                  {% if info.owner == name %}
+                  {{ name }} {% if info.owner == name %}
                   <b> (Owner)</b>
                   {% endif %}
                 </td>
                 {% if info.owner == name %}
-                <td class='text-center'>
-                  {{ num }}
-                </td>
+                <td class="text-center">{{ num }}</td>
                 {% else %}
-                <td class='text-center'></td>
+                <td class="text-center"></td>
                 {% endif %}
               </tr>
               {% endfor %}
@@ -359,11 +489,13 @@
   </div>
   <div id="disqus_thread"></div>
 </main>
-{% endblock %}
-
-{% block script %}
+{% endblock %} {% block script %}
 <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
 <script src="{% static 'js/grouplocked.js' %}"></script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
-    powered by Disqus.</a></noscript>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript" rel="nofollow"
+    >comments powered by Disqus.</a
+  ></noscript
+>
 {% endblock %}

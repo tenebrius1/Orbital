@@ -5,12 +5,12 @@ from scraping.shopee import checkShopeePrice
 
 def checkPrice(url):
     if "lazada" in url:
-      price = float("{:.2f}".format(float(checkLazadaPrice(url)[1:])))
+        price = float("{:.2f}".format(float(checkLazadaPrice(url)[1:])))
     elif "shopee" in url:
-      price = float("{:.2f}".format(float(checkShopeePrice(url)[1:])))
+        price = float("{:.2f}".format(float(checkShopeePrice(url)[1:])))
     elif "amazon" in url:
-      price = float("{:.2f}".format(float(checkAmazonPrice(url)[2:])))
+        price = float("{:.2f}".format(float(checkAmazonPrice(url)[2:])))
     else:
-      pass
-    
+        pass
+
     return price

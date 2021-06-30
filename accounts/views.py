@@ -20,16 +20,18 @@ env = Env()
 env.read_env()
 
 # Cloudinary config
-cloudinary.config( 
-  cloud_name = env.str('CLOUD_NAME'), 
-  api_key = env.str('API_KEY'), 
-  api_secret = env.str('API_SECRET'),
-  secure = True
+cloudinary.config(
+    cloud_name=env.str('CLOUD_NAME'),
+    api_key=env.str('API_KEY'),
+    api_secret=env.str('API_SECRET'),
+    secure=True
 )
+
 
 def logout(request):
     auth.logout(request)
     return redirect("index")
+
 
 @login_required(login_url='/accounts/login')
 def dashboard(request):
@@ -44,6 +46,7 @@ def dashboard(request):
         'mygroups': zip(mygroups, platform),
     }
     return render(request, "accounts/dashboard.html", context=context)
+
 
 def register(request):
     if request.user.is_authenticated:
@@ -81,6 +84,7 @@ def register(request):
         else:
             return render(request, "accounts/register.html")
 
+
 def login(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
@@ -99,6 +103,7 @@ def login(request):
                 return redirect("login")
         else:
             return render(request, "accounts/login.html")
+
 
 @login_required(login_url='/accounts/login')
 def transaction(request):
@@ -131,6 +136,7 @@ def transaction(request):
     else:
         return render(request, "accounts/transaction.html", context=context)
 
+
 @login_required(login_url='/accounts/login')
 def price(request):
     entries = Price.objects.filter(user_id=request.user.id)
@@ -151,6 +157,7 @@ def price(request):
         return redirect("price")
     else:
         return render(request, "accounts/price.html", context=context)
+
 
 @login_required(login_url='/accounts/login')
 def delivery(request):
@@ -184,6 +191,7 @@ def delivery(request):
     else:
         return render(request, "accounts/delivery.html", context=context)
 
+
 @login_required(login_url='/accounts/login')
 def ship(request):
     if request.method == "POST":
@@ -200,16 +208,18 @@ def ship(request):
             group_name=name, description=description, members=[owner], contacts=[contact], owner=owner)
         Shipping.objects.create(group=grp, group_name=name, platform=platform, location=location,
                                 base_shipping=base_shipping, free_shipping_min=free_shipping_min, member_count=1)
-        
+
         return redirect(f'ship/{name}')
     else:
         groups = Shipping.objects.all()
-        mygroups = Group.objects.filter(members__contains=[request.user.username])
+        mygroups = Group.objects.filter(
+            members__contains=[request.user.username])
         context = {
             'groups': groups,
             'mygroups': mygroups,
         }
         return render(request, "accounts/ship.html", context)
+
 
 def joinGroup(request):
     if request.method == 'POST':
@@ -224,6 +234,7 @@ def joinGroup(request):
         group_shipping.save()
         return redirect(f'ship/{group_name}')
 
+
 @login_required(login_url='/accounts/login')
 def groupmainpage(request, group_name):
     group = Group.objects.get(group_name=group_name)
@@ -233,7 +244,8 @@ def groupmainpage(request, group_name):
         return redirect('grouplocked', group_name=group_name)
     tabledata = None
     if len(data) != 0:
-        tabledata = zip(data[0].users, data[0].items, data[0].quantity, data[0].prices, data[0].urls)
+        tabledata = zip(data[0].users, data[0].items,
+                        data[0].quantity, data[0].prices, data[0].urls)
     context = {
         'info': group,
         'shipping': Shipping.objects.filter(group_name=group_name)[0],
@@ -249,9 +261,11 @@ def groupmainpage(request, group_name):
         adddata = None
         if len(data) == 0:
             if request.user.username == group.owner:
-                adddata = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[True])
+                adddata = Data.objects.create(group_name=group, users=[user], items=[name], prices=[
+                                              price], urls=[url], quantity=[quantity], paid=[True])
             else:
-                adddata = Data.objects.create(group_name=group, users=[user], items=[name], prices=[price], urls=[url], quantity=[quantity], paid=[False])
+                adddata = Data.objects.create(group_name=group, users=[user], items=[name], prices=[
+                                              price], urls=[url], quantity=[quantity], paid=[False])
             adddata.save()
         else:
             adddata = Data.objects.filter(group_name=group)[0]
@@ -260,11 +274,13 @@ def groupmainpage(request, group_name):
             adddata.prices.append(price)
             adddata.urls.append(url)
             adddata.quantity.append(quantity)
-            adddata.paid.append(False if request.user.username != group.owner else True)
+            adddata.paid.append(
+                False if request.user.username != group.owner else True)
             adddata.save()
         return redirect('groupmainpage', group_name=group_name)
     else:
         return render(request, "accounts/groupmainpage.html", context)
+
 
 @login_required(login_url='/accounts/login')
 def grouplocked(request, group_name):
@@ -278,7 +294,8 @@ def grouplocked(request, group_name):
 
     tabledata = None
     if len(data) != 0:
-        tabledata = zip(data[0].users, data[0].items, data[0].quantity, data[0].prices,  data[0].urls, data[0].paid)
+        tabledata = zip(data[0].users, data[0].items, data[0].quantity,
+                        data[0].prices, data[0].urls, data[0].paid)
         for i in range(len(data[0].users)):
             if data[0].users[i] == request.user.username:
                 user_total += data[0].prices[i] * data[0].quantity[i]
@@ -303,10 +320,11 @@ def grouplocked(request, group_name):
         group.address = address
         group.meeting_date = date
         group.save()
-        
+
         return redirect('grouplocked', group_name=group_name)
-    else:    
+    else:
         return render(request, "accounts/grouplocked.html", context)
+
 
 def uploadImage(request):
     if request.method == 'POST':
@@ -317,6 +335,7 @@ def uploadImage(request):
         group.save()
         return redirect('grouplocked', group_name=name)
 
+
 @login_required(login_url='/accounts/login')
 def settings(request):
     u = User.objects.get(username=request.user.username)
@@ -326,7 +345,7 @@ def settings(request):
         currpw = request.POST["currpw"]
         password = request.POST["newpw"]
         user = auth.authenticate(
-                request, username=request.user.username, password=currpw)
+            request, username=request.user.username, password=currpw)
         if user is not None:
             u.set_password(password)
             u.save()
@@ -341,9 +360,11 @@ def settings(request):
     else:
         return render(request, "accounts/settings.html")
 
+
 @login_required(login_url='/accounts/login')
 def report(request):
     return render(request, "accounts/report.html")
+
 
 def forgetpassword(request):
     if request.method == "POST":
@@ -357,10 +378,13 @@ def forgetpassword(request):
             return redirect("resetpasswordsuccess")
     return render(request, "accounts/forgetpassword.html")
 
+
 def resetpasswordsuccess(request):
     return render(request, "accounts/resetpasswordsuccess.html")
 
 # Handles AJAX Requests
+
+
 def deleteTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         item = request.POST.get("name").lower()
@@ -373,6 +397,7 @@ def deleteTransaction(request):
         dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)
+
 
 def displayExpenses(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -393,6 +418,7 @@ def displayExpenses(request):
             "others": others,
         }, status=200)
 
+
 def editTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         oItem = request.POST.get("oItem").lower()
@@ -410,6 +436,7 @@ def editTransaction(request):
         oEntry.save()
 
         return JsonResponse({"success": ""}, status=200)
+
 
 def displayDeliveries(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -436,6 +463,7 @@ def displayDeliveries(request):
             "response": r.json()['data'],
         }, status=200)
 
+
 def deleteDelivery(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         name = request.POST.get("name")
@@ -447,6 +475,7 @@ def deleteDelivery(request):
 
         return JsonResponse({"success": ""}, status=200)
 
+
 def changePaidStatus(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         group_name = request.GET['name']
@@ -456,6 +485,7 @@ def changePaidStatus(request):
         data.paid[index] = paid
         data.save()
         return JsonResponse({"success": ""}, status=200)
+
 
 def deleteItem(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -473,6 +503,7 @@ def deleteItem(request):
 
         return JsonResponse({"success": ""}, status=200)
 
+
 def leaveGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         group_name = request.GET['name']
@@ -485,7 +516,7 @@ def leaveGroup(request):
         grp.save()
         grp_shipping.member_count -= 1
         grp_shipping.save()
-        
+
         # Deletes user's data when user leaves group
         if len(data) != 0:
             while request.user.username in data[0].users:
@@ -500,6 +531,7 @@ def leaveGroup(request):
 
         return JsonResponse({"success": ""}, status=200)
 
+
 def lockGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         group_name = request.GET['name']
@@ -508,6 +540,7 @@ def lockGroup(request):
         grp.is_locked = True
         grp.save()
         return JsonResponse({"success": ""}, status=200)
+
 
 def deleteGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':

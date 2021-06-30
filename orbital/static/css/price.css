@@ -4,28 +4,30 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
 #actions {
-    width: 15%;
+  width: 15%;
 }
 
-.delete, .graph, .cart {
-    color: unset;
+.delete,
+.graph,
+.cart {
+  color: unset;
 }
 
 .delete:hover {
-    color: rgb(228, 74, 74);
+  color: rgb(228, 74, 74);
 }
 
 .graph:hover {
-    color: blue;
+  color: blue;
 }
 
 .cart:hover {
-    color: green;
+  color: green;
 }
 
 th.sortable {

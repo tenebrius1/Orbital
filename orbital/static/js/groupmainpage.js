@@ -1,28 +1,31 @@
 (function () {
-  'use strict'
+  "use strict";
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.needs-validation')
+  var forms = document.querySelectorAll(".needs-validation");
   // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener(
+      "submit",
+      function (event) {
         if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
+          event.preventDefault();
+          event.stopPropagation();
         }
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
 
 // Get CSRF token
 function getCookie(name) {
   let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+      if (cookie.substring(0, name.length + 1) === name + "=") {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
       }
@@ -32,7 +35,15 @@ function getCookie(name) {
 }
 
 function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  var table,
+    rows,
+    switching,
+    i,
+    x,
+    y,
+    shouldSwitch,
+    dir,
+    switchcount = 0;
   table = document.getElementById("group_data");
   switching = true;
   // Set the sorting direction to ascending:
@@ -45,7 +56,7 @@ function sortTable(n) {
     rows = table.rows;
     /* Loop through all table rows (except the
     first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
+    for (i = 1; i < rows.length - 1; i++) {
       // Start by saying there should be no switching:
       shouldSwitch = false;
       /* Get the two elements you want to compare,
@@ -86,83 +97,85 @@ function sortTable(n) {
   }
 }
 
-var $sortable = $('.sortable');
-$sortable.on('click', function () {
+var $sortable = $(".sortable");
+$sortable.on("click", function () {
   var $this = $(this);
-  var asc = $this.hasClass('asc');
-  var desc = $this.hasClass('desc');
-  $sortable.removeClass('asc').removeClass('desc');
+  var asc = $this.hasClass("asc");
+  var desc = $this.hasClass("desc");
+  $sortable.removeClass("asc").removeClass("desc");
   if (desc || (!asc && !desc)) {
-    $this.addClass('asc');
+    $this.addClass("asc");
   } else {
-    $this.addClass('desc');
+    $this.addClass("desc");
   }
 });
 
 // Delete button AJAX Request
 $(document).on("click", ".delete_item", function () {
   $(this).parents("tr").remove();
-  index = $(this).parent().parent().siblings().closest(".index").text()
+  index = $(this).parent().parent().siblings().closest(".index").text();
   $.ajax({
-    type: 'POST',
+    type: "POST",
     url: "/accounts/deleteItem",
     data: {
-      "index": index,
-      "name": $('#group_name').text(),
-      csrfmiddlewaretoken: getCookie('csrftoken'),
+      index: index,
+      name: $("#group_name").text(),
+      csrfmiddlewaretoken: getCookie("csrftoken"),
     },
-    success: function(response) {
-      location.href = '/accounts/ship/' + $('#group_name').text()
-    }
-  })
+    success: function (response) {
+      location.href = "/accounts/ship/" + $("#group_name").text();
+    },
+  });
 });
 
 function redirect_locked(group_name) {
   location.href = "/accounts/ship/" + group_name + "/locked";
 }
 
-(function () {  // DON'T EDIT BELOW THIS LINE
-  var d = document, s = d.createElement('script');
-  s.src = 'https://shopbud.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', +new Date());
+(function () {
+  // DON'T EDIT BELOW THIS LINE
+  var d = document,
+    s = d.createElement("script");
+  s.src = "https://shopbud.disqus.com/embed.js";
+  s.setAttribute("data-timestamp", +new Date());
   (d.head || d.body).appendChild(s);
 })();
 
 $(document).on("click", ".delete", function () {
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/accounts/deleteGroup",
     data: {
-      "name": $('#group_name').text(),
+      name: $("#group_name").text(),
     },
     success: function (response) {
-      location.href = '/accounts/ship'
-    }
-  })
+      location.href = "/accounts/ship";
+    },
+  });
 });
 
 $(document).on("click", ".leave", function () {
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/accounts/leaveGroup",
     data: {
-      "name": $('#group_name').text(),
+      name: $("#group_name").text(),
     },
     success: function (response) {
-      location.href = '/accounts/ship'
-    }
-  })
+      location.href = "/accounts/ship";
+    },
+  });
 });
 
 $(document).on("click", ".lock", function () {
   $.ajax({
-    type: 'GET',
+    type: "GET",
     url: "/accounts/lockGroup",
     data: {
-      "name": $('#group_name').text(),
+      name: $("#group_name").text(),
     },
     success: function (response) {
-      redirect_locked($('#group_name').text());
-    }
-  })
+      redirect_locked($("#group_name").text());
+    },
+  });
 });
