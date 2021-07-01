@@ -167,12 +167,10 @@ def delivery(request):
     }
 
     if request.method == "POST":
-        name = request.POST["name"]
+        name = request.POST["name"].lower()
         tkg_number = request.POST["tkg_number"]
         courier_code = request.POST["courier"].split(",")[0]
         courier_name = request.POST["courier"].split(",")[1]
-        Deliveries.objects.create(name=name, user_id=request.user.id, tkg_number=tkg_number,
-                                  courier_code=courier_code, courier_name=courier_name)
 
         header = {
             "Content-Type": "application/json",
@@ -184,10 +182,17 @@ def delivery(request):
             "courier_code": courier_code,
         }
 
-        requests.post(
+        r = requests.post(
             url="https://api.trackingmore.com/v3/trackings/realtime", headers=header, json=params)
-
-        return redirect("delivery")
+        
+        if r.json()["data"]["delivery_status"] == "notfound":
+            messages.error(request, " ")
+            return redirect("delivery")
+        else:
+            Deliveries.objects.create(name=name, user_id=request.user.id, tkg_number=tkg_number,
+                                  courier_code=courier_code, courier_name=courier_name)
+            return redirect("delivery")
+        
     else:
         return render(request, "accounts/delivery.html", context=context)
 
@@ -466,11 +471,11 @@ def displayDeliveries(request):
 
 def deleteDelivery(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        name = request.POST.get("name")
+        name = request.POST.get("name").lower()
         tkg_number = request.POST.get("tkg_number")
 
         dlt = Deliveries.objects.filter(
-            name=name, tkg_number=tkg_number, user_id=request.user.id)[0]
+            name=name, tkg_number=tkg_number, user_id=request.user.id)
         dlt.delete()
 
         return JsonResponse({"success": ""}, status=200)
@@ -535,7 +540,6 @@ def leaveGroup(request):
 def lockGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         group_name = request.GET['name']
-        print(group_name)
         grp = Group.objects.get(pk=group_name)
         grp.is_locked = True
         grp.save()
@@ -545,8 +549,16 @@ def lockGroup(request):
 def deleteGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         group_name = request.GET['name']
-        grp = Group.objects.get(pk=group_name)
-        grp.delete()
         grp_ship = Shipping.objects.get(pk=group_name)
         grp_ship.delete()
+        grp = Group.objects.get(pk=group_name)
+        grp.delete()
+        return JsonResponse({"success": ""}, status=200)
+
+def unlockGroup(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        group_name = request.GET['name']
+        grp = Group.objects.get(pk=group_name)
+        grp.is_locked = False
+        grp.save()
         return JsonResponse({"success": ""}, status=200)

@@ -1,0 +1,21 @@
+{% if messages %} {% for message in messages %} 
+{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+<div
+  class="alert alert-{{ message.tags }} text-center alert-dismissible fade show"
+  role="alert"
+>
+  <strong> Error: </strong>
+  Can't process tracking number due to one of the following reasons: 
+  <p>
+      1. Invalid Tracking Number. <br> 
+      2. Tracking Number do not match courier. <br>
+      3. Tracking number not updated on our servers, please try again later.
+  </p>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endif %} {% endfor %} {% endif %}

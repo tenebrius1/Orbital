@@ -130,3 +130,33 @@ $(".paid").change(function () {
     });
   }
 });
+
+$(document).on("click", ".delete", function () {
+  $.ajax({
+    type: "GET",
+    url: "/accounts/deleteGroup",
+    data: {
+      name: $("#group_name_data").text(),
+    },
+    success: function (response) {
+      location.href = "/accounts/ship";
+    },
+  });
+});
+
+function redirect(group_name) {
+  location.href = "/accounts/ship/" + group_name;
+}
+
+$(document).on("click", ".unlock", function () {
+  $.ajax({
+    type: "GET",
+    url: "/accounts/unlockGroup",
+    data: {
+      name: $("#group_name_data").text(),
+    },
+    success: function (response) {
+      redirect($("#group_name_data").text());
+    },
+  });
+});

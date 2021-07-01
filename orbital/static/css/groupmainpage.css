@@ -4,7 +4,7 @@
   color: unset;
 }
 
-.delete,
+.delete_button,
 .delete_item {
   color: rgb(221, 42, 42);
 }

@@ -26,18 +26,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                Locking of group is an <b>IRREVERSIBLE</b> action. Please ensure all orders have been consolidated before proceeding.
+                Please ensure all orders have been consolidated before proceeding.
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success lock" onclick="redirect_locked(`{{ info.group_name }}`)">Confirm</button>
+                <button type="button" class="btn btn-success lock">Confirm</button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="p-2 bd-highlight">
-        <button type="button" class="btn delete">
+        <button type="button" class="btn delete_button" data-bs-toggle="modal" data-bs-target="#deletegroup">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill"
             viewBox="0 0 16 16">
             <path
@@ -45,6 +45,23 @@
           </svg>
           Delete group
         </button>
+        <div class="modal fade" id="deletegroup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deletegroupLabel">Delete Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <b>WARNING</b>: Deleting of group is an <b>IRREVERSIBLE</b> action. Click on "Confirm" to proceed.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success delete">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {% elif request.user.username not in info.members %}
       <div class="p-2 bd-highlight">

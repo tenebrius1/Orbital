@@ -20,6 +20,7 @@ urlpatterns = [
     path('leaveGroup', views.leaveGroup, name='leaveGroup'),
     path('ship/<group_name>/locked', views.grouplocked, name='grouplocked'),
     path('lockGroup', views.lockGroup, name='lockGroup'),
+    path('unlockGroup', views.unlockGroup, name='unlockGroup'),
     path('report', views.report, name='report'),
     path('uploadImage', views.uploadImage, name='uploadImage'),
 
