@@ -20,7 +20,11 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
+                {% if info.owner == request.user.username %}
                 <h5 class="modal-title" id="exampleModalLabel">Instructions for owner</h5>
+                {% else %}
+                <h5 class="modal-title" id="exampleModalLabel">Instructions for members</h5>
+                {% endif %}
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -415,7 +419,6 @@
             </div>
           </div>
         </div>
-        
       </div>
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
         <div class="card flex-fill">
@@ -425,9 +428,11 @@
                 <h5 class="card-title">Screenshot</h5>
               </div>
               <div class="bd-highlight text-end">
+                {% if info.owner == request.user.username %}
                 <a href="#upload" data-bs-toggle="modal" data-bs-target="#upload" title="Upload screenshot">
                   <i data-feather="upload"></i>
                 </a>
+                {% endif %}
                 <div class="modal fade" id="upload" tabindex="-1" aria-labelledby="upload_label" aria-hidden="true"
                   role="dialog">
                   <div class="modal-dialog modal-dialog-centered" role="document">

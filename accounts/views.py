@@ -245,8 +245,8 @@ def groupmainpage(request, group_name):
     group = Group.objects.get(group_name=group_name)
     data = Data.objects.filter(group_name=group_name)
     # Ensures that the group is locked before allowing members to access this page
-    if group.is_locked:
-        return redirect('grouplocked', group_name=group_name)
+    # if group.is_locked:
+    #     return redirect('grouplocked', group_name=group_name)
     tabledata = None
     if len(data) != 0:
         tabledata = zip(data[0].users, data[0].items,
@@ -294,8 +294,8 @@ def grouplocked(request, group_name):
     user_total = 0
 
     # Ensures that the group is locked before allowing members to access this page
-    if not group.is_locked:
-        return redirect('groupmainpage', group_name=group_name)
+    # if not group.is_locked:
+    #     return redirect('groupmainpage', group_name=group_name)
 
     tabledata = None
     if len(data) != 0:

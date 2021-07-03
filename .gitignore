@@ -277,3 +277,4 @@ fabric.properties
 /staticfiles
 /node_modules
 .env
+user_guide.md
