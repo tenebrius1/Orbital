@@ -1,15 +1,26 @@
 import datetime
+from io import UnsupportedOperation
+from re import U
 from PIL import Image
 import cloudinary
+from django.contrib.auth import tokens
+from marshmallow.fields import Method
 
 import requests
+from django.core.mail import EmailMessage, message
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password, password_validators_help_texts
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.urls import reverse
+from .utils import account_activation_token
 from environs import Env
 from scraping.checkPrice import checkPrice
 from scraping.models import Price
@@ -79,11 +90,37 @@ def register(request):
                     email=email,
                     password=password,
                 )
-                # Login User after they register
-                auth.login(
-                    request, user, backend="django.contrib.auth.backends.ModelBackend"
+                user.is_active = False
+                user.save()
+                current_site = get_current_site(request)
+                email_body = {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                }
+
+                link = reverse('activate', kwargs={
+                               'uidb64': email_body['uid'], 'token': email_body['token']})
+
+                email_subject = 'Activate your account'
+
+                activate_url = 'http://'+current_site.domain+link
+
+                email = EmailMessage(
+                    email_subject,
+                    'Hi '+user.username + ', Please click the link below to activate your account \n'+activate_url,
+                    'noreply@semycolon.com',
+                    [email],
                 )
-                return redirect("dashboard")
+                email.send(fail_silently=False)
+                messages.success(request, 'Account successfully created')
+                # # Login User after they register
+                # auth.login(
+                #     request, user, backend="django.contrib.auth.backends.ModelBackend"
+                # )
+                # return redirect("dashboard")
+                return redirect("register")
 
                 # Redirect user to login page after registration
                 # user.save()
@@ -91,6 +128,27 @@ def register(request):
         else:
             return render(request, "accounts/register.html")
 
+def activate(request, uidb64, token):
+    try:
+        id = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=id)
+
+        if not account_activation_token.check_token(user, token):
+            message.error(request, 'User already active')
+            return redirect('login')
+
+        if user.is_active:
+            return redirect('login')
+        user.is_active = True
+        user.save()
+
+        messages.success(request, 'Account activated successfully')
+        return redirect('login')
+
+    except Exception as ex:
+        pass
+
+    return redirect('login')
 
 def login(request):
     if request.user.is_authenticated:
@@ -102,12 +160,17 @@ def login(request):
 
             user = auth.authenticate(
                 request, username=username, password=password)
+            print(len(User.objects.filter(username=username)))
             if user is not None:
                 auth.login(request, user)
                 return redirect("dashboard")
             else:
-                messages.error(request, "Invalid credentials")
-                return redirect("login")
+                if len(User.objects.filter(username=username)) > 0:
+                    messages.error(request, 'Account is not active,please check your email')
+                    return redirect("login")
+                else: 
+                    messages.error(request, "Invalid credentials")
+                    return redirect("login")
         else:
             return render(request, "accounts/login.html")
 
@@ -387,9 +450,51 @@ def forgetpassword(request):
                 request, "Email does not exist.")
             return redirect("forgetpassword")
         else:
+            user = User.objects.filter(email=email)[0]
+            current_site = get_current_site(request)
+            email_body = {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': PasswordResetTokenGenerator().make_token(user),
+            }
+
+            link = reverse('resetpw', kwargs={
+                            'uidb64': email_body['uid'], 'token': email_body['token']})
+
+            email_subject = 'Reset your Password'
+
+            reset_url = 'http://'+current_site.domain+link
+
+            email = EmailMessage(
+                email_subject,
+                'Hi there, Please click the link below to reset your password \n'+reset_url,
+                'noreply@semycolon.com',
+                [email],
+            )
+            email.send(fail_silently=False)
             return redirect("resetpasswordsuccess")
+
     return render(request, "accounts/forgetpassword.html")
 
+def resetpw(request, uidb64, token):
+    context = {'uidb64':uidb64, 'token':token}
+    if request.method == "POST":
+        newpw = request.POST["password"]
+        user_id = force_text(urlsafe_base64_decode(uidb64))
+        user=User.objects.get(pk=user_id)
+        
+        try:
+            validate_password(newpw)
+        except:
+            messages.error(request, password_validators_help_texts(password_validators=None))
+            return redirect("resetpw", uidb64=uidb64, token=token)
+        user.set_password(newpw)        
+        user.save()
+        messages.success(request, "Password reset successfully")
+        return redirect("login")
+        
+    return render(request, "accounts/resetpw.html",context)
 
 def resetpasswordsuccess(request):
     return render(request, "accounts/resetpasswordsuccess.html")

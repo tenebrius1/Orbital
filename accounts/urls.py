@@ -23,6 +23,8 @@ urlpatterns = [
     path('unlockGroup', views.unlockGroup, name='unlockGroup'),
     path('report', views.report, name='report'),
     path('uploadImage', views.uploadImage, name='uploadImage'),
+    path('activate/<uidb64>/<token>', views.activate, name='activate'),
+    path('resetpw/<uidb64>/<token>', views.resetpw, name='resetpw'),
 
     # Handles AJAX requests
     path('deleteTransaction', views.deleteTransaction, name='deleteTransaction'),
