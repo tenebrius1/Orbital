@@ -6,6 +6,7 @@ import requests
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password, password_validators_help_texts
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -57,6 +58,12 @@ def register(request):
             username = request.POST["username"]
             email = request.POST["email"]
             password = request.POST["password"]
+
+            try:
+                validate_password(password)
+            except:
+                messages.error(request, password_validators_help_texts(password_validators=None))
+                return redirect("register")
 
             # Check email
             if User.objects.filter(email=email).exists():
