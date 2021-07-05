@@ -7,7 +7,7 @@ from django.contrib.auth import tokens
 from marshmallow.fields import Method
 
 import requests
-from django.core.mail import EmailMessage, message
+from django.core.mail import EmailMessage
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -92,10 +92,10 @@ def register(request):
                 )
                 user.is_active = False
                 user.save()
-                current_site = get_current_site(request)
+                current_site = get_current_site(request).domain
                 email_body = {
                     'user': user,
-                    'domain': current_site.domain,
+                    'domain': current_site,
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': account_activation_token.make_token(user),
                 }
@@ -105,7 +105,10 @@ def register(request):
 
                 email_subject = 'Activate your account'
 
-                activate_url = 'http://'+current_site.domain+link
+                if current_site == 'localhost:8000' :
+                    activate_url = 'http://'+current_site+link
+                else:
+                    activate_url = 'http://shopbud.herokuapp.com'+link
 
                 email = EmailMessage(
                     email_subject,
@@ -134,7 +137,7 @@ def activate(request, uidb64, token):
         user = User.objects.get(pk=id)
 
         if not account_activation_token.check_token(user, token):
-            message.error(request, 'User already active')
+            messages.error(request, 'User already active')
             return redirect('login')
 
         if user.is_active:
@@ -160,7 +163,6 @@ def login(request):
 
             user = auth.authenticate(
                 request, username=username, password=password)
-            print(len(User.objects.filter(username=username)))
             if user is not None:
                 auth.login(request, user)
                 return redirect("dashboard")
