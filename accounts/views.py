@@ -105,10 +105,7 @@ def register(request):
 
                 email_subject = 'Activate your account'
 
-                if current_site == 'localhost:8000' :
-                    activate_url = 'http://'+current_site+link
-                else:
-                    activate_url = 'http://shopbud.herokuapp.com'+link
+                activate_url = 'http://shopbud.herokuapp.com'+link
 
                 email = EmailMessage(
                     email_subject,
@@ -466,7 +463,7 @@ def forgetpassword(request):
 
             email_subject = 'Reset your Password'
 
-            reset_url = 'http://'+current_site.domain+link
+            reset_url = 'http://shopbud.herokuapp.com'+link
 
             email = EmailMessage(
                 email_subject,
