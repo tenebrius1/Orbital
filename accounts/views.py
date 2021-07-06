@@ -1,31 +1,27 @@
 import datetime
-from io import UnsupportedOperation
-from re import U
-from PIL import Image
-import cloudinary
-from django.contrib.auth import tokens
-from marshmallow.fields import Method
 
+import cloudinary
 import requests
-from django.core.mail import EmailMessage, message
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth.password_validation import validate_password, password_validators_help_texts
+from django.contrib.auth.password_validation import (
+    password_validators_help_texts, validate_password)
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage, message
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.urls import reverse
-from .utils import account_activation_token
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from environs import Env
 from scraping.checkPrice import checkPrice
 from scraping.models import Price
 
-from .models import Data, Deliveries, Transaction, Shipping, Group
+from .models import Data, Deliveries, Group, Shipping, Transaction
+from .utils import account_activation_token
 
 # Set up environ
 env = Env()
@@ -115,16 +111,7 @@ def register(request):
                 )
                 email.send(fail_silently=False)
                 messages.success(request, 'Account successfully created')
-                # # Login User after they register
-                # auth.login(
-                #     request, user, backend="django.contrib.auth.backends.ModelBackend"
-                # )
-                # return redirect("dashboard")
                 return redirect("register")
-
-                # Redirect user to login page after registration
-                # user.save()
-                # return redirect("login")
         else:
             return render(request, "accounts/register.html")
 
@@ -145,7 +132,7 @@ def activate(request, uidb64, token):
         messages.success(request, 'Account activated successfully')
         return redirect('login')
 
-    except Exception as ex:
+    except Exception:
         pass
 
     return redirect('login')
@@ -160,7 +147,6 @@ def login(request):
 
             user = auth.authenticate(
                 request, username=username, password=password)
-            print(len(User.objects.filter(username=username)))
             if user is not None:
                 auth.login(request, user)
                 return redirect("dashboard")
@@ -181,7 +167,6 @@ def transaction(request):
     transactions = Transaction.objects.filter(user_id=request.user.id)
     context = {
         'month': month,
-        'range': range(2),
         'transactions': transactions,
     }
     if request.method == "POST":
@@ -500,8 +485,6 @@ def resetpasswordsuccess(request):
     return render(request, "accounts/resetpasswordsuccess.html")
 
 # Handles AJAX Requests
-
-
 def deleteTransaction(request):
     if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         item = request.POST.get("name").lower()
