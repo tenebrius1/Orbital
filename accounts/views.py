@@ -9,7 +9,7 @@ from django.contrib.auth.password_validation import (
     password_validators_help_texts, validate_password)
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage, message
+from django.core.mail import EmailMessage
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -88,10 +88,10 @@ def register(request):
                 )
                 user.is_active = False
                 user.save()
-                current_site = get_current_site(request)
+                current_site = get_current_site(request).domain
                 email_body = {
                     'user': user,
-                    'domain': current_site.domain,
+                    'domain': current_site,
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': account_activation_token.make_token(user),
                 }
@@ -101,7 +101,7 @@ def register(request):
 
                 email_subject = 'Activate your account'
 
-                activate_url = 'http://'+current_site.domain+link
+                activate_url = 'http://shopbud.herokuapp.com'+link
 
                 email = EmailMessage(
                     email_subject,
@@ -121,7 +121,7 @@ def activate(request, uidb64, token):
         user = User.objects.get(pk=id)
 
         if not account_activation_token.check_token(user, token):
-            message.error(request, 'User already active')
+            messages.error(request, 'User already active')
             return redirect('login')
 
         if user.is_active:
@@ -449,7 +449,7 @@ def forgetpassword(request):
 
             email_subject = 'Reset your Password'
 
-            reset_url = 'http://'+current_site.domain+link
+            reset_url = 'http://shopbud.herokuapp.com'+link
 
             email = EmailMessage(
                 email_subject,
