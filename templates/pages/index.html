@@ -38,10 +38,9 @@
             <ul>
                 <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
                 <li><a class="nav-link scrollto" href="#about">About</a></li>
-                <li><a class="nav-link scrollto" href="#services">Services</a></li>
+                <li><a class="nav-link scrollto" href="#features">Services</a></li>
                 <a class="btn btn-sm rounded-pill login" href="{% url 'login' %}" role="button">Log in</a>
-                <a class="btn btn-sm rounded-pill signup" href="{% url 'register' %}"
-                    role="button">Sign up</a>
+                <a class="btn btn-sm rounded-pill signup" href="{% url 'register' %}" role="button">Sign up</a>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -55,7 +54,8 @@
         <div class="carousel-item active">
             <div class="carousel-container">
                 <h2 class="animate__animated animate__fadeInDown">Welcome to ShopBud</h2>
-                <p class="animate__animated fanimate__fadeInUp">The all-in-one webapp that integrates multiple shopping assistants/apps so that you can enjoy a one stop experience for your e-commerce shopping needs.</p>
+                <p class="animate__animated fanimate__fadeInUp">The all-in-one webapp that integrates multiple shopping
+                    assistants/apps so that you can enjoy a one stop experience for your e-commerce shopping needs.</p>
                 <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
             </div>
         </div>
@@ -83,35 +83,35 @@
         <div class="container">
             <div class="section-title" data-aos="zoom-out">
                 <h2>About</h2>
-                <p>Who we are</p>
+                <p>Our Mission</p>
             </div>
             <div class="row content" data-aos="fade-up">
                 <div class="col-lg-6">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et
-                        dolore
-                        magna aliqua.
+                        We hope to integrate multiple online shopping assistants/apps(tracking of order, expense
+                        tracking, etc.) into one unified web app so that it is a one stop experience for our end users.
                     </p>
                     <ul>
-                        <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat
+                        <li><i class="ri-check-double-line"></i> Keep track of your expenses/spendings
                         </li>
-                        <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in voluptate
-                            velit</li>
-                        <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat
+                        <li><i class="ri-check-double-line"></i> Group buy to lower shipping cost
+                        </li>
+                        <li><i class="ri-check-double-line"></i> Know the status of all your deliveries
+                        </li>
+                        <li><i class="ri-check-double-line"></i> Platform to consolidate all your online purchases.
                         </li>
                     </ul>
                 </div>
                 <div class="col-lg-6 pt-4 pt-lg-0">
                     <p>
-                        Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                        in
-                        voluptate
-                        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
+                        Shopping on E-commerce platforms has become really popular these days and we often tend to shop
+                        on multiple platforms such as Shopee, Lazada or ASOS. We can easily lose track
+                        of our total expenses or will not be able to keep track of all our delivery dates.
+                        We would have to check all platforms individually which could be a hassle! Not being able to
+                        track how much we are spending can also be dangerous and can lead to overspending.
+                        We would also love to bring costs down when shopping, and this is where ordering together with
+                        other people comes in as costs can be lowered through buying in bulk or cheaper shipping.
                     </p>
-                    <a href="#" class="btn-learn-more">Learn More</a>
                 </div>
             </div>
         </div>
@@ -121,28 +121,22 @@
     <section id="features" class="features">
         <div class="container">
             <ul class="nav nav-tabs row d-flex">
-                <li class="nav-item col-3" data-aos="zoom-in">
+                <li class="nav-item col-4" data-aos="zoom-in">
                     <a class="nav-link active show" data-bs-toggle="tab" href="#tab-1">
-                        <i class="ri-gps-line"></i>
-                        <h4 class="d-none d-lg-block">Modi sit est dela pireda nest</h4>
+                        <i class="ri-pie-chart-2-fill"></i>
+                        <h4 class="d-none d-lg-block">Expense Tracker</h4>
                     </a>
                 </li>
-                <li class="nav-item col-3" data-aos="zoom-in" data-aos-delay="100">
+                <li class="nav-item col-4" data-aos="zoom-in" data-aos-delay="100">
                     <a class="nav-link" data-bs-toggle="tab" href="#tab-2">
-                        <i class="ri-body-scan-line"></i>
-                        <h4 class="d-none d-lg-block">Unde praesenti mara setra le</h4>
+                        <i class="ri-truck-line"></i>
+                        <h4 class="d-none d-lg-block">Delivery Tracker</h4>
                     </a>
                 </li>
-                <li class="nav-item col-3" data-aos="zoom-in" data-aos-delay="200">
+                <li class="nav-item col-4" data-aos="zoom-in" data-aos-delay="300">
                     <a class="nav-link" data-bs-toggle="tab" href="#tab-3">
-                        <i class="ri-sun-line"></i>
-                        <h4 class="d-none d-lg-block">Pariatur explica nitro dela</h4>
-                    </a>
-                </li>
-                <li class="nav-item col-3" data-aos="zoom-in" data-aos-delay="300">
-                    <a class="nav-link" data-bs-toggle="tab" href="#tab-4">
-                        <i class="ri-store-line"></i>
-                        <h4 class="d-none d-lg-block">Nostrum qui dile node</h4>
+                        <i class="ri-ship-line"></i>
+                        <h4 class="d-none d-lg-block">ShipTogether</h4>
                     </a>
                 </li>
             </ul>
@@ -150,34 +144,16 @@
                 <div class="tab-pane active show" id="tab-1">
                     <div class="row">
                         <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                            <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
+                            <h3>Track all your online expenses with our expense tracker!</h3>
                             <p class="fst-italic">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et
-                                dolore
-                                magna aliqua.
+                                Be in the know on what you are spending on and how much you are spending.
                             </p>
                             <ul>
-                                <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat.</li>
-                                <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in
-                                    voluptate velit.
-                                </li>
-                                <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis
-                                    aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore
-                                    eu fugiat nulla
-                                    pariatur.</li>
+                                <li><i class="ri-check-double-line"></i> Doughnut chart for a overview of your
+                                    spendings.</li>
+                                <li><i class="ri-check-double-line"></i> Sort items based on platforms etc.</li>
+                                <li><i class="ri-check-double-line"></i> Make entries and edits with ease.</li>
                             </ul>
-                            <p>
-                                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in
-                                voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident,
-                                sunt in
-                                culpa qui officia deserunt mollit anim id est laborum
-                            </p>
                         </div>
                         <div class="col-lg-6 order-1 order-lg-2 text-center">
                             <img src="{% static 'img/features-1.png' %}" alt="" class="img-fluid">
@@ -187,37 +163,16 @@
                 <div class="tab-pane" id="tab-2">
                     <div class="row">
                         <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                            <h3>Neque exercitationem debitis soluta quos debitis quo mollitia officia est</h3>
-                            <p>
-                                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in
-                                voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident,
-                                sunt in
-                                culpa qui officia deserunt mollit anim id est laborum
-                            </p>
-                            <p class="fst-italic">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et
-                                dolore
-                                magna aliqua.
-                            </p>
+                            <h3>Have all your tracking numbers all in one place!</h3>
+                            <p class="fst-italic">Keep track of all your deliveries with a click of a button.</p>
                             <ul>
-                                <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat.</li>
-                                <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in
-                                    voluptate velit.
+                                <li><i class="ri-check-double-line"></i> Enter tracking number to get delivery status.*</li>
+                                <li><i class="ri-check-double-line"></i> Get detailed reports on your delivery.
                                 </li>
-                                <li><i class="ri-check-double-line"></i> Provident mollitia neque rerum asperiores
-                                    dolores quos qui a.
-                                    Ipsum neque dolor voluptate nisi sed.</li>
-                                <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis
-                                    aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore
-                                    eu fugiat nulla
-                                    pariatur.</li>
                             </ul>
+                            <p class="fst-italic" style="color: grey;">
+                                *Only from our supported couriers
+                            </p>
                         </div>
                         <div class="col-lg-6 order-1 order-lg-2 text-center">
                             <img src="{% static 'img/features-2.png' %}" alt="" class="img-fluid">
@@ -227,72 +182,22 @@
                 <div class="tab-pane" id="tab-3">
                     <div class="row">
                         <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                            <h3>Voluptatibus commodi ut accusamus ea repudiandae ut autem dolor ut assumenda</h3>
-                            <p>
-                                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in
-                                voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident,
-                                sunt in
-                                culpa qui officia deserunt mollit anim id est laborum
+                            <h3>Group-buy feature to lower cost!</h3>
+                            <p class="fst-italic">
+                                Save money on shipping from online platforms by pooling orders together with a group of people.
                             </p>
                             <ul>
-                                <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat.</li>
-                                <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in
-                                    voluptate velit.
+                                <li><i class="ri-check-double-line"></i> Find suitable groups by online store or by meeting location.</li>
+                                <li><i class="ri-check-double-line"></i> Create your own ShipTogether group.
                                 </li>
-                                <li><i class="ri-check-double-line"></i> Provident mollitia neque rerum asperiores
-                                    dolores quos qui a.
-                                    Ipsum neque dolor voluptate nisi sed.</li>
+                                <li><i class="ri-check-double-line"></i> Keep cost as low as possible.</li>
                             </ul>
                             <p class="fst-italic">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et
-                                dolore
-                                magna aliqua.
+                                Sign up now to find out more about how you can maximise these features to enhance your shopping experience!
                             </p>
                         </div>
                         <div class="col-lg-6 order-1 order-lg-2 text-center">
                             <img src="{% static 'img/features-3.png' %}" alt="" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane" id="tab-4">
-                    <div class="row">
-                        <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                            <h3>Omnis fugiat ea explicabo sunt dolorum asperiores sequi inventore rerum</h3>
-                            <p>
-                                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in
-                                voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident,
-                                sunt in
-                                culpa qui officia deserunt mollit anim id est laborum
-                            </p>
-                            <p class="fst-italic">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et
-                                dolore
-                                magna aliqua.
-                            </p>
-                            <ul>
-                                <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat.</li>
-                                <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in
-                                    voluptate velit.
-                                </li>
-                                <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis
-                                    aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore
-                                    eu fugiat nulla
-                                    pariatur.</li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-6 order-1 order-lg-2 text-center">
-                            <img src="{% static 'img/features-4.png' %}" alt="" class="img-fluid">
                         </div>
                     </div>
                 </div>
