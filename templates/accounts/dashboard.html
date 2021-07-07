@@ -1,5 +1,10 @@
 {% extends 'dashboard_base.html' %} {% load static %} {% block header %}
 <link rel="preconnect" href="https://fonts.gstatic.com" />
+<link 
+      href="https://cdn.jsdelivr.net/npm/intro.js@4.1.0/introjs.min.css"
+      rel="stylesheet" 
+/>
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 {% endblock %} {% block content %}
 <main class="content">
   <div class="container-fluid p-0">
@@ -8,7 +13,7 @@
     </h1>
     <div class="row">
       <div class="col-12 col-md-4 col-xxl-4 d-flex">
-        <div class="card flex-fill w-100">
+        <div class="card flex-fill w-100 expenses">
           <div
             class="card-header"
             onclick="location.href=`{% url 'transaction' %}`"
@@ -21,6 +26,7 @@
             onclick="location.href=`{% url 'transaction' %}`"
             id="sbox"
           >
+            {% if transactions %}
             <div class="align-self-center w-100">
               <div class="py-3">
                 <div class="chart chart-xs">
@@ -60,11 +66,19 @@
                 </tbody>
               </table>
             </div>
+            {% else %}
+            <div class="align-self-center justify-content-center w-100">
+              <div class="py-3 text-center">
+                <span class="smiley">:-(</span>
+                <span class="note">No transactions</span>
+              </div>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>
       <div class="col-md-8 col-xxl-8 d-flex">
-        <div class="card flex-fill w-100">
+        <div class="card flex-fill w-100 shiptogether">
           <div
             class="card-header"
             onclick="location.href=`{% url 'ship' %}`"
@@ -72,6 +86,7 @@
           >
             <h5 class="card-title mb-0">ShipTogether (My Groups)</h5>
           </div>
+          {% if mygroups != None %}
           <table class="table table-hover my-0" id="my_group_data">
             <thead>
               <tr>
@@ -110,40 +125,18 @@
               {% endif %} {% endfor %}
             </tbody>
           </table>
-          <!-- <div class="align-self-center w-100 ">
-              <div class="carousel-inner d-flex" onclick="location.href=`{% url 'price' %}`" id="sbox">
-                <div class="carousel-item active" data-bs-interval="10000">
-                  <div class="chart">
-                    <canvas id="chartjs-dashboard-line"></canvas>
-                  </div>
-
-                </div>
-                <div class="carousel-item" data-bs-interval="10000">
-                  <div class="chart chart-sm">
-                    <canvas id="chartjs-dashboard-line1"></canvas>
-                  </div>
-                </div>
-                <div class="carousel-item" data-bs-interval="10000">
-                  <div class="chart chart-sm">
-                    <canvas id="chartjs-dashboard-line2"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                  aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                  aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                  aria-label="Slide 3"></button>
-              </div>
-            </div> -->
+          {% else %}
+          <div class="text-center justify-content-center p-3">
+            <span class="smiley-180">╯︿╰</span>
+            <span class="note">You have not joined any groups</span>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
     <div class="row">
       <div class="d-flex">
-        <div class="card flex-fill">
+        <div class="card flex-fill deliveries">
           <div
             class="card-header"
             onclick="location.href=`{% url 'delivery' %}`"
@@ -151,6 +144,7 @@
           >
             <h5 class="card-title mb-0">Delivery Tracker</h5>
           </div>
+          {% if deliveries != None %}
           <table
             class="table table-hover my-0"
             onclick="location.href=`{% url 'delivery' %}`"
@@ -183,6 +177,12 @@
               {% endfor %}
             </tbody>
           </table>
+          {% else %}
+          <div class="text-center p-3">
+            <span class="smiley-180">（´＿｀）</span>
+            <span class="note">No deliveries being tracked</span>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -190,4 +190,47 @@
 </main>
 {% endblock %} {% block script %}
 <script src="{% static 'js/dashboard.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/intro.js@4.1.0/intro.min.js"></script>
+
+{% if first_time %}
+<script>
+  introJs().setOptions({
+    showBullets: false,
+    showProgress: true,
+    exitOnOverlayClick: false,
+    steps: [{
+      title: 'Hello 👋',
+      intro: 'Welcome to ShopBud! <br><br> Right now, you are on the dashboard where you can see a summary of all your account activities.'
+    },
+    {
+      element: document.querySelector('.expenses'),
+      title: 'Expenses 💸',
+      intro: 'At the moment you have no transactions added. <br><br> To add a transaction, click on the card title to access the delivery tracker page.'
+    },
+    {
+      element: document.querySelector('.deliveries'),
+      title: 'Deliveries 🛒',
+      intro: 'This is where your delivery statuses will appear once you have added deliveries to be tracked.'
+    },
+    {
+      element: document.querySelector('.shiptogether'),
+      title: 'ShipTogether 🚢',
+      intro: 'Groups that you have joint will show up here!'
+    },
+    {
+      element: document.querySelector('.navbar-brand'),
+      intro: 'Click here from any page to return to the Dashboard'
+    },
+    {
+      element: document.querySelector('.nav-link'),
+      intro: 'Click on any of the nav-links to access our different features!'
+    }]
+  }).oncomplete(function() {
+    $.ajax({
+      type: "GET",
+      url: "/accounts/onboardingFin"
+    })
+  }).start()
+</script>
+{% endif %}
 {% endblock %}

@@ -17,10 +17,8 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from environs import Env
-from scraping.checkPrice import checkPrice
-from scraping.models import Price
 
-from .models import Data, Deliveries, Group, Shipping, Transaction
+from .models import Data, Deliveries, Group, Shipping, Transaction, UserExtension
 from .utils import account_activation_token
 
 # Set up environ
@@ -44,14 +42,23 @@ def logout(request):
 @login_required(login_url='/accounts/login')
 def dashboard(request):
     mygroups = Group.objects.filter(members__contains=[request.user.username])
+    user = UserExtension.objects.filter(user=request.user)
     platform = list()
     for i in range(len(mygroups)):
         g = Shipping.objects.filter(group_name=mygroups[i].group_name)
         platform.append(g[0].platform)
     deliveries = Deliveries.objects.filter(user_id=request.user.id)
+    expense = Transaction.objects.filter(user_id=request.user.id)
+
+    first_time = True
+    if len(user) == 0 or not user[0].first_time_user:
+        first_time = False
+
     context = {
-        'deliveries': deliveries,
-        'mygroups': zip(mygroups, platform),
+        'deliveries': deliveries if len(deliveries) != 0 else None,
+        'mygroups': zip(mygroups, platform) if len(mygroups) != 0 else None,
+        'first_time': first_time,
+        'transactions': True if len(expense) != 0 else False,
     }
     return render(request, "accounts/dashboard.html", context=context)
 
@@ -105,12 +112,15 @@ def register(request):
 
                 email = EmailMessage(
                     email_subject,
-                    'Hi '+user.username + ', Please click the link below to activate your account \n'+activate_url,
+                    'Hi '+ user.username + ', Please click the link below to activate your account \n'+ activate_url,
                     'noreply@semycolon.com',
                     [email],
                 )
                 email.send(fail_silently=False)
-                messages.success(request, 'Account successfully created')
+
+                UserExtension.objects.create(user=user, first_time_user=True)
+
+                messages.success(request, 'An email has been sent to you to activate your account')
                 return redirect("register")
         else:
             return render(request, "accounts/register.html")
@@ -151,8 +161,8 @@ def login(request):
                 auth.login(request, user)
                 return redirect("dashboard")
             else:
-                if len(User.objects.filter(username=username)) > 0:
-                    messages.error(request, 'Account is not active,please check your email')
+                if not User.objects.get(username=username).is_active:
+                    messages.error(request, 'Account is not active, please check your email')
                     return redirect("login")
                 else: 
                     messages.error(request, "Invalid credentials")
@@ -190,28 +200,6 @@ def transaction(request):
         return redirect("transaction")
     else:
         return render(request, "accounts/transaction.html", context=context)
-
-
-@login_required(login_url='/accounts/login')
-def price(request):
-    entries = Price.objects.filter(user_id=request.user.id)
-    context = {
-        'entries': entries,
-    }
-
-    if request.method == "POST":
-        name = request.POST["name"]
-        url = request.POST["url"]
-        company = request.POST["company"]
-        # first scrape
-        price = checkPrice(url)
-        date = datetime.datetime.now().strftime("%m/%d/%Y")
-        Price.objects.create(name=name, user_id=request.user.id,
-                             url=url, company=company, priceArr=[price], dateArr=[date])
-
-        return redirect("price")
-    else:
-        return render(request, "accounts/price.html", context=context)
 
 
 @login_required(login_url='/accounts/login')
@@ -268,15 +256,24 @@ def ship(request):
             group_name=name, description=description, members=[owner], contacts=[contact], owner=owner)
         Shipping.objects.create(group=grp, group_name=name, platform=platform, location=location,
                                 base_shipping=base_shipping, free_shipping_min=free_shipping_min, member_count=1)
+        user = UserExtension.objects.filter(user=request.user)
+
+        if len(user) != 0:
+            user[0].phone_number = contact
+            user[0].save()
+        else:
+            UserExtension.objects.create(user=User.objects.get(user_id=request.user.id), phone_number=contact)
 
         return redirect(f'ship/{name}')
     else:
         groups = Shipping.objects.all()
         mygroups = Group.objects.filter(
             members__contains=[request.user.username])
+        user = UserExtension.objects.filter(user=request.user)
         context = {
             'groups': groups,
             'mygroups': mygroups,
+            'contact': user[0].phone_number if len(user) != 0 else ''
         }
         return render(request, "accounts/ship.html", context)
 
@@ -286,12 +283,20 @@ def joinGroup(request):
         contact = request.POST['contact']
         group_name = request.POST['group_name']
         grp = Group.objects.get(pk=group_name)
+        user = UserExtension.objects.filter(user=request.user)
         group_shipping = Shipping.objects.get(pk=group_name)
         grp.members.append(request.user.username)
         grp.contacts.append(contact)
         grp.save()
         group_shipping.member_count += 1
         group_shipping.save()
+
+        if len(user) != 0:
+            user[0].phone_number = contact
+            user[0].save()
+        else:
+            UserExtension.objects.create(user=User.objects.get(user_id=request.user.id), phone_number=contact)
+
         return redirect(f'ship/{group_name}')
 
 
@@ -299,6 +304,7 @@ def joinGroup(request):
 def groupmainpage(request, group_name):
     group = Group.objects.get(group_name=group_name)
     data = Data.objects.filter(group_name=group_name)
+    user = UserExtension.objects.filter(user=request.user)
     # Ensures that the group is locked before allowing members to access this page
     # if group.is_locked:
     #     return redirect('grouplocked', group_name=group_name)
@@ -310,7 +316,8 @@ def groupmainpage(request, group_name):
         'info': group,
         'shipping': Shipping.objects.filter(group_name=group_name)[0],
         'data': data[0] if len(data) != 0 else None,
-        'table_data': tabledata
+        'table_data': tabledata,
+        'contact': user[0].phone_number if len(user) != 0 else ''
     }
     if request.method == 'POST':
         user = request.user.username
@@ -401,7 +408,6 @@ def settings(request):
     u = User.objects.get(username=request.user.username)
     if request.method == "POST":
         # Get form values
-        username = request.POST["newname"]
         currpw = request.POST["currpw"]
         password = request.POST["newpw"]
         user = auth.authenticate(
@@ -657,3 +663,13 @@ def unlockGroup(request):
         grp.is_locked = False
         grp.save()
         return JsonResponse({"success": ""}, status=200)
+
+
+def onboardingFin(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        user = UserExtension.objects.filter(user=request.user)
+
+        if len(user) != 0:
+            user[0].first_time_user = False
+            user[0].save()
+            return JsonResponse({"success": ""}, status=200)

@@ -24,19 +24,6 @@
               novalidate
             >
               {% csrf_token %}
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="newname"
-                  placeholder="newname"
-                  name="newname"
-                  value="{{ request.user.username }}"
-                  required
-                />
-                <label for="newname">Username</label>
-                <div class="invalid-feedback">Please provide username.</div>
-              </div>
               <div class="row justify-content-center gx-0">
                 <div class="form-floating mb-3 password">
                   <input

@@ -7,7 +7,6 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('login', views.login, name='login'),
     path('transaction', views.transaction, name='transaction'),
-    path('price', views.price, name='price'),
     path('delivery', views.delivery, name='delivery'),
     path('ship', views.ship, name='ship'),
     path('settings', views.settings, name='settings'),
@@ -34,5 +33,5 @@ urlpatterns = [
     path('deleteDelivery', views.deleteDelivery, name='deleteDelivery'),
     path('changePaidStatus', views.changePaidStatus, name='changePaidStatus'),
     path('deleteItem', views.deleteItem, name='deleteItem'),
-
+    path('onboardingFin', views.onboardingFin, name='onboardingFin')
 ]

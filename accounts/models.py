@@ -1,10 +1,10 @@
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models.deletion import CASCADE
-from django.db.models.fields.files import ImageField
+from django.db.models.fields import BooleanField
 from django.utils import timezone
-from cloudinary.models import CloudinaryField
 
 
 class Transaction(models.Model):
@@ -82,3 +82,11 @@ class Data(models.Model):
 
     def __str__(self) -> str:
         return self.group_name.group_name
+
+class UserExtension(models.Model):
+    user = models.OneToOneField(User, on_delete=CASCADE)
+    first_time_user = BooleanField(default=False)
+    phone_number = models.PositiveIntegerField(blank=True, null=True)
+
+    def __str__(self) -> str:
+        return self.user.username

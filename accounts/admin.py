@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Deliveries, Group, Shipping, Transaction, Data
+from .models import Deliveries, Group, Shipping, Transaction, Data, UserExtension
 
 
 class TransactionAdmin(admin.ModelAdmin):
@@ -46,8 +46,15 @@ class GroupAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+class UserExtensionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'first_time_user', 'phone_number')
+    list_editable = ('first_time_user',)
+    search_fields = ('user', 'phone_number')
+    list_per_page = 20
+
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Deliveries, DeliveriesAdmin)
 admin.site.register(Shipping, ShippingAdmin)
 admin.site.register(Group, GroupAdmin)
 admin.site.register(Data, DataAdmin)
+admin.site.register(UserExtension, UserExtensionAdmin)

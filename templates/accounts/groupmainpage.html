@@ -89,7 +89,7 @@
                   {% csrf_token %}
                   <div class="form-floating mb-3">
                     <input type="tel" class="form-control" id="contact" placeholder="contact" name="contact"
-                      pattern="[8-9]{1}[0-9]{7}" aria-describedby="contactHelp" required />
+                      pattern="[8-9]{1}[0-9]{7}" aria-describedby="contactHelp" value="{{ contact }}" required />
                     <label for="group-name">Contact Number</label>
                     <div class="invalid-feedback">
                       Please provide valid contact number.
