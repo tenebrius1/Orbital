@@ -667,10 +667,10 @@ def leaveGroup(request):
 
 def lockGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        # group_name = request.GET['name']
-        # grp = Group.objects.get(pk=group_name)
-        # grp.is_locked = True
-        # grp.save()
+        group_name = request.GET['name']
+        grp = Group.objects.get(pk=group_name)
+        grp.is_locked = True
+        grp.save()
         return JsonResponse({"success": ""}, status=200)
 
 

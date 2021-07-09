@@ -1,6 +1,9 @@
 {% extends 'dashboard_base.html' %} {% load static %} {% load mathfilters %} 
 {% load cloudinary %} {% block title %}: ShipTogether{% endblock %} 
 {% block header %}
+<link rel="preconnect" href="https://shopbud.disqus.com" />
+<link rel="preconnect" href="https://c.disquscdn.com" />
+<link href="{% static 'css/grouplocked.css' %}" rel="preload" as="style" />
 <link href="{% static 'css/grouplocked.css' %}" rel="stylesheet" />
 {% endblock %} {% block content %}
 <main class="content">
