@@ -3,24 +3,23 @@
 
 {% block title %}: Home {% endblock %}
 {% block header %}
-<link href="{% static 'css/_login_signup.css' %}" rel="stylesheet">
-<!-- Template Main CSS File -->
+<link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="preload" as="style">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="preload" as="style"/>
 <link href="{% static 'css/style.css' %}" rel="stylesheet">
-<link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-<link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="prestylesheetload">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" >
+<link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-<!-- Favicons -->
-<link href="{% static 'img/favicon.png' %}" rel="icon">
-<link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
 <!-- Google Fonts -->
 <link
     href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
     rel="stylesheet">
+
+<!-- Favicons -->
+<link href="{% static 'img/favicon.png' %}" rel="icon">
+<link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 {% endblock %}
 
 {% block content %}
@@ -36,7 +35,6 @@
 
         <nav id="navbar" class="navbar">
             <ul>
-                <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
                 <li><a class="nav-link scrollto" href="#about">About</a></li>
                 <li><a class="nav-link scrollto" href="#features">Services</a></li>
                 <a class="btn btn-sm rounded-pill login" href="{% url 'login' %}" role="button">Log in</a>

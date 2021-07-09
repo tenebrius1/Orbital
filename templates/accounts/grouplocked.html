@@ -1,5 +1,5 @@
-{% extends 'dashboard_base.html' %} {% load static %} {% load mathfilters %}
-{% load cloudinary %} {% block title %}: ShipTogether{% endblock %}
+{% extends 'dashboard_base.html' %} {% load static %} {% load mathfilters %} 
+{% load cloudinary %} {% block title %}: ShipTogether{% endblock %} 
 {% block header %}
 <link href="{% static 'css/grouplocked.css' %}" rel="stylesheet" />
 {% endblock %} {% block content %}
@@ -7,45 +7,77 @@
   <div class="container-fluid p-0">
     <div class="d-flex bd-highlight">
       <div class="p-2 flex-grow-1 bd-highlight">
-        <h1 class="h2" id="group_name">{{ info.group_name }}
+        <h1 class="h2" id="group_name">
+          {{ info.group_name }}
           <span>
-            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#info">
-            <i class="bi bi-info-circle"> Info</i>
-          </button>
-        </span>
+            <button
+              type="button"
+              class="btn"
+              data-bs-toggle="modal"
+              data-bs-target="#info"
+            >
+              <i class="bi bi-info-circle"> Info</i>
+            </button>
+          </span>
         </h1>
 
         <!-- Modal -->
-        <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div
+          class="modal fade"
+          id="info"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 {% if info.owner == request.user.username %}
-                <h5 class="modal-title" id="exampleModalLabel">Instructions for owner</h5>
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Instructions for owner
+                </h5>
                 {% else %}
-                <h5 class="modal-title" id="exampleModalLabel">Instructions for members</h5>
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Instructions for members
+                </h5>
                 {% endif %}
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
               <div class="modal-body">
                 {% if info.owner == request.user.username %}
                 <p>
-                  You are advised to collect payment from group members before ordering. Alternatively, you can contact your members using the contact number given to agree on a payment method. 
+                  You are advised to collect payment from group members before
+                  ordering. Alternatively, you can contact your members using
+                  the contact number given to agree on a payment method.
                 </p>
                 <p>
-                  Do update order details section and upload proof of order after purchasing the items.
+                  Do update order details section and upload proof of order
+                  after purchasing the items.
                 </p>
                 {% else %}
                 <p>
-                  Please contact owner to settle payment arrangements. Total amount payable is under the summary section.
+                  Please contact owner to settle payment arrangements. Total
+                  amount payable is under the summary section.
                 </p>
                 {% endif %}
                 <p>
-                  If you encounter any issues, you can report it to us at <a href="{% url 'report' %}">this page</a>.
+                  If you encounter any issues, you can report it to us at
+                  <a href="{% url 'report' %}">this page</a>.
                 </p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
@@ -53,94 +85,204 @@
       </div>
       {% if info.owner == request.user.username %}
       <div class="p-2 bd-highlight">
-        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#sendupdates">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-left-text" viewBox="0 0 16 16">
-            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-            <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+        <button
+          type="button"
+          class="btn"
+          data-bs-toggle="modal"
+          data-bs-target="#sendupdates"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            class="bi bi-chat-left-text"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+            />
+            <path
+              d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"
+            />
           </svg>
           Send Updates
         </button>
-        <div class="modal fade" id="sendupdates" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
+        <div
+          class="modal fade"
+          id="sendupdates"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="unlockgroupLabel">Send Updates</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
               <div class="modal-body">
                 <form
-              class="needs-validation"
-              action="{% url 'report' %}"
-              method="POST"
-              id="settings_form"
-              novalidate
-            >
-              {% csrf_token %}
-              <div class="input-group mb-3">
-                <span class="input-group-text">Message to members</span>
-                <textarea
-                  class="form-control"
-                  rows="10"
-                  aria-label="With textarea"
-                ></textarea>
-              </div>
-            </form>
+                  class="needs-validation"
+                  method="POST"
+                  id="update_form"
+                  action="{% url 'sendUpdate' %}"
+                  novalidate
+                >
+                  {% csrf_token %}
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Message to members</span>
+                    <textarea
+                      class="form-control"
+                      rows="3"
+                      name="message"
+                      required
+                    ></textarea>
+                  </div>
+                  <div class="input-group mb-3" hidden aria-hidden="">
+                    <input
+                      class="form-control"
+                      name="group"
+                      value="{{info.group_name}}"
+                    >
+                  </div>
+                </form>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success">Send</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  form="update_form"
+                >
+                  Send
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="p-2 bd-highlight">
-        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#unlockgroup">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-unlock-fill" viewBox="0 0 16 16">
-            <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z"/>
+        <button
+          type="button"
+          class="btn"
+          data-bs-toggle="modal"
+          data-bs-target="#unlockgroup"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            class="bi bi-unlock-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z"
+            />
           </svg>
           Unlock group
         </button>
-        <div class="modal fade" id="unlockgroup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div
+          class="modal fade"
+          id="unlockgroup"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="unlockgroupLabel">Unlock Group</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
-              <div class="modal-body">
-                Click on "Confirm" to proceed.
-              </div>
+              <div class="modal-body">Click on "Confirm" to proceed.</div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success unlock">Confirm</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-success unlock">
+                  Confirm
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="p-2 bd-highlight">
-        <button type="button" class="btn delete_button" data-bs-toggle="modal" data-bs-target="#deletegroup">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash-fill"
-            viewBox="0 0 16 16">
+        <button
+          type="button"
+          class="btn delete_button"
+          data-bs-toggle="modal"
+          data-bs-target="#deletegroup"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            class="bi bi-trash-fill"
+            viewBox="0 0 16 16"
+          >
             <path
-              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+            />
           </svg>
           Delete group
         </button>
-        <div class="modal fade" id="deletegroup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div
+          class="modal fade"
+          id="deletegroup"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="deletegroupLabel">Delete Group</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
               <div class="modal-body">
-                <b>WARNING</b>: Deleting of group is an <b>IRREVERSIBLE</b> action. Click on "Confirm" to proceed.
+                <b>WARNING</b>: Deleting of group is an
+                <b>IRREVERSIBLE</b> action. Click on "Confirm" to proceed.
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success delete">Confirm</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-success delete">
+                  Confirm
+                </button>
               </div>
             </div>
           </div>
@@ -196,11 +338,9 @@
                     <td>
                       ${{ user_total|addition:shipping_fee|floatformat:2 }}
                     </td>
-                    {% endwith %}
-                    {% else %}
+                    {% endwith %} {% else %}
                     <td>${{ user_total|floatformat:2 }}</td>
-                    {% endif %}
-                    {% endif %}
+                    {% endif %} {% endif %}
                   </tr>
                   <!-- <tr>
                     <td><i data-feather="user"></i>
@@ -256,10 +396,18 @@
           <table class="table table-hover my-0" id="group_data">
             <thead>
               <tr>
-                <th class="sortable asc" onclick="sortTable(0)" style="cursor: pointer">
+                <th
+                  class="sortable asc"
+                  onclick="sortTable(0)"
+                  style="cursor: pointer"
+                >
                   User
                 </th>
-                <th class="sortable" onclick="sortTable(1)" style="cursor: pointer">
+                <th
+                  class="sortable"
+                  onclick="sortTable(1)"
+                  style="cursor: pointer"
+                >
                   Item
                 </th>
                 <th class="text-center">Qty</th>
@@ -322,46 +470,95 @@
                   </div>
                   {% if info.owner == request.user.username %}
                   <div class="bd-highlight text-end">
-                    <a href="#edit" data-bs-toggle="modal" data-bs-target="#edit" title="Edit details">
+                    <a
+                      href="#edit"
+                      data-bs-toggle="modal"
+                      data-bs-target="#edit"
+                      title="Edit details"
+                    >
                       <i data-feather="edit-3"></i>
                     </a>
-                    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+                    <div
+                      class="modal fade"
+                      id="edit"
+                      tabindex="-1"
+                      aria-labelledby="edit"
+                      aria-hidden="true"
+                    >
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title" id="edit_label">
                               Edit order details
                             </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
                           </div>
                           <div class="modal-body">
-                            <form class="needs-validation" method="POST" action="{% url 'grouplocked' info.group_name %}"
-                              id="edit_form" novalidate>
+                            <form
+                              class="needs-validation"
+                              method="POST"
+                              action="{% url 'grouplocked' info.group_name %}"
+                              id="edit_form"
+                              novalidate
+                            >
                               {% csrf_token %}
                               <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="tkg_number" placeholder="tkg_number"
-                                  name="tkg_number" value="{{ info.tkg_number }}" required />
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="tkg_number"
+                                  placeholder="tkg_number"
+                                  name="tkg_number"
+                                  value="{{ info.tkg_number }}"
+                                  required
+                                />
                                 <label for="tkg_number">Tracking Number:</label>
                                 <div class="invalid-feedback">
                                   Please provide item name.
                                 </div>
                               </div>
                               <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="courier" placeholder="courier" name="courier"
-                                  value="{{ info.courier }}" required />
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="courier"
+                                  placeholder="courier"
+                                  name="courier"
+                                  value="{{ info.courier }}"
+                                  required
+                                />
                                 <label for="courier">Courier:</label>
                                 <div class="invalid-feedback">
                                   Please provide quantity.
                                 </div>
                               </div>
                               <div class="form-floating mb-3">
-                                <input class="form-control" id="date" type="date" placeholder="date" name="date"
-                                  value="{{ date }}" required />
+                                <input
+                                  class="form-control"
+                                  id="date"
+                                  type="date"
+                                  placeholder="date"
+                                  name="date"
+                                  value="{{ date }}"
+                                  required
+                                />
                                 <label for="date">Meetup date:</label>
                               </div>
                               <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="address" placeholder="address" name="address"
-                                  value="{{ info.address }}" required />
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="address"
+                                  placeholder="address"
+                                  name="address"
+                                  value="{{ info.address }}"
+                                  required
+                                />
                                 <label for="address">Address:</label>
                                 <div class="invalid-feedback">
                                   Please provide valid URL.
@@ -370,10 +567,18 @@
                             </form>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >
                               Cancel
                             </button>
-                            <button type="submit" class="btn btn-success" form="edit_form">
+                            <button
+                              type="submit"
+                              class="btn btn-success"
+                              form="edit_form"
+                            >
                               Add item
                             </button>
                           </div>
@@ -429,36 +634,76 @@
               </div>
               <div class="bd-highlight text-end">
                 {% if info.owner == request.user.username %}
-                <a href="#upload" data-bs-toggle="modal" data-bs-target="#upload" title="Upload screenshot">
+                <a
+                  href="#upload"
+                  data-bs-toggle="modal"
+                  data-bs-target="#upload"
+                  title="Upload screenshot"
+                >
                   <i data-feather="upload"></i>
                 </a>
                 {% endif %}
-                <div class="modal fade" id="upload" tabindex="-1" aria-labelledby="upload_label" aria-hidden="true"
-                  role="dialog">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
+                <div
+                  class="modal fade"
+                  id="upload"
+                  tabindex="-1"
+                  aria-labelledby="upload_label"
+                  aria-hidden="true"
+                  role="dialog"
+                >
+                  <div
+                    class="modal-dialog modal-dialog-centered"
+                    role="document"
+                  >
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="upload_label">
                           Upload Screenshot
                         </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
                       </div>
                       <div class="modal-body">
-                        <form method="POST" id="upload_form" action="{% url 'uploadImage' %}"
-                          enctype="multipart/form-data">
+                        <form
+                          method="POST"
+                          id="upload_form"
+                          action="{% url 'uploadImage' %}"
+                          enctype="multipart/form-data"
+                        >
                           {% csrf_token %}
                           <div class="d-flex justify-content-start">
                             <label class="me-1" for="img">Select image:</label>
-                            <input type="file" id="img" name="img" accept="image/*" />
-                            <input type="hidden" name="group_name" value="{{ info.group_name }}" />
+                            <input
+                              type="file"
+                              id="img"
+                              name="img"
+                              accept="image/*"
+                            />
+                            <input
+                              type="hidden"
+                              name="group_name"
+                              value="{{ info.group_name }}"
+                            />
                           </div>
                         </form>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
                           Cancel
                         </button>
-                        <button type="submit" class="btn btn-success" form="upload_form">
+                        <button
+                          type="submit"
+                          class="btn btn-success"
+                          form="upload_form"
+                        >
                           Upload
                         </button>
                       </div>
@@ -470,8 +715,10 @@
           </div>
           {% if info.scrnshot.url != None %}
           <div class="card-body text-center">
-            <a href="{{ info.scrnshot.url }}"
-              data-glightbox="type: image; effect: fade; width: 450px; height: 150px; zoomable: true; draggable: true;">
+            <a
+              href="{{ info.scrnshot.url }}"
+              data-glightbox="type: image; effect: fade; width: 450px; height: 150px; zoomable: true; draggable: true;"
+            >
               {% cloudinary info.scrnshot format='jpg' height='150' %}
             </a>
           </div>
@@ -523,11 +770,15 @@
     </div>
   </div>
   <div id="disqus_thread"></div>
-  <div id="group_name_data" hidden='true'>{{ info.group_name }}</div>
+  <div id="group_name_data" hidden="true">{{ info.group_name }}</div>
 </main>
 {% endblock %} {% block script %}
 <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
 <script src="{% static 'js/grouplocked.js' %}"></script>
-<noscript>Please enable JavaScript to view the
-  <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript" rel="nofollow"
+    >comments powered by Disqus.</a
+  ></noscript
+>
 {% endblock %}

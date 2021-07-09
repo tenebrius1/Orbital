@@ -17,8 +17,10 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from environs import Env
+from notifications.signals import notify
 
-from .models import Data, Deliveries, Group, Shipping, Transaction, UserExtension
+from .models import (Data, Deliveries, Group, Shipping, Transaction,
+                     UserExtension)
 from .utils import account_activation_token
 
 # Set up environ
@@ -76,7 +78,8 @@ def register(request):
             try:
                 validate_password(password)
             except:
-                messages.error(request, password_validators_help_texts(password_validators=None))
+                messages.error(request, password_validators_help_texts(
+                    password_validators=None))
                 return redirect("register")
 
             # Check email
@@ -112,7 +115,8 @@ def register(request):
 
                 email = EmailMessage(
                     email_subject,
-                    'Hi '+ user.username + ', Please click the link below to activate your account \n'+ activate_url,
+                    'Hi ' + user.username +
+                    ', Please click the link below to activate your account \n' + activate_url,
                     'noreply@semycolon.com',
                     [email],
                 )
@@ -120,10 +124,12 @@ def register(request):
 
                 UserExtension.objects.create(user=user, first_time_user=True)
 
-                messages.success(request, 'An email has been sent to you to activate your account')
+                messages.success(
+                    request, 'An email has been sent to you to activate your account')
                 return redirect("register")
         else:
             return render(request, "accounts/register.html")
+
 
 def activate(request, uidb64, token):
     try:
@@ -147,6 +153,7 @@ def activate(request, uidb64, token):
 
     return redirect('login')
 
+
 def login(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
@@ -162,9 +169,10 @@ def login(request):
                 return redirect("dashboard")
             else:
                 if not User.objects.get(username=username).is_active:
-                    messages.error(request, 'Account is not active, please check your email')
+                    messages.error(
+                        request, 'Account is not active, please check your email')
                     return redirect("login")
-                else: 
+                else:
                     messages.error(request, "Invalid credentials")
                     return redirect("login")
         else:
@@ -227,15 +235,15 @@ def delivery(request):
 
         r = requests.post(
             url="https://api.trackingmore.com/v3/trackings/realtime", headers=header, json=params)
-        
+
         if r.json()["data"]["delivery_status"] == "notfound":
             messages.error(request, " ")
             return redirect("delivery")
         else:
             Deliveries.objects.create(name=name, user_id=request.user.id, tkg_number=tkg_number,
-                                  courier_code=courier_code, courier_name=courier_name)
+                                      courier_code=courier_code, courier_name=courier_name)
             return redirect("delivery")
-        
+
     else:
         return render(request, "accounts/delivery.html", context=context)
 
@@ -262,7 +270,8 @@ def ship(request):
             user[0].phone_number = contact
             user[0].save()
         else:
-            UserExtension.objects.create(user=User.objects.get(user_id=request.user.id), phone_number=contact)
+            UserExtension.objects.create(user=User.objects.get(
+                user_id=request.user.id), phone_number=contact)
 
         return redirect(f'ship/{name}')
     else:
@@ -295,7 +304,8 @@ def joinGroup(request):
             user[0].phone_number = contact
             user[0].save()
         else:
-            UserExtension.objects.create(user=User.objects.get(user_id=request.user.id), phone_number=contact)
+            UserExtension.objects.create(user=User.objects.get(
+                user_id=request.user.id), phone_number=contact)
 
         return redirect(f'ship/{group_name}')
 
@@ -393,6 +403,20 @@ def grouplocked(request, group_name):
         return render(request, "accounts/grouplocked.html", context)
 
 
+def sendUpdate(request):
+    if request.method == 'POST':
+        msg = request.POST['message']
+        group_name = request.POST['group']
+        grp = Group.objects.get(pk=group_name)
+        users = grp.members
+        for user in users:
+            if user != request.user.username:
+                notify.send(request.user, recipient=User.objects.get(
+                    username=user), verb=msg, description="message", group=group_name)
+
+        return redirect('grouplocked', group_name=group_name)
+
+
 def uploadImage(request):
     if request.method == 'POST':
         name = request.POST['group_name']
@@ -451,7 +475,7 @@ def forgetpassword(request):
             }
 
             link = reverse('resetpw', kwargs={
-                            'uidb64': email_body['uid'], 'token': email_body['token']})
+                'uidb64': email_body['uid'], 'token': email_body['token']})
 
             email_subject = 'Reset your Password'
 
@@ -468,24 +492,27 @@ def forgetpassword(request):
 
     return render(request, "accounts/forgetpassword.html")
 
+
 def resetpw(request, uidb64, token):
-    context = {'uidb64':uidb64, 'token':token}
+    context = {'uidb64': uidb64, 'token': token}
     if request.method == "POST":
         newpw = request.POST["password"]
         user_id = force_text(urlsafe_base64_decode(uidb64))
-        user=User.objects.get(pk=user_id)
-        
+        user = User.objects.get(pk=user_id)
+
         try:
             validate_password(newpw)
         except:
-            messages.error(request, password_validators_help_texts(password_validators=None))
+            messages.error(request, password_validators_help_texts(
+                password_validators=None))
             return redirect("resetpw", uidb64=uidb64, token=token)
-        user.set_password(newpw)        
+        user.set_password(newpw)
         user.save()
         messages.success(request, "Password reset successfully")
         return redirect("login")
-        
-    return render(request, "accounts/resetpw.html",context)
+
+    return render(request, "accounts/resetpw.html", context)
+
 
 def resetpasswordsuccess(request):
     return render(request, "accounts/resetpasswordsuccess.html")
@@ -640,10 +667,22 @@ def leaveGroup(request):
 
 def lockGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        # group_name = request.GET['name']
+        # grp = Group.objects.get(pk=group_name)
+        # grp.is_locked = True
+        # grp.save()
+        return JsonResponse({"success": ""}, status=200)
+
+
+def sendNotification_locked(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         group_name = request.GET['name']
         grp = Group.objects.get(pk=group_name)
-        grp.is_locked = True
-        grp.save()
+        users = grp.members
+        for user in users:
+            if user != request.user.username:
+                notify.send(request.user, recipient=User.objects.get(
+                    username=user), verb=grp.group_name + ' has been locked!', description="info")
         return JsonResponse({"success": ""}, status=200)
 
 
@@ -655,6 +694,7 @@ def deleteGroup(request):
         grp = Group.objects.get(pk=group_name)
         grp.delete()
         return JsonResponse({"success": ""}, status=200)
+
 
 def unlockGroup(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -673,3 +713,10 @@ def onboardingFin(request):
             user[0].first_time_user = False
             user[0].save()
             return JsonResponse({"success": ""}, status=200)
+
+
+def clearNotifications(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        user = User.objects.get(username=request.user.username)
+        user.notifications.mark_all_as_read()
+        return JsonResponse({"success": ""}, status=200)

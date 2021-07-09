@@ -38,8 +38,8 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
-    'pages.apps.PagesConfig',
-    'accounts.apps.AccountsConfig',
+    'pages',
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,9 +52,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+    'notifications',
     'cloudinary',
     'cloudinary_storage',
-    'scraping',
     'mathfilters',
 ]
 
@@ -135,6 +135,8 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
+DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -182,7 +184,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
-
 
 EMAIL_HOST = env.str('EMAIL_HOST')
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')

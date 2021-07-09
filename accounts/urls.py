@@ -24,6 +24,7 @@ urlpatterns = [
     path('uploadImage', views.uploadImage, name='uploadImage'),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('resetpw/<uidb64>/<token>', views.resetpw, name='resetpw'),
+    path('sendUpdate',views.sendUpdate, name='sendUpdate'),
 
     # Handles AJAX requests
     path('deleteTransaction', views.deleteTransaction, name='deleteTransaction'),
@@ -33,5 +34,7 @@ urlpatterns = [
     path('deleteDelivery', views.deleteDelivery, name='deleteDelivery'),
     path('changePaidStatus', views.changePaidStatus, name='changePaidStatus'),
     path('deleteItem', views.deleteItem, name='deleteItem'),
-    path('onboardingFin', views.onboardingFin, name='onboardingFin')
+    path('onboardingFin', views.onboardingFin, name='onboardingFin'),
+    path('sendNotification_locked', views.sendNotification_locked, name='sendNotification_locked'),
+    path('clearNotifications', views.clearNotifications, name='clearNotifications'),
 ]

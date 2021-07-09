@@ -189,10 +189,10 @@
   </div>
 </main>
 {% endblock %} {% block script %}
-<script src="{% static 'js/dashboard.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/intro.js@4.1.0/intro.min.js"></script>
+<script async src="{% static 'js/dashboard.js' %}"></script>
 
 {% if first_time %}
+<script src="https://cdn.jsdelivr.net/npm/intro.js@4.1.0/intro.min.js"></script>
 <script>
   introJs().setOptions({
     showBullets: false,

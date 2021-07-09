@@ -175,7 +175,14 @@ $(document).on("click", ".lock", function () {
       name: $("#group_name").text(),
     },
     success: function (response) {
-      redirect_locked($("#group_name").text());
+      // redirect_locked($("#group_name").text());
+    },
+  });
+  $.ajax({
+    type: "GET",
+    url: "/accounts/sendNotification_locked",
+    data: {
+      name: $("#group_name").text(),
     },
   });
 });
