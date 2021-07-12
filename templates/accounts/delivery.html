@@ -80,8 +80,8 @@
     <div class="row">
       <div class="card flex-fill w-100">
         <div class="card-header">
-          <!-- <h5 class="card-title mb-0">Deliveries</h5> -->
         </div>
+        {% if deliveries %}
         <table class="table table-hover my-0" id="transaction_data">
           <thead>
             <tr>
@@ -122,12 +122,22 @@
             {% endfor %}
           </tbody>
         </table>
+        {% else %}
+        <div class="text-center justify-content-center p-3">
+          <span class="smiley-180">😥</span>
+          <span class="note">There are no deliveries to be tracked</span>
+        </div>
+        {% endif %}
       </div>
     </div>
+    {% if deliveries %}
     <div id="tm-my-tp-container" data-key="1qRX1ZieyN1pmJpqZWpnl9+gwpqWh6Sh"></div>
+    {% endif %}
   </div>
 </main>
 {% endblock %} {% block script %}
 <script async src="{% static 'js/delivery.js' %}"></script>
+{% if deliveries %}
 <script async src="https://s.trackingmore.com/track/js/20210111.js"></script>
+{% endif %}
 {% endblock %}

@@ -181,10 +181,10 @@ def login(request):
 
 @login_required(login_url='/accounts/login')
 def transaction(request):
-    month = datetime.datetime.now()
+    # month = datetime.datetime.now()
     transactions = Transaction.objects.filter(user_id=request.user.id)
     context = {
-        'month': month,
+        # 'month': month,
         'transactions': transactions,
     }
     if request.method == "POST":
