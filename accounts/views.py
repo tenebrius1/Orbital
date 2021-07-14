@@ -56,11 +56,14 @@ def dashboard(request):
     if len(user) == 0 or not user[0].first_time_user:
         first_time = False
 
+    platforms = user[0].platforms
+
     context = {
         'deliveries': deliveries if len(deliveries) != 0 else None,
         'mygroups': zip(mygroups, platform) if len(mygroups) != 0 else None,
         'first_time': first_time,
         'transactions': True if len(expense) != 0 else False,
+        'platforms': platforms,
     }
     return render(request, "accounts/dashboard.html", context=context)
 
@@ -547,7 +550,6 @@ def displayExpenses(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         transactions = Transaction.objects.filter(user_id=request.user.id)
         platforms = UserExtension.objects.get(user_id=request.user.id).platforms
-        print(platforms)
         response = {}
         for platform in platforms:
             response[platform] = transactions.filter(company=platform).aggregate(

@@ -1,25 +1,35 @@
+function capitalize(word) {
+  return word.replace(/^\w/, (c) => c.toUpperCase());
+}
+
 function displayExpenses() {
   $.ajax({
-    type: "GET",
-    url: "/accounts/displayExpenses",
+    type: 'GET',
+    url: '/accounts/displayExpenses',
     success: function (response) {
-      new Chart(document.getElementById("chartjs-dashboard-pie"), {
-        type: "pie",
+      let platforms = Object.keys(response);
+      let dataset = [];
+      let colors = [];
+      var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return 'rgb(' + r + ',' + g + ',' + b + ')';
+      };
+      for (var i = 0, len = platforms.length; i < len; i++) {
+        dataset.push(response[platforms[i]]);
+        $(`.${platforms[i]}`).text(`$${response[platforms[i]]}`);
+        platforms[i] = capitalize(platforms[i]);
+        colors.push(dynamicColors());
+      }
+      new Chart(document.getElementById('chartjs-dashboard-pie'), {
+        type: 'pie',
         data: {
-          labels: ["Lazada", "Shopee", "Amazon", "Others"],
+          labels: platforms,
           datasets: [
             {
-              data: [
-                response["lazada"],
-                response["shopee"],
-                response["amazon"],
-                response["others"],
-              ],
-              backgroundColor: [
-                window.theme.primary,
-                window.theme.warning,
-                window.theme.danger,
-              ],
+              data: dataset,
+              backgroundColor: colors,
               borderWidth: 5,
             },
           ],
@@ -33,19 +43,6 @@ function displayExpenses() {
           cutoutPercentage: 75,
         },
       });
-
-      $(".amazon").text(
-        "$" + (response["amazon"] ? response["amazon"] : "0.00")
-      );
-      $(".lazada").text(
-        "$" + (response["lazada"] ? response["lazada"] : "0.00")
-      );
-      $(".shopee").text(
-        "$" + (response["shopee"] ? response["shopee"] : "0.00")
-      );
-      $(".others").text(
-        "$" + (response["others"] ? response["others"] : "0.00")
-      );
     },
   });
 }

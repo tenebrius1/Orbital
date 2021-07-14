@@ -36,34 +36,14 @@
               </div>
               <table class="table mb-0">
                 <tbody>
+                  {% for platform in platforms %}
                   <tr>
                     <td>
-                      Amazon
-                      <i class="bi bi-circle-fill" style="color: #dc3545"></i>
+                      {{ platform |title }}
                     </td>
-                    <td class="text-end amazon">Loading...</td>
+                    <td class="text-end {{ platform }}">Loading...</td>
                   </tr>
-                  <tr>
-                    <td>
-                      Lazada
-                      <i class="bi bi-circle-fill" style="color: #3b7ddd"></i>
-                    </td>
-                    <td class="text-end lazada">Loading...</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Shopee
-                      <i class="bi bi-circle-fill" style="color: #fcb92c"></i>
-                    </td>
-                    <td class="text-end shopee">Loading...</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Others
-                      <i class="bi bi-circle-fill" style="color: #6c757d"></i>
-                    </td>
-                    <td class="text-end others">Loading...</td>
-                  </tr>
+                  {% endfor %}
                 </tbody>
               </table>
             </div>
