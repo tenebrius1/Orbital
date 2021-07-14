@@ -11,7 +11,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.db.models import Sum
-from django.http import JsonResponse
+from django.http import JsonResponse, response
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_text
@@ -183,14 +183,20 @@ def login(request):
 def transaction(request):
     # month = datetime.datetime.now()
     transactions = Transaction.objects.filter(user_id=request.user.id)
+    userext = UserExtension.objects.get(user_id=request.user.id)
     context = {
         # 'month': month,
         'transactions': transactions,
+        'platforms': userext.platforms,
     }
     if request.method == "POST":
         name = request.POST["name"].lower()
         date = request.POST["date"]
-        company = request.POST["company"]
+        company = request.POST["company"].lower()
+
+        if company not in userext.platforms:
+            userext.platforms.append(company)
+            userext.save()
 
         # Formats price to be in 2 decimal place
         price = request.POST["price"]
@@ -523,11 +529,16 @@ def deleteTransaction(request):
         item = request.POST.get("name").lower()
         date = request.POST.get("date")
         price = request.POST.get("price")[1:]
-        company = request.POST.get("company")
+        company = request.POST.get("company").lower()
 
         dlt = Transaction.objects.filter(
             item=item, date=date, price=price, company=company, user_id=request.user.id)[0]
         dlt.delete()
+
+        if len(Transaction.objects.filter(company=company)) == 0:
+            userext = UserExtension.objects.get(user_id=request.user.id)
+            userext.platforms.remove(company)
+            userext.save()
 
         return JsonResponse({"success": ""}, status=200)
 
@@ -535,21 +546,14 @@ def deleteTransaction(request):
 def displayExpenses(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         transactions = Transaction.objects.filter(user_id=request.user.id)
-        lazada = transactions.filter(company="Lazada").aggregate(
-            Sum('price'))['price__sum']
-        shopee = transactions.filter(company="Shopee").aggregate(
-            Sum('price'))['price__sum']
-        amazon = transactions.filter(company="Amazon").aggregate(
-            Sum('price'))['price__sum']
-        others = transactions.filter(company="Others").aggregate(
+        platforms = UserExtension.objects.get(user_id=request.user.id).platforms
+        print(platforms)
+        response = {}
+        for platform in platforms:
+            response[platform] = transactions.filter(company=platform).aggregate(
             Sum('price'))['price__sum']
 
-        return JsonResponse({
-            "lazada": lazada,
-            "shopee": shopee,
-            "amazon": amazon,
-            "others": others,
-        }, status=200)
+        return JsonResponse(response, status=200)
 
 
 def editTransaction(request):
@@ -557,7 +561,7 @@ def editTransaction(request):
         oItem = request.POST.get("oItem").lower()
         oDate = request.POST.get("oDate")
         oPrice = request.POST.get("oPrice")[1:]
-        oCom = request.POST.get("oCom")
+        oCom = request.POST.get("oCom").lower()
         oEntry = Transaction.objects.get(
             item=oItem, date=oDate, price=oPrice, company=oCom)
 
@@ -565,8 +569,20 @@ def editTransaction(request):
         oEntry.date = request.POST.get("nDate")
         oEntry.price = float("{:.2f}".format(
             float(request.POST.get("nPrice"))))
-        oEntry.company = request.POST.get("nCom")
+        oEntry.company = request.POST.get("nCom").lower()
         oEntry.save()
+
+        if len(Transaction.objects.filter(company=oCom)) == 0:
+            userext = UserExtension.objects.get(user_id=request.user.id)
+            userext.platforms.remove(oCom)
+            if request.POST.get("nCom").lower() not in userext.platforms:
+                userext.platforms.append(request.POST.get("nCom").lower())
+            userext.save()
+
+        if request.POST.get("nCom").lower() not in UserExtension.objects.get(user_id=request.user.id).platforms:
+            userext = UserExtension.objects.get(user_id=request.user.id)
+            userext.platforms.append(request.POST.get("nCom").lower())
+            userext.save()
 
         return JsonResponse({"success": ""}, status=200)
 

@@ -47,8 +47,8 @@ class GroupAdmin(admin.ModelAdmin):
 
 
 class UserExtensionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'first_time_user', 'phone_number')
-    list_editable = ('first_time_user',)
+    list_display = ('user', 'first_time_user', 'phone_number', 'platforms')
+    list_editable = ('first_time_user', 'platforms')
     search_fields = ('user', 'phone_number')
     list_per_page = 20
 

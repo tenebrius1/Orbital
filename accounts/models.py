@@ -87,6 +87,7 @@ class UserExtension(models.Model):
     user = models.OneToOneField(User, on_delete=CASCADE)
     first_time_user = BooleanField(default=False)
     phone_number = models.PositiveIntegerField(blank=True, null=True)
+    platforms = ArrayField(models.CharField(max_length=20), default=list, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.user.username
