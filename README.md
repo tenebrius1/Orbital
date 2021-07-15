@@ -40,6 +40,10 @@ View the libraries/dependencies that we used to create our webapp [here](https:/
 
 View our User Guide [here](https://github.com/tenebrius1/shopbud/wiki/ShopBud-User-Guide).
 
+## Developer Guide
+
+View our Developer Guide [here](https://github.com/tenebrius1/shopbud/wiki/ShopBud-Developer-Guide)
+
 ## License
 
 This project uses [Apache License 2.0](https://github.com/tenebrius1/shopbud/blob/main/LICENSE).
