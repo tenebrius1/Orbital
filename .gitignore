@@ -171,5 +171,3 @@ Thumbs.db
 /staticfiles
 /node_modules
 .env
-user_guide.md
-dev_guide.adoc

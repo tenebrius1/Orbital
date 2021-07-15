@@ -1,0 +1,277 @@
+= ShopBud Developer Guide
+:toc:
+:sectnums:
+:xrefstyle: full
+:icons: font
+:experimental:
+:source-highlighter: highlight.js
+:figure-caption!:
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:warning-caption: :warning:
+endif::[]
+
+== Setting up
+
+=== Prerequisites
+
+. Python `3.9.x`
+. Visual Studio Code
+
+NOTE: You can download VSCode https://code.visualstudio.com/[here] and the latest version of python https://www.python.org/[here].
+
+[#Setting-Ext]
+=== Extensions for VSCode (Recommended)
+
+These are some extensions that we have used to assist us during our development process:
+
+. Auto Close Tag
+. Auto Rename Tag
+. Django
+. HTML CSS Support
+. Prettier
+
+=== Setting up the project in your computer
+
+. Go to https://github.com/tenebrius1/shopbud, click on the green _Code_ button and copy the HTTPS link.
+. Open a new VSCode instance, go to the source control tab (kbd:[Ctrl+Shift+G]) and click _Clone Repository_.
+. Paste the link you copied and hit Enter.
+. Create a new virtual environment by typing `$ python -m venv venv`. This will create a directory called venv inside your project directory.
+. Activate your virtual environment by typing `$ source venv/bin/activate` for mac users or `$ venv/Scripts/Activate` for Windows users.
+. Install the required dependencies by typing `$ pip install -r requirements.txt`.
++
+NOTE: You can view our complete tech stack https://docs.google.com/document/d/1l4UlsGf9LmCwoKB5_YWZ3GzQotKH8sjJPMXLMt3Rzsw/edit[here] to see what each of the dependency do.
+. Set up the environment variables by following the instructions <<Setting-Env, here>>.
+. To verify that you have installed the dependencies correctly, type `$ python manage.py runserver`. The output should be something like this: 
++
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1625336114/screenshots/runserver_jse9yf.png[runserver screenshot, align=center]
+. Open a browser and type http://127.0.0.1:8000 or localhost:8000 to access the development server.
+
+[#Setting-Env]
+=== Setting up Environment Variables
+
+. In your project directory, find a file named .env.example and rename it to .env
+. Under Django configs, set `SECRET_KEY` to be your own secret key, set `DEBUG` to be `True` so that you can see debug messages while developing and `ALLOWED_HOSTS` to be `['*']`.
++
+WARNING: Please remember to have a separate environment setting for your production server whereby `DEBUG` is set to `False` and `ALLOWED_HOSTS` is configured to only contain trusted hosts!
+. To get a PostgreSQL server, you can either use a local postgres server or provision a cloud server yourself. We opted to to provision a cloud server using https://www.heroku.com/[Heroku] for free. Once you have a postgres server running simply fill in `DATABASE_URL` with the URL of your server.
+
+NOTE: These are the important environment variables that you must set before running the development server. There are few more environment variables that you would be required to configure for the APIs that we are using to work.
+
+=== Configuring the coding style
+
+This project follows the https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#code-style[black code style] for all python codes and https://prettier.io/[Prettier code format] for all HTML, CSS and Javascript files.
+
+To install black code formatter, simply type `$ pip install black`. To use black as the default formatter for VSCode, select menu:File[Preferences > Settings] and search for "python formatting provider" in the search bar. Then change this setting to black instead of autopep8 which is the default python formatter.
+
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1625392256/screenshots/python_formatter_gvapys.png[python formatter, align=center]
+
+If you have installed the <<Setting-Ext, recommended extensions>> for VSCode, to set Prettier as the default formatter, go to any HTML file, right click on the text area where you would edit your code and click on "`Format Document`". VSCode should prompt you that you have multiple formatters and from there you can select Prettier as your default formatter. Repeat the steps above for CSS and Javascript files.
+
+== Design
+
+=== Program Flow
+
+==== Diagram of our program flow
+
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1625977079/Program_Flow_jyq4nt.svg[program flow diagram]
+
+=== Database Overview
+
+==== Diagram of our Database
+
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1625978143/Database_lbi238.webp[database diagram]
+
+Legend:
+
+  * [red]#Red# - Database
+  * [yellow]#Orange# - Purpose
+  * [navy]#Blue# - Model
+  * [teal]#Green# - Data
+
+==== Structure of Database
+
+We used PostgreSQL, a powerful, open source object-relational database system that uses and extends the SQL language combined with many features that safely store and scale the most complicated data workloads. It is a widely used open source Relational Database Management System (RDBMS) which offers easy vertical scaling due to it being a SQL database. We anticipated our webapp to handle a large amount of data which are interconnected with one another. This was perfect for relational databases such as PostgreSQL since we could connect different tables using one-to-one field, many-to-one fields or by integrating a foreign key into the table we want.
+
+==== Models
+
+There are a total of 6 models in usage, which are all labelled in blue in the figure shown above.
+
+`User` Model: 
+
+  * stores user data (Email, Username, Password & Contact number)
+  * `is_active` and `first_time` represents state of the account
+
+`Transaction` Model: 
+
+  * stores `User` object
+  * stores transaction data, can be edited through the webapp
+
+`Delivery` Model: 
+
+  * stores `User` object
+  * stores delivery data
+  * data stored is used to query API to retrieve data on orders
+
+`Group` Model: 
+
+  * stores group data, which consist of data about each group
+  * owner of group is a `User` object
+  * `is_locked` is a boolean representing the state of the group
+  * `User` array for members and a `String` array to store contact of each member. The data is stored sequentially such that the `User` object at index i of the array has the contact at index i of the `String` array
+  * stores images
+
+`Group_data` Model:
+
+  * stores `Group` object, is updated when the `Group` object is updated
+  * stores various arrays which consist of items purchased by each person. The data is stored sequentially such that the data stored at index i of all the arrays belong to the same `User`
+
+`Shipping` Model:
+
+  * stores `Group` objects
+  * data stored are all information tagged to each group which is stored upon group creation
+
+=== Pages
+
+==== Login/Sign up
+
+  - *Sign up*
+    * Fill in the form on the sign up page. We have implemented both client (Using https://getbootstrap.com/docs/5.0/forms/validation/[Bootstrap's Form Validation]) and server side validation for increased security. The validity of the passsword is done through Django https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-AUTH_PASSWORD_VALIDATORS[password validator feature] to ensure a strong password is used.
+    * By default, Django stores a hashed version of the user's password which is hashed using the PBKDF2 algorithm. If you wish to change the hashing algorithm you can read more about https://docs.djangoproject.com/en/3.2/topics/auth/passwords/[Django's password management].
+    * We also query our Database to ensure that username and emails are not resused.
+    * An email will then be sent from our servers to the email provided and the user would have to click on the link in the email to verify their accounts.
+
+  - *Verification*
+    * Simply click on the link given to activate the account. The link is made via encoding of the `User` object via Base64 encoding and a `Token` object via Django's TokenGenerator.
+
+===== Setting up Email Verification in `.env` file
+
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1626248481/screenshots/email_setup_fmfhkk.jpg[Email set up]
+
+Set up `.env` file with the details in the image above. The content/link of the email can be changed in the file accounts/views.py under `register` method.
+
+NOTE: An example of `EMAIL_HOST` is "smtp.gmail.com" for Gmail.
+
+  - *Login*
+    * For users who already have an account or new users who have completed the activation process, they can proceed to login using their account in the login page
+    * The login authentication process is handled using Django's own https://docs.djangoproject.com/en/3.2/topics/auth/[authentication system]
+    * As with the sign up process, we have also implemented a client side validation using Bootstrap form validator.
+
+  - *Social Logins and Registration*
+    * Social logins are enabled using a third party extension: `https://django-allauth.readthedocs.io/en/latest/installation.html[django-allauth]`
+
+==== Dashboard
+
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1625977079/Dashboard_ka7orc.svg[dashboard diagram, title=Dashboard Diagram]
+
+  - *Navbar*:
+    * Linked to all the different pages of our website
+
+  - *Main Card*
+    * Since most of the information requires either calling an API or server callbacks, we render the relevant information using AJAX requests to speed up DOM rendering process.
+    * You can find most of the server side handling of AJAX request in `views.py` under the accounts folder.
+    * Most of our javascript is under menu:orbital[static > js]
+
+==== Expense Tracker
+
+  - *Add items*
+    * Fill in the form with valid inputs, we have implemented client side validation as well. The data is stored in our database and each of the data is tagged to the `User`.
+  - *Edit/Delete item*
+    * We have made it such that the table data is retrieved via the use of javascript in the Frontend for the data we want to modify. After the data has been modified, the updated data will be sent to the backend, where the necessary functions will be invoked.
+  - *Doughnut Chart*
+    * We used Chart.js to render the chart. The data from the database is used to calculate total price of the items from each category and passed to the Chart.js API in json format for it to be rendered.
+  - *Update Chart*
+    * We render the relevant information using AJAX requests. The data will be updated after it has been modified without the need to refresh the page.
+
+==== Delivery Tracker
+
+===== Setting up Tracking API 
+
+NOTE: We have tested multiple Tracking APIs while looking for one that suit our use case. We eventually decided to use TrackingMore's API mainly because it offers a wide range of couriers that are used globally and also because it offers a free trial.
+
+. Head to https://www.trackingmore.com/[TrackingMore] to sign up for an account.
+. Once you have reached the dashboard, click on the `Settings` button.
++
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1626080731/screenshots/trackingmore_vwctjw.png[trackingmore diagram]
+. Then click on `Get API Key`
++
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1626081502/screenshots/api_page_tkxmft.jpg[api page diagram]
+. Create a API key name and click `Generate`
+. Copy the API key generated and copy into your `.env` file under `TRACKING_API_KEY`
+
+===== Using Delivery Tracker 
+
+- *Add items*
+  * Fill in the form with valid inputs, we have implemented client side validation as well. The data is stored in our database and each of the data is tagged to the `User`.
+- *Delete items*
+  * We retrieve the data that is to be deleted from the table via the use of javascript in the Frontend. The data will then be sent to the backend where we would remove the entry in the database.
+- *Detailed Tracking*
+  * TrackingMore API is used for this. Simply input the tracking number and the API handles the request.
+
+==== ShipTogether
+
+.ShipTogether Program Flow
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1625977079/ShipTogether_tbnbxg.svg[shiptogether diagram]
+
+- *Create Group*
+  * Fill in the form with valid inputs, we have implemented client side validation as well. The data is stored in our database and each of the data is tagged to the `Group`.
+
+- *Search*
+  * Search for specific results. Function is done via javascript, where we loop through the `Group` data to get the results the user is searching for.
+
+- *Join Group*
+  * User is added to the `Group` by having the `User` object be added to `User` array.
+
+- *Leave Group*
+  * User is removed from the `Group` by having the `User` object be removed from `User` array. Any items associated with `User` will be removed as well.
+
+- *Delete Group*
+  * The data of the `Group` and `Shipping` Object and `Group_data` will be wiped from the database.
+
+- *Lock/Unlock Group*
+  * `is_locked` boolean changes to signify status of group. This will affect the pages to be accessed by the group.
+
+- *Add items*
+  * Fill in the form with valid inputs, we have implemented client side validation as well. The data is stored in our database and each of the data is tagged to the `User` via index of array in `Group_data`.
+
+- *Send Updates*
+  * Members will be notified when messages are sent by the owner.
+
+- *Edit Details/Upload Screenshot* 
+  * Fill in the form with valid inputs, we have implemented client side validation as well. The data is stored in our database and each of the data is tagged to the `Group_data`.
+  * Media files such as the screenshot is stored and served using a cloud server on https://cloudinary.com/[Cloudinary].
+
+TIP: We found out that there is no good way to store and serve media files using only Postgres and there was also no way to serve up media files in production like how you would serve up static files using WhiteNoise. We found out after reading multiple stackoverflow sites that the official way to serve up media files is through external storage service like Amazon S3 but it would cost you some money. Hence, we decided that Cloudinary would serve as a good media storage and server since it offers free 25GB storage. You can read on the stackoverflow post https://stackoverflow.com/questions/64094745/how-to-serve-media-files-in-production[here].
+
+===== Setting up Cloudinary account
+
+. Head to https://cloudinary.com/[Cloudinary] and click on btn:[SIGN UP FOR FREE]
++
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1626235404/screenshots/cloduinary_home_amhhq9.jpg[cloudinary home page]
+. Once you have signed in, click on the btn:[Dashboard] page to view your account details.
+. You would want to copy your Cloud name, API Key and API secret into the `.env` under `CLOUD_NAME`, `API_KEY` and `API_SECRET` respectively.
++
+image::https://res.cloudinary.com/dgfzlpuds/image/upload/v1626237353/screenshots/cloudinary_info_euqmhz.jpg[cloudinary info]
+
+== Documentation
+
+Refer to our README https://hackmd.io/YdOokxdgSPS1J7VwXVZffg[here].
+
+== Testing
+
+Refer to our testing logs https://hackmd.io/YdOokxdgSPS1J7VwXVZffg#Testing[here].
+
+== Dev Ops
+
+=== Continuous Development
+
+We opted to https://www.heroku.com/[Heroku] as our deployment server which has the feature to automatically deploy from GitHub whenever we make a push. Do note that before you push your code up for production, you would need to enter all the environment variables into the `Config Vars` section under the settings page of your app.
+
+=== Continuos Integration
+
+Although we did not set up any Unit testing for our app, we did set up a workflow in Github to help us check on our dependencies (using https://dependabot.com/[Dependabot]) and also for any security issues (using https://github.com/github/codeql-action[CodeQL]). Our app will only be deployed once these checks passes to ensure that there are no security issues or dependencies that are not updated.
+
+=== Managing dependencies
+
+All of our dependencies can be found in our https://docs.google.com/document/d/1l4UlsGf9LmCwoKB5_YWZ3GzQotKH8sjJPMXLMt3Rzsw/edit[tech stack] guide and can be easily modified by changing the `requirements.txt` file.
