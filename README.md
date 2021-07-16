@@ -2,7 +2,7 @@
 # NUS Orbital 2021
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=shopbud)(https://shopbud.herokuapp.com/)]
+[![Heroku](https://heroku-badge.herokuapp.com/?app=shopbud)](https://shopbud.herokuapp.com/)
 
 Orbital (Independent Software Development Project) is NUS School of Computing self-directed, independent work course. This programme gives students the opportunity to pick up software development skills on their own, using sources on the web.
 
