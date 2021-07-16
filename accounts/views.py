@@ -59,7 +59,7 @@ def dashboard(request):
     if len(user) != 0 and not user[0].first_time_user:
         first_time = False
 
-    platforms = user[0].platforms
+    platforms = UserExtension.objects.get(user=request.user).platforms
 
     context = {
         'deliveries': deliveries if len(deliveries) != 0 else None,
