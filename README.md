@@ -2,17 +2,11 @@
 # NUS Orbital 2021
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=shopbud)]
 
 Orbital (Independent Software Development Project) is NUS School of Computing self-directed, independent work course. This programme gives students the opportunity to pick up software development skills on their own, using sources on the web.
 
 **Proposed Level of Achievement:** Apollo 11
-
-* [NUS Orbital 2021](#nus-orbital-2021)
-  * [ShopBud](#shopbud)
-  * [Milestones](#milestones)
-  * [Techstack](#techstack)
-  * [User Guide](#user-guide)
-  * [License](#license)
 
 ## ShopBud
 
@@ -21,8 +15,6 @@ ShopBud is **LIVE** at [https://shopbud.herokuapp.com/](https://shopbud.herokuap
 Poster Link: [Link](https://drive.google.com/file/d/1VNAAU065_oKebyTNKvJZh6c0H6K-_scK/view?usp=sharing)
 
 Do also watch our video demo at: [Link](https://drive.google.com/file/d/1utDdV6d5n3X6Ny-rnd638mxAVd-JS5X4/view?usp=sharing)
-
-User Guide: [Link](https://docs.google.com/document/d/1JZVMZeAFcHXlqNnLMF-RLc3LcniCeGb6bX5XiciqvBc/edit?usp=sharing)
 
 ## Milestones
 
