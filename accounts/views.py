@@ -52,8 +52,11 @@ def dashboard(request):
     deliveries = Deliveries.objects.filter(user_id=request.user.id)
     expense = Transaction.objects.filter(user_id=request.user.id)
 
+    if len(user) == 0:
+        UserExtension.objects.create(user=User.objects.get(username=request.user.username), first_time_user=True)
+
     first_time = True
-    if len(user) == 0 or not user[0].first_time_user:
+    if len(user) != 0 and not user[0].first_time_user:
         first_time = False
 
     platforms = user[0].platforms
