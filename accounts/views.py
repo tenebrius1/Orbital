@@ -171,7 +171,10 @@ def login(request):
                 auth.login(request, user)
                 return redirect("dashboard")
             else:
-                if not User.objects.get(username=username).is_active:
+                if len(User.objects.filter(username=username)) == 0:
+                    messages.error(request, "Invalid credentials")
+                    return redirect("login")
+                elif not User.objects.get(username=username).is_active:
                     messages.error(
                         request, 'Account is not active, please check your email')
                     return redirect("login")
