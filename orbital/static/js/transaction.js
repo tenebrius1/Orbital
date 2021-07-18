@@ -199,7 +199,7 @@ function Edit() {
   );
   tdSave.replaceWith(
     "<a class='btnSave' title='Save' data-bs-toggle='tooltip' data-bs-placement='top'>" +
-      "<i class='bi-check-square me-3'></i>" +
+      "<i class='bi bi-check-square me-3'></i>" +
       '</a>'
   );
   tdCancel.replaceWith(
