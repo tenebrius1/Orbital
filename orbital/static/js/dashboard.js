@@ -9,18 +9,10 @@ function displayExpenses() {
     success: function (response) {
       let platforms = Object.keys(response);
       let dataset = [];
-      let colors = [];
-      var dynamicColors = function () {
-        var r = Math.floor(Math.random() * 255);
-        var g = Math.floor(Math.random() * 255);
-        var b = Math.floor(Math.random() * 255);
-        return 'rgb(' + r + ',' + g + ',' + b + ')';
-      };
       for (var i = 0, len = platforms.length; i < len; i++) {
         dataset.push(response[platforms[i]]);
         $(`.${platforms[i]}`).text(`$${response[platforms[i]]}`);
         platforms[i] = capitalize(platforms[i]);
-        colors.push(dynamicColors());
       }
       new Chart(document.getElementById('chartjs-dashboard-pie'), {
         type: 'pie',
@@ -29,7 +21,6 @@ function displayExpenses() {
           datasets: [
             {
               data: dataset,
-              backgroundColor: colors,
               borderWidth: 5,
             },
           ],
@@ -38,9 +29,14 @@ function displayExpenses() {
           responsive: !window.MSInputMethodContext,
           maintainAspectRatio: false,
           legend: {
-            display: false,
+            display: true,
           },
           cutoutPercentage: 75,
+          plugins: {
+            colorschemes: {
+              scheme: 'tableau.ClassicMedium10'
+            }
+          }
         },
       });
     },

@@ -301,92 +301,54 @@
               <div class="card-header">
                 <h5 class="card-title mb-0">Summary</h5>
               </div>
-              <table class="table mb-0">
-                <tbody>
-                  <tr>
-                    <td>
-                      <i data-feather="shopping-bag"></i>
-                      Store:
-                    </td>
-                    <td>{{ shipping.platform }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i data-feather="briefcase"></i>
-                      Description:
-                    </td>
-                    <td>{{ info.description }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i data-feather="credit-card"></i>
-                      Shipping fee per member:
-                    </td>
-                    {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
-                    <td>
-                      ${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}
-                    </td>
-                    {% else %}
-                    <td>$0.00</td>
-                    {% endif %}
-                  </tr>
-                  <tr>
-                    {% if request.user.username in info.members %}
-                    <td>
-                      <i data-feather="info"></i>
-                      Total Amount:
-                    </td>
-                    {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
-                    {% with shipping_fee=shipping.base_shipping|div:shipping.member_count %}
-                    <td>
-                      ${{ user_total|addition:shipping_fee|floatformat:2 }}
-                    </td>
-                    {% endwith %} {% else %}
-                    <td>${{ user_total|floatformat:2 }}</td>
-                    {% endif %} {% endif %}
-                  </tr>
-                  <!-- <tr>
-                    <td><i data-feather="user"></i>
-                      Member details:
-                    </td>
-                    <td>
-                      <a href="#exampleModal" data-bs-toggle="modal" data-bs-target="#exampleModal"> Click to show </a>
-                      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Members</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <table class="table mb-0">
-                                <tbody>
-                                  {% for member in info.members %}
-                                  <tr class="data">
-                                    <td>
-                                      <i data-feather="user"></i>
-                                      {{ member }}
-                                    </td>
-                                    <td>
-                                      contact
-                                    </td>
-                                  </tr>
-                                  {% endfor %}
-                                </tbody>
-                              </table>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr> -->
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <i data-feather="shopping-bag"></i>
+                        Store:
+                      </td>
+                      <td>{{ shipping.platform }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <i data-feather="briefcase"></i>
+                        Description:
+                      </td>
+                      <td>{{ info.description }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <i data-feather="credit-card"></i>
+                        Shipping fee per member:
+                      </td>
+                      {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
+                      <td>
+                        ${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}
+                      </td>
+                      {% else %}
+                      <td>$0.00</td>
+                      {% endif %}
+                    </tr>
+                    <tr>
+                      {% if request.user.username in info.members %}
+                      <td>
+                        <i data-feather="info"></i>
+                        Total Amount:
+                      </td>
+                      {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
+                      {% with shipping_fee=shipping.base_shipping|div:shipping.member_count %}
+                      <td>
+                        ${{ user_total|addition:shipping_fee|floatformat:2 }}
+                      </td>
+                      {% endwith %} {% else %}
+                      <td>${{ user_total|floatformat:2 }}</td>
+                      {% endif %} {% endif %}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -396,68 +358,70 @@
           <div class="card-header">
             <h5 class="card-title mb-0">Items</h5>
           </div>
-          <table class="table table-hover my-0" id="group_data">
-            <thead>
-              <tr>
-                <th
-                  class="sortable asc"
-                  onclick="sortTable(0)"
-                  style="cursor: pointer"
-                >
-                  User
-                </th>
-                <th
-                  class="sortable"
-                  onclick="sortTable(1)"
-                  style="cursor: pointer"
-                >
-                  Item
-                </th>
-                <th class="text-center">Qty</th>
-                <th class="text-center">Price</th>
-                <th class="text-center">Total</th>
-                <th class="text-center">Paid</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for user, item, qty, price, url, paid in table_data %}
-              <tr class="data">
-                <td class="user">{{ user }}</td>
-                <td class="d-none d-xl-table-cell item">
-                  <a href="{{ url }}"> {{ item|capfirst }} </a>
-                </td>
-                <td class="d-none d-md-table-cell qty text-center">
-                  {{ qty }}
-                </td>
-                <td class="d-none d-md-table-cell price text-center">
-                  ${{ price|floatformat:2}}
-                </td>
-                <td class="d-none d-md-table-cell total text-center">
-                  ${{ price|mul:qty|floatformat:2 }}
-                </td>
-                <td class="justify-content-center">
-                  {% if request.user.username == info.owner %}
-                  <div class="d-flex justify-content-center paid">
-                    {% if paid %}
-                    <input class="form-check-input" type="checkbox" checked />
+          <div class="table-responsive">
+            <table class="table table-hover my-0" id="group_data">
+              <thead>
+                <tr>
+                  <th
+                    class="sortable asc"
+                    onclick="sortTable(0)"
+                    style="cursor: pointer"
+                  >
+                    User
+                  </th>
+                  <th
+                    class="sortable"
+                    onclick="sortTable(1)"
+                    style="cursor: pointer"
+                  >
+                    Item
+                  </th>
+                  <th class="text-center">Qty</th>
+                  <th class="text-center">Price</th>
+                  <th class="text-center">Total</th>
+                  <th class="text-center">Paid</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user, item, qty, price, url, paid in table_data %}
+                <tr class="data">
+                  <td class="user">{{ user }}</td>
+                  <td class="item">
+                    <a href="{{ url }}" target="_blank" rel="noreferrer noopener"> {{ item|capfirst }} </a>
+                  </td>
+                  <td class="qty text-center">
+                    {{ qty }}
+                  </td>
+                  <td class="price text-center">
+                    ${{ price|floatformat:2}}
+                  </td>
+                  <td class="total text-center">
+                    ${{ price|mul:qty|floatformat:2 }}
+                  </td>
+                  <td class="justify-content-center">
+                    {% if request.user.username == info.owner %}
+                    <div class="d-flex justify-content-center paid">
+                      {% if paid %}
+                      <input class="form-check-input" type="checkbox" checked />
+                      {% else %}
+                      <input class="form-check-input" type="checkbox" />
+                      {% endif %}
+                    </div>
                     {% else %}
-                    <input class="form-check-input" type="checkbox" />
+                    <div class="d-flex justify-content-center">
+                      {% if paid %}
+                      <i data-feather="check" color="green"></i>
+                      {% else %}
+                      <i data-feather="x" color="red"></i>
+                      {% endif %}
+                    </div>
                     {% endif %}
-                  </div>
-                  {% else %}
-                  <div class="d-flex justify-content-center">
-                    {% if paid %}
-                    <i data-feather="check" color="green"></i>
-                    {% else %}
-                    <i data-feather="x" color="red"></i>
-                    {% endif %}
-                  </div>
-                  {% endif %}
-                </td>
-              </tr>
-              {% endfor%}
-            </tbody>
-          </table>
+                  </td>
+                </tr>
+                {% endfor%}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -592,38 +556,40 @@
                   {% endif %}
                 </div>
               </div>
-              <table class="table mb-0">
-                <tbody>
-                  <tr>
-                    <td>
-                      <i data-feather="hash"></i>
-                      Tracking Number:
-                    </td>
-                    <td>{{ info.tkg_number }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i data-feather="truck"></i>
-                      Courier:
-                    </td>
-                    <td>{{ info.courier|capfirst }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i data-feather="calendar"></i>
-                      Meetup Date:
-                    </td>
-                    <td>{{ info.meeting_date }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i data-feather="map-pin"></i>
-                      Meetup Address:
-                    </td>
-                    <td>{{ info.address|title }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <i data-feather="hash"></i>
+                        Tracking Number:
+                      </td>
+                      <td>{{ info.tkg_number }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <i data-feather="truck"></i>
+                        Courier:
+                      </td>
+                      <td>{{ info.courier|capfirst }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <i data-feather="calendar"></i>
+                        Meetup Date:
+                      </td>
+                      <td>{{ info.meeting_date }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <i data-feather="map-pin"></i>
+                        Meetup Address:
+                      </td>
+                      <td>{{ info.address|title }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -733,41 +699,43 @@
           <div class="card-header">
             <h5 class="card-title mb-0">Members' details</h5>
           </div>
-          <table class="table mb-0">
-            {% if info.owner == request.user.username %}
-            <tbody>
-              {% for name, num in member_details %}
-              <tr class="data">
-                <td>
-                  <i data-feather="user"></i>
-                  {{ name }} {% if info.owner == name %}
-                  <b> (Owner)</b>
+          <div class="table-responsive">
+            <table class="table mb-0">
+              {% if info.owner == request.user.username %}
+              <tbody>
+                {% for name, num in member_details %}
+                <tr class="data">
+                  <td>
+                    <i data-feather="user"></i>
+                    {{ name }} {% if info.owner == name %}
+                    <b> (Owner)</b>
+                    {% endif %}
+                  </td>
+                  <td class="text-center">{{ num }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              {% else %}
+              <tbody>
+                {% for name, num in member_details %}
+                <tr class="data">
+                  <td>
+                    <i data-feather="user"></i>
+                    {{ name }} {% if info.owner == name %}
+                    <b> (Owner)</b>
+                    {% endif %}
+                  </td>
+                  {% if info.owner == name %}
+                  <td class="text-center">{{ num }}</td>
+                  {% else %}
+                  <td class="text-center"></td>
                   {% endif %}
-                </td>
-                <td class="text-center">{{ num }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-            {% else %}
-            <tbody>
-              {% for name, num in member_details %}
-              <tr class="data">
-                <td>
-                  <i data-feather="user"></i>
-                  {{ name }} {% if info.owner == name %}
-                  <b> (Owner)</b>
-                  {% endif %}
-                </td>
-                {% if info.owner == name %}
-                <td class="text-center">{{ num }}</td>
-                {% else %}
-                <td class="text-center"></td>
-                {% endif %}
-              </tr>
-              {% endfor %}
-            </tbody>
-            {% endif %}
-          </table>
+                </tr>
+                {% endfor %}
+              </tbody>
+              {% endif %}
+            </table>
+          </div>
         </div>
       </div>
     </div>

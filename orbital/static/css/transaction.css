@@ -84,3 +84,7 @@ th.sortable:hover::after {
   line-height: 28px;
   color: grey;
 }
+
+.bi {
+  font-size: 16px;
+}

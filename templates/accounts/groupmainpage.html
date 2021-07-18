@@ -135,61 +135,63 @@
               <div class="card-header">
                 <h5 class="card-title mb-0">Description</h5>
               </div>
-              <table class="table mb-0">
-                <tbody>
-                  <tr>
-                    <td>
-                      <i data-feather="shopping-bag"></i>
-                      Store:
-                    </td>
-                    <td>{{ shipping.platform }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i data-feather="briefcase"></i>
-                      Short Description:
-                    </td>
-                    <td>{{ info.description }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i data-feather="map-pin"></i>
-                      Location:
-                    </td>
-                    <td>{{ shipping.location }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i data-feather="credit-card"></i>
-                      Shipping fee/member:
-                    </td>
-                    {% if shipping.free_shipping_min|sub:data.total_price > 0 or shipping.free_shipping_min == 0 %}
-                    <td>
-                      ${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}
-                    </td>
-                    {% else %}
-                    <td>$0.00</td>
-                    {% endif %}
-                  </tr>
-                  {% if shipping.free_shipping_min != 0 %}
-                  <tr>
-                    <td>
-                      <i data-feather="info"></i>
-                      Amount to free shipping:
-                    </td>
-                    <td>
-                      {% if data == None %}
-                      ${{ shipping.free_shipping_min|floatformat:2 }}
-                      {% elif shipping.free_shipping_min|sub:data.total_price > 0 %}
-                      ${{ shipping.free_shipping_min|sub:data.total_price }}
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <i data-feather="shopping-bag"></i>
+                        Store:
+                      </td>
+                      <td>{{ shipping.platform }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <i data-feather="briefcase"></i>
+                        Short Description:
+                      </td>
+                      <td>{{ info.description }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <i data-feather="map-pin"></i>
+                        Location:
+                      </td>
+                      <td>{{ shipping.location }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <i data-feather="credit-card"></i>
+                        Shipping fee/member:
+                      </td>
+                      {% if shipping.free_shipping_min|sub:data.total_price > 0 or shipping.free_shipping_min == 0 %}
+                      <td>
+                        ${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}
+                      </td>
                       {% else %}
-                      $0.00
+                      <td>$0.00</td>
                       {% endif %}
-                    </td>
-                  </tr>
-                  {% endif %}
-                </tbody>
-              </table>
+                    </tr>
+                    {% if shipping.free_shipping_min != 0 %}
+                    <tr>
+                      <td>
+                        <i data-feather="info"></i>
+                        Amount to free shipping:
+                      </td>
+                      <td>
+                        {% if data == None %}
+                        ${{ shipping.free_shipping_min|floatformat:2 }}
+                        {% elif shipping.free_shipping_min|sub:data.total_price > 0 %}
+                        ${{ shipping.free_shipping_min|sub:data.total_price }}
+                        {% else %}
+                        $0.00
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -197,21 +199,23 @@
               <div class="card-header">
                 <h5 class="card-title mb-0">Members</h5>
               </div>
-              <table class="table mb-0">
-                <tbody>
-                  {% for member in info.members %}
-                  <tr class="data">
-                    <td>
-                      <i data-feather="user"></i>
-                      {{ member }}
-                      {% if info.owner == member %}
-                      (Owner)
-                      {% endif %}
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <tbody>
+                    {% for member in info.members %}
+                    <tr class="data">
+                      <td>
+                        <i data-feather="user"></i>
+                        {{ member }}
+                        {% if info.owner == member %}
+                        (Owner)
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -298,56 +302,58 @@
               {% endif %}
             </div>
           </div>
-          <table class="table table-hover my-0" id="group_data">
-            <thead>
-              <tr>
-                <th class="sortable asc" onclick="sortTable(0)" style="cursor: pointer">
-                  User
-                </th>
-                <th class="sortable" onclick="sortTable(1)" style="cursor: pointer">
-                  Item
-                </th>
-                <th class="text-center">Qty</th>
-                <th class="text-center">Price</th>
-                <th class="text-center">Total</th>
-                <th id="actions"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for user, item, qty, price, url in table_data %}
-              <tr class="data">
-                <td class="index" style="display: none">
-                  {{ forloop.counter0 }}
-                </td>
-                <td class="user">{{ user }}</td>
-                <td class="d-none d-xl-table-cell item">
-                  <a class="item" href="{{ url }}">{{ item|capfirst }}</a>
-                </td>
-                <td class="d-none d-md-table-cell qty text-center">
-                  {{ qty }}
-                </td>
-                <td class="d-none d-md-table-cell price text-center">
-                  ${{ price|floatformat:2 }}
-                </td>
-                <td class="d-none d-md-table-cell total text-center">
-                  ${{ price|mul:qty|floatformat:2 }}
-                </td>
-                <td class="text-center">
-                  {% if user == request.user.username %}
-                  <span>
-                    <!-- <a class="edit" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
-                      <i class="bi bi-pencil-square me-3"></i>
-                    </a> -->
-                    <a class="delete_item" title="Delete Item" data-bs-toggle="tooltip" data-bs-placement="top">
-                      <i class="bi bi-trash-fill"></i>
-                    </a>
-                  </span>
-                  {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-hover my-0" id="group_data">
+              <thead>
+                <tr>
+                  <th class="sortable asc" onclick="sortTable(0)" style="cursor: pointer">
+                    User
+                  </th>
+                  <th class="sortable" onclick="sortTable(1)" style="cursor: pointer">
+                    Item
+                  </th>
+                  <th class="text-center">Qty</th>
+                  <th class="text-center">Price</th>
+                  <th class="text-center">Total</th>
+                  <th id="actions"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user, item, qty, price, url in table_data %}
+                <tr class="data">
+                  <td class="index" style="display: none">
+                    {{ forloop.counter0 }}
+                  </td>
+                  <td class="user">{{ user }}</td>
+                  <td class="item">
+                    <a class="item" href="{{ url }}" target="_blank" rel="noreferrer noopener">{{ item|capfirst }}</a>
+                  </td>
+                  <td class="qty text-center">
+                    {{ qty }}
+                  </td>
+                  <td class="price text-center">
+                    ${{ price|floatformat:2 }}
+                  </td>
+                  <td class="total text-center">
+                    ${{ price|mul:qty|floatformat:2 }}
+                  </td>
+                  <td class="text-center">
+                    {% if user == request.user.username %}
+                    <span>
+                      <!-- <a class="edit" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
+                        <i class="bi bi-pencil-square me-3"></i>
+                      </a> -->
+                      <a class="delete_item" title="Delete Item" data-bs-toggle="tooltip" data-bs-placement="top">
+                        <i class="bi bi-trash-fill"></i>
+                      </a>
+                    </span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

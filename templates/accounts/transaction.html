@@ -179,74 +179,76 @@
             <h5 class="card-title mb-0">Spending</h5>
           </div>
           {% if transactions %}
-          <table class="table table-hover my-0" id="transaction_data">
-            <thead>
-              <tr>
-                <th
-                  class="sortable asc"
-                  onclick="sortTable(0)"
-                  style="cursor: pointer"
-                >
-                  Item
-                </th>
-                <th
-                  class="d-none d-xl-table-cell sortable"
-                  onclick="sortDate(1)"
-                  style="cursor: pointer"
-                >
-                  Date bought
-                </th>
-                <th
-                  class="d-none d-xl-table-cell sortable"
-                  onclick="sortTable(2)"
-                  style="cursor: pointer"
-                >
-                  Platform
-                </th>
-                <th
-                  class="d-none d-md-table-cell sortable"
-                  onclick="sortPrice(3)"
-                  style="cursor: pointer"
-                >
-                  Price
-                </th>
-                <th id="actions"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for transaction in transactions %}
-              <tr>
-                <td class="name">{{ transaction.item|capfirst }}</td>
-                <td class="d-none d-xl-table-cell date">{{ transaction.date }}</td>
-                <td class="d-none d-xl-table-cell company">{{ transaction.company | title }}</td>
-                <td class="d-none d-md-table-cell price">${{ transaction.price }}</td>
-                <td>
-                  <span>
-                    <a
-                      class="edit"
-                      title="Edit"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                    >
-                      <i class="bi bi-pencil-square me-3"></i>
-                    </a>
-                    <a
-                      class="delete"
-                      title="Delete"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                    >
-                      <i class="bi bi-trash-fill"></i>
-                    </a>
-                  </span>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-hover my-0" id="transaction_data">
+              <thead>
+                <tr>
+                  <th
+                    class="sortable asc"
+                    onclick="sortTable(0)"
+                    style="cursor: pointer"
+                  >
+                    Item
+                  </th>
+                  <th
+                    class="sortable"
+                    onclick="sortDate(1)"
+                    style="cursor: pointer"
+                  >
+                    Date bought
+                  </th>
+                  <th
+                    class="sortable"
+                    onclick="sortTable(2)"
+                    style="cursor: pointer"
+                  >
+                    Platform
+                  </th>
+                  <th
+                    class="sortable"
+                    onclick="sortPrice(3)"
+                    style="cursor: pointer"
+                  >
+                    Price
+                  </th>
+                  <th id="actions"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                  <td class="name">{{ transaction.item|capfirst }}</td>
+                  <td class="date">{{ transaction.date }}</td>
+                  <td class="company">{{ transaction.company | title }}</td>
+                  <td class="price">${{ transaction.price }}</td>
+                  <td>
+                    <span class="d-inline-flex flex-row">
+                      <a
+                        class="edit"
+                        title="Edit"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                      >
+                        <i class="bi bi-pencil-square me-3"></i>
+                      </a>
+                      <a
+                        class="delete"
+                        title="Delete"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                      >
+                        <i class="bi bi-trash-fill"></i>
+                      </a>
+                    </span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
           {% else %}
           <div class="text-center justify-content-center p-3">
-            <span class="smiley-180">😶</span>
+            <span class="smiley-180">＞﹏＜</span>
             <span class="note">You have not added any transactions</span>
           </div>
           {% endif %}

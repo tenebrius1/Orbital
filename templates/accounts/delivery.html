@@ -82,49 +82,51 @@
         <div class="card-header">
         </div>
         {% if deliveries %}
-        <table class="table table-hover my-0" id="transaction_data">
-          <thead>
-            <tr>
-              <th class="sortable asc" onclick="sortTable(0)" style="cursor: pointer">
-                Item
-              </th>
-              <th class="d-none d-xl-table-cell sortable" onclick="sortTable(1)" style="cursor: pointer">
-                Tracking Number
-              </th>
-              <th class="d-none d-md-table-cell sortable" onclick="sortTable(2)" style="cursor: pointer">
-                Courier
-              </th>
-              <th class="d-none d-md-table-cell">Status</th>
-              <th class="d-none d-xl-table-cell">Time Updated</th>
-              <th id="actions"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for delivery in deliveries %}
-            <tr class="data">
-              <td class="name">{{ delivery.name|capfirst }}</td>
-              <td class="d-none d-xl-table-cell tkg_number">{{ delivery.tkg_number }}</td>
-              <td class="d-none d-md-table-cell courier">
-                {{ delivery.courier_name }}
-              </td>
-              <td class="d-none d-md-table-cell status">
-                <span>Loading...</span>
-              </td>
-              <td class="d-none d-xl-table-cell time_updated">Loading...</td>
-              <td style="text-align: center">
-                <span>
-                  <a class="delete" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
-                    <i class="bi bi-trash-fill"></i>
-                  </a>
-                </span>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-hover my-0" id="transaction_data">
+            <thead>
+              <tr>
+                <th class="sortable asc" onclick="sortTable(0)" style="cursor: pointer">
+                  Item
+                </th>
+                <th class="sortable" onclick="sortTable(1)" style="cursor: pointer">
+                  Tracking Number
+                </th>
+                <th class="sortable" onclick="sortTable(2)" style="cursor: pointer">
+                  Courier
+                </th>
+                <th>Status</th>
+                <th>Time Updated</th>
+                <th id="actions"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for delivery in deliveries %}
+              <tr class="data">
+                <td class="name">{{ delivery.name|capfirst }}</td>
+                <td class="tkg_number">{{ delivery.tkg_number }}</td>
+                <td class="courier">
+                  {{ delivery.courier_name }}
+                </td>
+                <td class="status">
+                  <span>Loading...</span>
+                </td>
+                <td class="time_updated">Loading...</td>
+                <td style="text-align: center">
+                  <span>
+                    <a class="delete" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
+                      <i class="bi bi-trash-fill"></i>
+                    </a>
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
         {% else %}
         <div class="text-center justify-content-center p-3">
-          <span class="smiley-180">😥</span>
+          <span class="smiley-180">(っ °Д °;)っ</span>
           <span class="note">There are no deliveries to be tracked</span>
         </div>
         {% endif %}
