@@ -231,13 +231,13 @@
       </div>
     </div>
     <script async src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script async src="{% static 'js/app.js' %}"></script>
+    <script defer src="{% static 'js/app.js' %}"></script>
     <script defer src="{% static 'js/noti.js' %}"></script>
     <script
-      async
+      defer
       src="https://unpkg.com/@adminkit/core@latest/dist/js/app.js"
     ></script>
-    <script async src="https://unpkg.com/chartjs-plugin-colorschemes"></script>
+    <script defer src="https://unpkg.com/chartjs-plugin-colorschemes"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     {% block script %} {% endblock %}
   </body>
