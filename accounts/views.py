@@ -544,7 +544,7 @@ def deleteTransaction(request):
             item=item, date=date, price=price, company=company, user_id=request.user.id)[0]
         dlt.delete()
 
-        if len(Transaction.objects.filter(company=company)) == 0:
+        if len(Transaction.objects.filter(company=company, user_id=request.user.id)) == 0:
             userext = UserExtension.objects.get(user_id=request.user.id)
             userext.platforms.remove(company)
             userext.save()
