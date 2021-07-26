@@ -399,6 +399,7 @@ def grouplocked(request, group_name):
         'table_data': tabledata,
         'date': group.meeting_date.isoformat(),
         'user_total': user_total,
+        'data': data[0] if len(data) != 0 else None,
     }
     if request.method == "POST":
         tkg_number = request.POST['tkg_number']

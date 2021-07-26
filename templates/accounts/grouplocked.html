@@ -323,12 +323,12 @@
                         <i data-feather="credit-card"></i>
                         Shipping fee per member:
                       </td>
-                      {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
+                      {% if shipping.free_shipping_min|sub:data.total_price <= 0  and shipping.free_shipping_min > 0 %}
+                      <td>$0.00</td>
+                      {% else %}
                       <td>
                         ${{ shipping.base_shipping|div:shipping.member_count|floatformat:2 }}
                       </td>
-                      {% else %}
-                      <td>$0.00</td>
                       {% endif %}
                     </tr>
                     <tr>
@@ -337,13 +337,14 @@
                         <i data-feather="info"></i>
                         Total Amount:
                       </td>
-                      {% if shipping.free_shipping_min|sub:data.total_price > 0 %}
+                      {% if shipping.free_shipping_min|sub:data.total_price <= 0  and shipping.free_shipping_min > 0 %}
+                      <td>${{ user_total|floatformat:2 }}</td>
+                      {% else %}
                       {% with shipping_fee=shipping.base_shipping|div:shipping.member_count %}
                       <td>
                         ${{ user_total|addition:shipping_fee|floatformat:2 }}
                       </td>
-                      {% endwith %} {% else %}
-                      <td>${{ user_total|floatformat:2 }}</td>
+                      {% endwith %} 
                       {% endif %} {% endif %}
                     </tr>
                   </tbody>
