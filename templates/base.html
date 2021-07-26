@@ -1,52 +1,39 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
     <title>ShopBud{% block title %}{% endblock %}</title>
-    <meta content="ShopBud is an all-in-one webapp integrating shopping assistants/apps so that you can enjoy a one-stop experience for your e-commerce shopping needs." name="description" />
+    <meta
+      content="ShopBud is an all-in-one webapp integrating shopping assistants/apps so that you can enjoy a one-stop experience for your e-commerce shopping needs."
+      name="description" />
     <meta content="shopbud, web, application" name="keywords" />
 
     <link rel="icon" href="{% static 'img/shopbud.ico' %}" />
 
     <!-- Favicons -->
     <link href="{% static 'img/shopbud.ico' %}" rel="apple-touch-icon">
-    
+
     <!-- Vendor CSS Files -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="preload"
-      as="style"
-    />
-    <link
-      rel="preload"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
-      as="style"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="preload" as="style" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" as="style" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     {% block header %} {% endblock %}
   </head>
 
   <body>
     <!-- Main Content -->
     {% block content %} {% endblock %}
-    <a
-      href="#"
-      class="back-to-top d-flex align-items-center justify-content-center"
-      ><i class="bi bi-arrow-up-short"></i
-    ></a>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
     <!-- Vendor JS Files -->
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     {% block script %} {% endblock %}
   </body>
+
 </html>
