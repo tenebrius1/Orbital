@@ -14,7 +14,7 @@ ShopBud is **LIVE** at [https://shopbud.herokuapp.com/](https://shopbud.herokuap
 
 Poster Link: [Link](https://drive.google.com/file/d/1VNAAU065_oKebyTNKvJZh6c0H6K-_scK/view?usp=sharing)
 
-Do also watch our video demo at: [Link](https://drive.google.com/file/d/1utDdV6d5n3X6Ny-rnd638mxAVd-JS5X4/view?usp=sharing)
+Do also watch our video demo at: [Link](https://drive.google.com/file/d/1UosSIchx7gxvD7ldS48so8fnu5s10kZ8/view?usp=sharing)
 
 ## Milestones
 
